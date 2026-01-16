@@ -1,65 +1,254 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { Camera, LayoutDashboard, Users } from "lucide-react";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" as const },
+  },
+};
+
+const stagger = {
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
 
 export default function Home() {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const res = await fetch("https://formspree.io/f/xzddzwjj", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+
+    setLoading(false);
+    if (res.ok) {
+      setSubmitted(true);
+    }
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="min-h-screen bg-background text-foreground">
+      {/* Nav */}
+      <nav className="flex items-center justify-between px-6 py-4 max-w-6xl mx-auto">
+        <div className="text-2xl font-bold tracking-tight">
+          <span className="text-emerald-500">Fit</span>Lens
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <Button asChild>
+          <a href="#waitlist">Get Early Access</a>
+        </Button>
+      </nav>
+
+      {/* Hero */}
+      <motion.section
+        className="px-6 py-24 max-w-4xl mx-auto text-center"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={stagger}
+      >
+        <motion.h1
+          className="text-4xl md:text-6xl font-bold leading-tight mb-6"
+          variants={fadeUp}
+        >
+          See what your clients{" "}
+          <span className="text-emerald-500">actually eat</span>
+        </motion.h1>
+        <motion.p
+          className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
+          variants={fadeUp}
+        >
+          AI-powered nutrition tracking for personal trainers. Your clients log
+          meals via photo, voice, or text — you get proof, not promises.
+        </motion.p>
+        <motion.div variants={fadeUp}>
+          <Button size="lg" asChild>
+            <a href="#waitlist">Request Early Access</a>
+          </Button>
+        </motion.div>
+      </motion.section>
+
+      {/* Problem/Solution */}
+      <motion.section
+        className="px-6 py-16 max-w-5xl mx-auto"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={stagger}
+      >
+        <div className="grid md:grid-cols-2 gap-8">
+          <motion.div variants={fadeUp}>
+            <Card className="h-full border-destructive/30 bg-destructive/5">
+              <CardContent className="p-8">
+                <div className="text-destructive text-sm font-medium mb-2">
+                  THE PROBLEM
+                </div>
+                <h3 className="text-xl font-semibold mb-3">
+                  Clients say they&apos;re eating clean
+                </h3>
+                <p className="text-muted-foreground">
+                  But results don&apos;t lie. You program great workouts, but
+                  you&apos;re flying blind on nutrition. Self-reported food logs
+                  are unreliable, and you lose clients who blame the training.
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+          <motion.div variants={fadeUp}>
+            <Card className="h-full border-emerald-500/30 bg-emerald-500/5">
+              <CardContent className="p-8">
+                <div className="text-emerald-500 text-sm font-medium mb-2">
+                  THE SOLUTION
+                </div>
+                <h3 className="text-xl font-semibold mb-3">
+                  FitLens shows you the truth
+                </h3>
+                <p className="text-muted-foreground">
+                  Clients snap a photo, leave a voice note, or type what they
+                  ate. Our AI analyzes it instantly. You see real data on your
+                  dashboard — no more guessing.
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
-      </main>
-    </div>
+      </motion.section>
+
+      {/* Features */}
+      <motion.section
+        className="px-6 py-16 max-w-5xl mx-auto"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={stagger}
+      >
+        <motion.h2
+          className="text-3xl font-bold text-center mb-12"
+          variants={fadeUp}
+        >
+          Built for trainers who scale
+        </motion.h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          <motion.div variants={fadeUp}>
+            <Card className="text-center h-full">
+              <CardContent className="p-8">
+                <div className="w-14 h-14 bg-emerald-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <Camera className="w-7 h-7 text-emerald-500" />
+                </div>
+                <h3 className="font-semibold mb-2">AI Food Recognition</h3>
+                <p className="text-muted-foreground text-sm">
+                  Photo, voice, or text — our AI breaks down calories, protein,
+                  carbs, and fat instantly.
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+          <motion.div variants={fadeUp}>
+            <Card className="text-center h-full">
+              <CardContent className="p-8">
+                <div className="w-14 h-14 bg-emerald-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <LayoutDashboard className="w-7 h-7 text-emerald-500" />
+                </div>
+                <h3 className="font-semibold mb-2">Trainer Dashboard</h3>
+                <p className="text-muted-foreground text-sm">
+                  See all your clients in one place. Track compliance, spot
+                  trends, intervene early.
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+          <motion.div variants={fadeUp}>
+            <Card className="text-center h-full">
+              <CardContent className="p-8">
+                <div className="w-14 h-14 bg-emerald-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <Users className="w-7 h-7 text-emerald-500" />
+                </div>
+                <h3 className="font-semibold mb-2">Squad Accountability</h3>
+                <p className="text-muted-foreground text-sm">
+                  Clients post meals to group feeds. Peer pressure that drives
+                  results without extra work for you.
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* Waitlist */}
+      <motion.section
+        id="waitlist"
+        className="px-6 py-24 max-w-2xl mx-auto text-center"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={stagger}
+      >
+        <motion.h2 className="text-3xl font-bold mb-4" variants={fadeUp}>
+          Get early access
+        </motion.h2>
+        <motion.p className="text-muted-foreground mb-8" variants={fadeUp}>
+          We&apos;re onboarding trainers for our pilot program. Join the
+          waitlist and be first in line.
+        </motion.p>
+        <motion.div variants={fadeUp}>
+          {submitted ? (
+            <Card className="border-emerald-500/30 bg-emerald-500/10">
+              <CardContent className="p-6">
+                <p className="text-emerald-500 font-medium">
+                  You&apos;re on the list! We&apos;ll be in touch soon.
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+            >
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="flex-1"
+              />
+              <Button type="submit" disabled={loading}>
+                {loading ? "Joining..." : "Join Waitlist"}
+              </Button>
+            </form>
+          )}
+        </motion.div>
+      </motion.section>
+
+      {/* Footer */}
+      <footer className="px-6 py-8 border-t border-border">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-muted-foreground text-sm">
+            © 2025 FitLens. All rights reserved.
+          </div>
+          <div className="text-2xl font-bold tracking-tight">
+            <span className="text-emerald-500">Fit</span>Lens
+          </div>
+        </div>
+      </footer>
+    </main>
   );
 }
