@@ -192,6 +192,109 @@ export default function Home() {
         </div>
       </motion.section>
 
+      {/* App Screenshots */}
+      <motion.section
+        className="px-6 py-16 max-w-6xl mx-auto"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={stagger}
+      >
+        <motion.h2
+          className="text-3xl font-bold text-center mb-4"
+          variants={fadeUp}
+        >
+          See it in action
+        </motion.h2>
+        <motion.p
+          className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto"
+          variants={fadeUp}
+        >
+          A simple experience for clients. Powerful insights for trainers.
+        </motion.p>
+
+        {/* Trainer App */}
+        <motion.div className="mb-16" variants={fadeUp}>
+          <h3 className="text-xl font-semibold text-center mb-6 text-emerald-500">
+            Trainer Dashboard
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Card className="overflow-hidden">
+              <img
+                src="/images/trainer/dashboard.png"
+                alt="Trainer dashboard"
+                className="w-full h-auto"
+              />
+            </Card>
+            <Card className="overflow-hidden">
+              <img
+                src="/images/trainer/screen1.png"
+                alt="Trainer view"
+                className="w-full h-auto"
+              />
+            </Card>
+            <Card className="overflow-hidden">
+              <img
+                src="/images/trainer/screen2.png"
+                alt="Client details"
+                className="w-full h-auto"
+              />
+            </Card>
+            <Card className="overflow-hidden">
+              <img
+                src="/images/trainer/squad.png"
+                alt="Squad view"
+                className="w-full h-auto"
+              />
+            </Card>
+          </div>
+        </motion.div>
+
+        {/* Client App */}
+        <motion.div variants={fadeUp}>
+          <h3 className="text-xl font-semibold text-center mb-6 text-emerald-500">
+            Client App
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <Card className="overflow-hidden">
+              <img
+                src="/images/client/screen1.png"
+                alt="Client home"
+                className="w-full h-auto"
+              />
+            </Card>
+            <Card className="overflow-hidden">
+              <img
+                src="/images/client/screen2.png"
+                alt="Meal logging"
+                className="w-full h-auto"
+              />
+            </Card>
+            <Card className="overflow-hidden">
+              <img
+                src="/images/client/screen3.png"
+                alt="AI analysis"
+                className="w-full h-auto"
+              />
+            </Card>
+            <Card className="overflow-hidden">
+              <img
+                src="/images/client/screen4.png"
+                alt="Progress view"
+                className="w-full h-auto"
+              />
+            </Card>
+            <Card className="overflow-hidden">
+              <img
+                src="/images/client/screen5.png"
+                alt="Squad feed"
+                className="w-full h-auto"
+              />
+            </Card>
+          </div>
+        </motion.div>
+      </motion.section>
+
       {/* Waitlist */}
       <motion.section
         id="waitlist"
