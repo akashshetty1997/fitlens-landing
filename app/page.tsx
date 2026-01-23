@@ -5,7 +5,26 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { Camera, LayoutDashboard, Users } from "lucide-react";
+import { 
+  Camera, 
+  LayoutDashboard, 
+  Users, 
+  Check, 
+  Sparkles,
+  Smartphone,
+  Dumbbell,
+  BarChart3,
+  AlertTriangle,
+  Activity,
+  ChefHat,
+  TrendingUp,
+  Droplet,
+  Calendar,
+  MessageCircle,
+  UserCheck,
+  Shield,
+  Share2
+} from "lucide-react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -44,6 +63,89 @@ export default function Home() {
       setSubmitted(true);
     }
   };
+
+  const currentYear = new Date().getFullYear();
+
+  const clientFeatures = [
+    {
+      icon: Camera,
+      title: "AI-Powered Meal Logging",
+      description: "Take a photo, describe with voice, or type - AI instantly analyzes nutrition"
+    },
+    {
+      icon: TrendingUp,
+      title: "Smart Nutrition Tracking",
+      description: "Track calories, protein, carbs, and fats with visual progress rings"
+    },
+    {
+      icon: Users,
+      title: "Squad Feed & Accountability",
+      description: "Share meals with your trainer's squad for group motivation"
+    },
+    {
+      icon: Droplet,
+      title: "Hydration Tracking",
+      description: "Log water intake with one tap to stay hydrated throughout the day"
+    },
+    {
+      icon: Calendar,
+      title: "Weekly Calendar View",
+      description: "Review your nutrition history and track compliance over time"
+    },
+    {
+      icon: MessageCircle,
+      title: "Direct Trainer Communication",
+      description: "Message your trainer directly for guidance and support"
+    }
+  ];
+
+  const trainerFeatures = [
+    {
+      icon: LayoutDashboard,
+      title: "Client Dashboard Overview",
+      description: "Monitor all clients' progress, compliance, and nutrition at a glance"
+    },
+    {
+      icon: UserCheck,
+      title: "Automated Compliance Tracking",
+      description: "See who's logging meals without chasing clients for screenshots"
+    },
+    {
+      icon: AlertTriangle,
+      title: "Risk Management & Alerts",
+      description: "Identify at-risk clients who need intervention before they quit"
+    },
+    {
+      icon: Activity,
+      title: "Client Status Tracking",
+      description: "See inactive, on-track, and struggling clients with visual indicators"
+    },
+    {
+      icon: ChefHat,
+      title: "Meal Creation & Sharing",
+      description: "Create meal plans and share them directly with clients for easy logging"
+    },
+    {
+      icon: Users,
+      title: "Squad Management",
+      description: "Create accountability groups where clients motivate each other"
+    },
+    {
+      icon: BarChart3,
+      title: "Nutrition Analytics",
+      description: "View detailed reports on client nutrition patterns and trends"
+    },
+    {
+      icon: Shield,
+      title: "Unique Trainer Code",
+      description: "Share your code to instantly onboard new clients to your squad"
+    },
+    {
+      icon: Share2,
+      title: "Scalable Client Management",
+      description: "Manage unlimited clients without the manual tracking headache"
+    }
+  ];
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -190,6 +292,122 @@ export default function Home() {
             </Card>
           </motion.div>
         </div>
+      </motion.section>
+
+      {/* Detailed Features Section */}
+      <motion.section
+        className="px-6 py-16 max-w-6xl mx-auto"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={stagger}
+      >
+        <motion.div className="text-center mb-16" variants={fadeUp}>
+          <div className="inline-block px-4 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-sm font-semibold mb-4">
+            POWERFUL FEATURES
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Everything you need to succeed
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Whether you're a client tracking your nutrition or a trainer managing your squad, FitLens has the tools you need
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          {/* Client Features */}
+          <motion.div variants={fadeUp}>
+            <Card className="h-full border-l-4 border-l-emerald-500">
+              <CardContent className="p-8">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center">
+                    <Smartphone className="w-7 h-7 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold">For Clients</h3>
+                    <p className="text-sm text-muted-foreground">Track your fitness journey</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  {clientFeatures.map((feature, index) => (
+                    <div key={index} className="flex items-start gap-3 pb-4 border-b border-border last:border-0">
+                      <div className="w-6 h-6 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <feature.icon className="w-4 h-4 text-emerald-500" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">{feature.title}</h4>
+                        <p className="text-sm text-muted-foreground">{feature.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Trainer Features */}
+          <motion.div variants={fadeUp}>
+            <Card className="h-full border-l-4 border-l-amber-500">
+              <CardContent className="p-8">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center">
+                    <Dumbbell className="w-7 h-7 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold">For Trainers</h3>
+                    <p className="text-sm text-muted-foreground">Scale your coaching business</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  {trainerFeatures.map((feature, index) => (
+                    <div key={index} className="flex items-start gap-3 pb-4 border-b border-border last:border-0">
+                      <div className="w-6 h-6 rounded-lg bg-amber-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <feature.icon className="w-4 h-4 text-amber-500" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-1">{feature.title}</h4>
+                        <p className="text-sm text-muted-foreground">{feature.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+
+        {/* Comparison Stats */}
+        <motion.div variants={fadeUp}>
+          <Card className="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white border-0">
+            <CardContent className="p-12 text-center">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <Sparkles className="w-6 h-6" />
+                <h3 className="text-2xl md:text-3xl font-bold">
+                  Built for Scale, Designed for Results
+                </h3>
+              </div>
+              <p className="text-emerald-50 text-lg mb-8 max-w-2xl mx-auto">
+                FitLens replaces spreadsheets, MyFitnessPal screenshots, and manual tracking with automated AI-powered compliance monitoring
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                  <div className="text-5xl font-bold mb-2">10x</div>
+                  <div className="text-emerald-100">Faster compliance checking</div>
+                </div>
+                <div>
+                  <div className="text-5xl font-bold mb-2">100%</div>
+                  <div className="text-emerald-100">Verified meal data</div>
+                </div>
+                <div>
+                  <div className="text-5xl font-bold mb-2">∞</div>
+                  <div className="text-emerald-100">Scalable clients</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
       </motion.section>
 
       {/* App Screenshots */}
@@ -345,7 +563,7 @@ export default function Home() {
       <footer className="px-6 py-8 border-t border-border">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-muted-foreground text-sm">
-            © 2025 FitLens. All rights reserved.
+            © {currentYear} FitLens. All rights reserved.
           </div>
           <div className="text-2xl font-bold tracking-tight">
             <span className="text-emerald-500">Fit</span>Lens
