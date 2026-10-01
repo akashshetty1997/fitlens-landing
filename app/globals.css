@@ -127,3 +127,14 @@
 html {
   scroll-behavior: smooth;
 }
+
+.landing-shell {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% -8%, oklch(0.55 0.17 163 / 22%), transparent 70%),
+    radial-gradient(ellipse 35% 30% at 100% 18%, oklch(0.55 0.12 180 / 10%), transparent 70%),
+    var(--background);
+}
+
+.landing-shell::selection {
+  background: oklch(0.72 0.16 163 / 35%);
+}
