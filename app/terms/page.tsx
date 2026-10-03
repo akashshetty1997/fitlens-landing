@@ -62,7 +62,7 @@ export default function TermsPage() {
               Simple, clear terms
             </div>
             <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">Terms of Service</h1>
-            <p className="text-muted-foreground">Last updated: October 1, 2026</p>
+            <p className="text-muted-foreground">Last updated: October 2, 2026</p>
           </div>
 
           <div className="space-y-10 text-[15px] leading-7 text-muted-foreground">
@@ -157,6 +157,14 @@ export default function TermsPage() {
                 <li>attempt to defeat usage limits, security controls, or AI safeguards; or</li>
                 <li>use FitLens to provide medical care or make high-risk health decisions without qualified professional oversight.</li>
               </ul>
+              <p className="mt-4">
+                FitLens has zero tolerance for objectionable content or abusive users. This
+                includes harassment, hate speech, sexual content, threats, and content that
+                promotes self-harm or dangerous eating behavior. You can report any squad post,
+                comment, or message from inside the app, and block any user so you no longer see
+                their content. We review reports within 24 hours and remove content that breaks
+                these Terms, and we may suspend or remove the accounts of users who post it.
+              </p>
             </section>
 
             <section id="ownership" className="scroll-mt-8">
