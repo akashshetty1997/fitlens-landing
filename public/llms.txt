@@ -1,0 +1,27 @@
+# FitLens
+
+> FitLens is an AI nutrition tracking app for personal trainers and their clients. Clients photograph or describe each meal and FitLens estimates calories, protein, carbs and fat ingredient by ingredient. Trainers see every client's meals, compliance and a daily list of who needs attention.
+
+FitLens is an iPhone app. It is free for trainers during the pilot, and clients always use it for free.
+
+## For trainers
+- Daily attention queue: clients who stop logging or miss targets, ranked by urgency
+- Client snapshots: adherence, weight trend, targets, notes and meals awaiting review
+- Meal plans: single meals or full days, written once and shared with any number of clients
+- Private squads and direct chat with clients; clients join with a trainer code
+
+## For clients
+- Log a meal from a photo or a short text description
+- AI breakdown of calories, protein, carbs and fat with a confidence score
+- Daily calorie ring, macros, water and weight tracking
+- Meal plans from their trainer, a squad feed and chat with their coach
+
+## Notes
+- Nutrition values are AI estimates for coaching, not medical advice
+- Data is never sold or used for advertising; users can delete their account in the app
+
+## Pages
+- [Home](https://usefitlens.com/): product overview, demo and FAQ
+- [Support](https://usefitlens.com/support): contact and help
+- [Privacy Policy](https://usefitlens.com/privacy-policy)
+- [Terms of Service](https://usefitlens.com/terms)

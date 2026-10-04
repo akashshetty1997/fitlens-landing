@@ -1,664 +1,1030 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
-import { 
-  ArrowRight,
-  Camera, 
-  Check,
-  LayoutDashboard, 
-  Users, 
-  Sparkles,
-  Smartphone,
-  Dumbbell,
-  BarChart3,
-  AlertTriangle,
-  Activity,
-  ChefHat,
-  TrendingUp,
-  Droplet,
-  Calendar,
-  MessageCircle,
-  UserCheck,
-  Shield,
-  Share2
-} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  MotionConfig,
+  motion,
+  useInView,
+  useReducedMotion,
+} from "framer-motion";
+import { ArrowRight, Check, Plus, X } from "lucide-react";
+import { ScreenDeck, type Screen } from "@/components/screen-deck";
+import { FeatureTabs, type FeatureTab } from "@/components/feature-tabs";
+import { FanSpread } from "@/components/fan-spread";
+import { AiDemo } from "@/components/ai-demo";
+import { TrackingStory } from "@/components/tracking-story";
+import { SiteFooter, Wordmark } from "@/components/site-chrome";
+import { StructuredData } from "@/components/structured-data";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" as const },
+// FitLens app palette (fitness-app/constants/theme.js + macro colours)
+const ORANGE = "#F97316";
+const AMBER = "#F59E0B";
+const GREEN = "#10B981";
+const BLUE = "#3B82F6";
+const RED = "#EF4444";
+
+const screens: Record<string, Screen> = {
+  dashboard: {
+    src: "/screens/trainer-dashboard.webp",
+    alt: "Trainer dashboard with a prioritised attention queue",
+    caption: "Trainer dashboard",
+  },
+  plans: {
+    src: "/screens/meal-plans.webp",
+    alt: "Meal plan library with plans shared with clients",
+    caption: "Meal plans",
+  },
+  client: {
+    src: "/screens/client-detail.webp",
+    alt: "Client snapshot with adherence and weight trend",
+    caption: "Client snapshot",
+  },
+  meal: {
+    src: "/screens/meal-result.webp",
+    alt: "AI meal breakdown with calories, macros and ingredients",
+    caption: "AI meal breakdown",
+  },
+  home: {
+    src: "/screens/client-home.webp",
+    alt: "Client home with calorie ring, macros and water",
+    caption: "Client home",
+  },
+  squad: {
+    src: "/screens/squad.webp",
+    alt: "Squad feed with a coach post and a shared meal",
+    caption: "Squad feed",
+  },
+  chat: {
+    src: "/screens/chat.webp",
+    alt: "Chat between a client and their coach",
+    caption: "Coach chat",
   },
 };
 
-const stagger = {
-  visible: {
-    transition: {
-      staggerChildren: 0.15,
-    },
+const heroScreens = [
+  screens.dashboard,
+  screens.meal,
+  screens.plans,
+  screens.home,
+  screens.squad,
+  screens.client,
+  screens.chat,
+];
+const clientScreens = [screens.meal, screens.home, screens.squad, screens.chat];
+
+const tickerMeals = [
+  ["Greek yogurt, blueberries & granola", 319],
+  ["Grilled chicken salad", 381],
+  ["High-protein chicken power bowl", 520],
+  ["Avocado toast & poached eggs", 395],
+  ["Overnight protein oats", 410],
+  ["Baked salmon & sweet potato", 536],
+  ["Salmon & quinoa plate", 610],
+  ["Turkey avocado wrap", 520],
+] as const;
+
+const steps = [
+  {
+    n: "01",
+    title: "Snap",
+    cmd: "photo → meal",
+    body: "Your client photographs their plate or types what they ate. No scales, no barcode hunting.",
   },
+  {
+    n: "02",
+    title: "Analyse",
+    cmd: "meal → macros",
+    body: "FitLens estimates calories, protein, carbs and fat ingredient by ingredient, in seconds.",
+  },
+  {
+    n: "03",
+    title: "Coach",
+    cmd: "macros → dashboard",
+    body: "It lands on your dashboard. You see who's on track and who needs a nudge, before they drift.",
+  },
+];
+
+const stats = [
+  ["5s", "To log a meal"],
+  ["4", "Numbers per meal"],
+  ["1", "Dashboard per roster"],
+  ["$0", "During the pilot"],
+];
+
+const trainerFeatures: FeatureTab[] = [
+  {
+    title: "Daily attention queue",
+    body: "Clients who are slipping, prioritised, so you step in before they quit.",
+    screen: screens.dashboard,
+  },
+  {
+    title: "Meal plans, written once",
+    body: "Build a meal or a full day and share it with as many clients as you like.",
+    screen: screens.plans,
+  },
+  {
+    title: "Client snapshots",
+    body: "Adherence, weight trend and meals awaiting your review on one screen.",
+    screen: screens.client,
+  },
+  {
+    title: "Your own squad",
+    body: "A private group feed and direct chat. Invite clients with your trainer code.",
+    screen: screens.squad,
+  },
+];
+
+const features = [
+  {
+    title: "AI meal analysis",
+    tag: "Photo + text",
+    body: "Snap or describe a meal. Calories, protein, carbs and fat, ingredient by ingredient, with a confidence score.",
+  },
+  {
+    title: "Attention queue",
+    tag: "Auto-prioritised",
+    body: "Clients who stop logging or miss targets rise to the top of your day, ranked by urgency.",
+  },
+  {
+    title: "Meal plans",
+    tag: "Write once",
+    body: "Single meals or full days with macros, shared with as many clients as you like.",
+  },
+  {
+    title: "Client snapshots",
+    tag: "Per client",
+    body: "Adherence, weight trend, targets, notes and meals awaiting review in one place.",
+  },
+  {
+    title: "Squads & chat",
+    tag: "Private groups",
+    body: "A feed for your clients plus direct messages, with report and block built in.",
+  },
+  {
+    title: "Private by default",
+    tag: "No ads",
+    body: "Data is never sold or used for advertising. Clients can delete their account any time.",
+  },
+];
+
+const extras = [
+  "Water tracking",
+  "Weight trends",
+  "Calorie targets",
+  "Trainer code",
+  "Leaderboard",
+  "Meal favourites",
+  "Reminders",
+  "Dark mode",
+];
+
+const roster = [
+  { name: "Sam Rivera", score: 96, color: GREEN },
+  { name: "Maya Chen", score: 88, color: GREEN },
+  { name: "Jordan Lee", score: 81, color: GREEN },
+  { name: "Marcus Brown", score: 54, color: AMBER },
+  { name: "Priya Patel", score: 12, color: RED },
+];
+
+const signals = [
+  {
+    level: "Critical",
+    color: RED,
+    body: "No meals logged in 2 days. Reach out today.",
+  },
+  {
+    level: "Nutrition",
+    color: AMBER,
+    body: "Protein under target 5 of the last 7 days.",
+  },
+  {
+    level: "To review",
+    color: BLUE,
+    body: "3 meals awaiting your verification.",
+  },
+  {
+    level: "On track",
+    color: GREEN,
+    body: "Logging consistently and hitting targets.",
+  },
+];
+
+const clientPoints = [
+  [
+    "Photo in, macros out",
+    "A full breakdown of every meal, with ingredients you can check.",
+  ],
+  ["Today at a glance", "Calories, protein, carbs, fat and water in one ring."],
+  ["Plans from your coach", "Meals your trainer shares, ready to follow."],
+  [
+    "A squad that keeps you honest",
+    "Share meals, cheer each other on, message your coach.",
+  ],
+] as const;
+
+const withoutFitLens = [
+  "Food diaries over WhatsApp, if clients remember",
+  "Guessing portions from blurry screenshots",
+  "Finding out a client fell off weeks later",
+  "Rewriting the same meal plan for every client",
+];
+
+const withFitLens = [
+  "Every meal logged with calories and macros",
+  "A daily queue of who needs you, prioritised",
+  "Spot a slipping client the day it happens",
+  "Write a plan once, share it with anyone",
+];
+
+const faqs = [
+  {
+    q: "How much does FitLens cost?",
+    a: "FitLens is free for trainers during the pilot, and clients always use the app for free. We'll share pricing with pilot trainers well before anything changes.",
+  },
+  {
+    q: "How accurate is the AI?",
+    a: "FitLens estimates each meal ingredient by ingredient and shows a confidence score, so clients can check what it found. It's built for coaching decisions, not medical advice, and you can review every meal from your dashboard.",
+  },
+  {
+    q: "What do my clients need?",
+    a: "Just the FitLens iPhone app. They sign up, enter your trainer code, and they're in your roster and your squad straight away.",
+  },
+  {
+    q: "Is there an Android app?",
+    a: "FitLens is launching on iPhone first. Leave your email and we'll let you know when more platforms arrive.",
+  },
+  {
+    q: "What happens to my clients' data?",
+    a: "It's stored securely, never sold, and never used for advertising. Clients can delete their account and data at any time from the app.",
+  },
+];
+
+const reveal = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-80px" },
+  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
 };
 
 export default function Home() {
+  return (
+    <MotionConfig reducedMotion="user">
+      <main className="landing min-h-screen overflow-x-clip antialiased">
+        <StructuredData faqs={faqs} />
+        <Nav />
+        <Hero />
+        <Ticker />
+        <HowItWorks />
+        <StorySection />
+        <DemoSection />
+        <TrainerSection />
+        <FeatureGrid />
+        <RosterSection />
+        <ClientSection />
+        <BeforeAfter />
+        <Faq />
+        <FinalCta />
+        <SiteFooter />
+      </main>
+    </MotionConfig>
+  );
+}
+
+/* ---------- shared bits ---------- */
+
+function SectionLabel({
+  children,
+  color = ORANGE,
+}: {
+  children: React.ReactNode;
+  color?: string;
+}) {
+  return (
+    <p
+      className="mb-5 text-xs font-medium uppercase tracking-[0.2em]"
+      style={{ color }}
+    >
+      {"// "}
+      {children}
+    </p>
+  );
+}
+
+/** Uppercase headline that types itself in when scrolled into view */
+function TypeHeading({
+  text,
+  highlight,
+  className = "",
+}: {
+  text: string;
+  highlight?: string;
+  className?: string;
+}) {
+  const ref = useRef<HTMLHeadingElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const reduceMotion = useReducedMotion();
+  const full = highlight ? `${text} ${highlight}` : text;
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (reduceMotion) return setCount(full.length);
+    if (!inView) return;
+    let i = 0;
+    const timer = setInterval(() => {
+      i += 1;
+      setCount(i);
+      if (i >= full.length) clearInterval(timer);
+    }, 32);
+    return () => clearInterval(timer);
+  }, [inView, reduceMotion, full.length]);
+
+  const typed = full.slice(0, count);
+  const plain = typed.slice(0, text.length);
+  const accent = typed.length > text.length ? typed.slice(text.length + 1) : "";
+
+  return (
+    <h2 ref={ref} className={`font-display uppercase ${className}`}>
+      <span className="sr-only">{full}</span>
+      <span aria-hidden>
+        {plain}
+        {accent && (
+          <>
+            {" "}
+            <em>{accent}</em>
+          </>
+        )}
+        <span className="cursor-blink ml-1 inline-block h-[0.8em] w-[0.08em] translate-y-[0.08em] bg-accent" />
+      </span>
+    </h2>
+  );
+}
+
+function PilotForm({ id }: { id: string }) {
   const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">(
+    "idle",
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-
-    const res = await fetch("https://formspree.io/f/xzddzwjj", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
-
-    setLoading(false);
-    if (res.ok) {
-      setSubmitted(true);
+    setStatus("sending");
+    try {
+      const res = await fetch("https://formspree.io/f/xzddzwjj", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+      setStatus(res.ok ? "done" : "error");
+    } catch {
+      setStatus("error");
     }
   };
 
-  const currentYear = new Date().getFullYear();
-
-  const clientFeatures = [
-    {
-      icon: Camera,
-      title: "AI-Powered Meal Logging",
-      description: "Take a photo, describe with voice, or type - AI instantly analyzes nutrition"
-    },
-    {
-      icon: TrendingUp,
-      title: "Smart Nutrition Tracking",
-      description: "Track calories, protein, carbs, and fats with visual progress rings"
-    },
-    {
-      icon: Users,
-      title: "Squad Feed & Accountability",
-      description: "Share meals with your trainer's squad for group motivation"
-    },
-    {
-      icon: Droplet,
-      title: "Hydration Tracking",
-      description: "Log water intake with one tap to stay hydrated throughout the day"
-    },
-    {
-      icon: Calendar,
-      title: "Weekly Calendar View",
-      description: "Review your nutrition history and track compliance over time"
-    },
-    {
-      icon: MessageCircle,
-      title: "Direct Trainer Communication",
-      description: "Message your trainer directly for guidance and support"
-    }
-  ];
-
-  const trainerFeatures = [
-    {
-      icon: LayoutDashboard,
-      title: "Client Dashboard Overview",
-      description: "Monitor all clients' progress, compliance, and nutrition at a glance"
-    },
-    {
-      icon: UserCheck,
-      title: "Automated Compliance Tracking",
-      description: "See who's logging meals without chasing clients for screenshots"
-    },
-    {
-      icon: AlertTriangle,
-      title: "Risk Management & Alerts",
-      description: "Identify at-risk clients who need intervention before they quit"
-    },
-    {
-      icon: Activity,
-      title: "Client Status Tracking",
-      description: "See inactive, on-track, and struggling clients with visual indicators"
-    },
-    {
-      icon: ChefHat,
-      title: "Meal Creation & Sharing",
-      description: "Create meal plans and share them directly with clients for easy logging"
-    },
-    {
-      icon: Users,
-      title: "Squad Management",
-      description: "Create accountability groups where clients motivate each other"
-    },
-    {
-      icon: BarChart3,
-      title: "Nutrition Analytics",
-      description: "View detailed reports on client nutrition patterns and trends"
-    },
-    {
-      icon: Shield,
-      title: "Unique Trainer Code",
-      description: "Share your code to instantly onboard new clients to your squad"
-    },
-    {
-      icon: Share2,
-      title: "Scalable Client Management",
-      description: "Manage unlimited clients without the manual tracking headache"
-    }
-  ];
+  if (status === "done") {
+    return (
+      <p className="inline-flex items-center gap-2 border border-green/40 bg-green/10 px-4 py-3 text-sm text-green">
+        <Check className="h-4 w-4" /> You&apos;re on the list. We&apos;ll be in
+        touch soon.
+      </p>
+    );
+  }
 
   return (
-    <main className="landing-shell min-h-screen overflow-hidden bg-background text-foreground">
-      {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-white/10 bg-background/70 px-6 py-4 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <Link href="/" className="flex items-center gap-3" aria-label="FitLens home">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500 text-sm font-black text-emerald-950 shadow-lg shadow-emerald-500/20">
-              F
-            </span>
-            <span className="text-xl font-bold tracking-tight">
-              <span className="text-emerald-400">Fit</span>Lens
-            </span>
-          </Link>
-          <div className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
-            <a className="transition-colors hover:text-foreground" href="#features">Features</a>
-            <a className="transition-colors hover:text-foreground" href="#showcase">See it in action</a>
-            <Link className="transition-colors hover:text-foreground" href="/privacy">Privacy</Link>
-          </div>
-          <Button className="rounded-full px-5 shadow-lg shadow-white/5" asChild>
-            <a href="#waitlist">
-              Get Early Access
-              <ArrowRight />
-            </a>
-          </Button>
-        </div>
-      </nav>
-
-      {/* Hero */}
-      <motion.section
-        className="mx-auto grid max-w-7xl items-center gap-14 px-6 pb-24 pt-20 lg:grid-cols-[1.05fr_.95fr] lg:gap-20 lg:pb-32 lg:pt-28"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={stagger}
+    <div>
+      <form
+        onSubmit={handleSubmit}
+        className="flex w-full max-w-xl flex-col border border-line bg-card sm:flex-row"
       >
-        <div>
-          <motion.div
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1.5 text-sm font-medium text-emerald-300"
-            variants={fadeUp}
-          >
-            <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-            Nutrition accountability, reimagined
-          </motion.div>
-          <motion.h1
-            className="max-w-3xl text-5xl font-bold leading-[1.04] tracking-[-0.055em] md:text-7xl"
-            variants={fadeUp}
-          >
-            See what your clients{" "}
-            <span className="bg-gradient-to-r from-emerald-300 via-emerald-400 to-teal-200 bg-clip-text text-transparent">
-              actually eat
-            </span>
-          </motion.h1>
-          <motion.p
-            className="mt-7 max-w-xl text-lg leading-8 text-muted-foreground md:text-xl"
-            variants={fadeUp}
-          >
-            AI-powered nutrition tracking for personal trainers. Your clients log
-            meals via photo, voice, or text — you get proof, not promises.
-          </motion.p>
-          <motion.div className="mt-9 flex flex-col gap-3 sm:flex-row" variants={fadeUp}>
-            <Button size="lg" className="rounded-full px-6 shadow-xl shadow-emerald-500/10" asChild>
-              <a href="#waitlist">
-                Request Early Access
-                <ArrowRight />
-              </a>
-            </Button>
-            <a
-              href="#showcase"
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-white/10 px-6 text-sm font-medium text-foreground transition-colors hover:bg-white/5"
-            >
-              Explore the product
-            </a>
-          </motion.div>
-          <motion.div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-muted-foreground" variants={fadeUp}>
-            <span className="inline-flex items-center gap-2"><Check className="h-4 w-4 text-emerald-400" /> Photo, voice & text logging</span>
-            <span className="inline-flex items-center gap-2"><Check className="h-4 w-4 text-emerald-400" /> Built for coaches</span>
-          </motion.div>
-        </div>
-
-        <motion.div className="relative mx-auto w-full max-w-[480px]" variants={fadeUp}>
-          <div className="absolute -inset-8 rounded-[3rem] bg-emerald-500/15 blur-3xl" />
-          <div className="relative rounded-[2rem] border border-white/15 bg-white/[0.06] p-3 shadow-2xl shadow-black/40 backdrop-blur-sm">
-            <div className="mb-3 flex items-center justify-between px-2 text-xs text-muted-foreground">
-              <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-emerald-400" /> Live nutrition snapshot</span>
-              <span>Today</span>
-            </div>
-            <div className="relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-black">
-              <img
-                src="/images/client/screen1.png"
-                alt="FitLens nutrition tracking screen"
-                className="h-[520px] w-full object-cover object-top opacity-95"
-              />
-              <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/70 to-transparent" />
-            </div>
-            <div className="absolute -bottom-5 -left-8 hidden rounded-2xl border border-white/10 bg-[#17191c]/95 p-4 shadow-xl backdrop-blur md:block">
-              <div className="text-2xl font-bold text-foreground">298 <span className="text-sm font-normal text-muted-foreground">kcal logged</span></div>
-              <div className="mt-1 text-xs text-emerald-300">On track for today</div>
-            </div>
-            <div className="absolute -right-5 top-20 hidden rounded-2xl border border-white/10 bg-[#17191c]/95 p-4 shadow-xl backdrop-blur sm:block">
-              <div className="text-xs text-muted-foreground">Weekly consistency</div>
-              <div className="mt-1 text-2xl font-bold text-foreground">92%</div>
-            </div>
-          </div>
-        </motion.div>
-      </motion.section>
-
-      {/* Problem/Solution */}
-      <motion.section
-        className="mx-auto max-w-6xl px-6 py-20"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={stagger}
-      >
-        <motion.div className="mb-10 max-w-xl" variants={fadeUp}>
-          <div className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-400">The coaching gap</div>
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Stop coaching from guesswork.</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-8">
-          <motion.div variants={fadeUp}>
-            <Card className="h-full rounded-3xl border-white/10 bg-white/[0.03] transition-colors hover:bg-white/[0.05]">
-              <CardContent className="p-8">
-                <div className="mb-4 inline-flex rounded-full bg-rose-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-rose-300">
-                  THE PROBLEM
-                </div>
-                <h3 className="text-xl font-semibold mb-3">
-                  Clients say they&apos;re eating clean
-                </h3>
-                <p className="text-muted-foreground">
-                  But results don&apos;t lie. You program great workouts, but
-                  you&apos;re flying blind on nutrition. Self-reported food logs
-                  are unreliable, and you lose clients who blame the training.
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
-          <motion.div variants={fadeUp}>
-            <Card className="h-full rounded-3xl border-emerald-400/20 bg-gradient-to-br from-emerald-400/10 to-transparent transition-colors hover:from-emerald-400/15">
-              <CardContent className="p-8">
-                <div className="mb-4 inline-flex rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-300">
-                  THE SOLUTION
-                </div>
-                <h3 className="text-xl font-semibold mb-3">
-                  FitLens shows you the truth
-                </h3>
-                <p className="text-muted-foreground">
-                  Clients snap a photo, leave a voice note, or type what they
-                  ate. Our AI analyzes it instantly. You see real data on your
-                  dashboard — no more guessing.
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* Features */}
-      <motion.section
-        id="features"
-        className="mx-auto max-w-6xl px-6 py-20"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={stagger}
-      >
-        <motion.h2
-          className="mb-12 text-center text-3xl font-bold tracking-tight md:text-4xl"
-          variants={fadeUp}
+        <label htmlFor={id} className="sr-only">
+          Email address
+        </label>
+        <span
+          className="hidden items-center pl-4 text-accent sm:flex"
+          aria-hidden
         >
-          Built for trainers who scale
-        </motion.h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          <motion.div variants={fadeUp}>
-            <Card className="h-full rounded-3xl border-white/10 bg-white/[0.03] text-center transition-all hover:-translate-y-1 hover:border-emerald-400/30 hover:bg-white/[0.05]">
-              <CardContent className="p-8">
-                <div className="w-14 h-14 bg-emerald-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Camera className="w-7 h-7 text-emerald-500" />
-                </div>
-                <h3 className="font-semibold mb-2">AI Food Recognition</h3>
-                <p className="text-muted-foreground text-sm">
-                  Photo, voice, or text — our AI breaks down calories, protein,
-                  carbs, and fat instantly.
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
-          <motion.div variants={fadeUp}>
-            <Card className="h-full rounded-3xl border-white/10 bg-white/[0.03] text-center transition-all hover:-translate-y-1 hover:border-emerald-400/30 hover:bg-white/[0.05]">
-              <CardContent className="p-8">
-                <div className="w-14 h-14 bg-emerald-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <LayoutDashboard className="w-7 h-7 text-emerald-500" />
-                </div>
-                <h3 className="font-semibold mb-2">Trainer Dashboard</h3>
-                <p className="text-muted-foreground text-sm">
-                  See all your clients in one place. Track compliance, spot
-                  trends, intervene early.
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
-          <motion.div variants={fadeUp}>
-            <Card className="h-full rounded-3xl border-white/10 bg-white/[0.03] text-center transition-all hover:-translate-y-1 hover:border-emerald-400/30 hover:bg-white/[0.05]">
-              <CardContent className="p-8">
-                <div className="w-14 h-14 bg-emerald-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Users className="w-7 h-7 text-emerald-500" />
-                </div>
-                <h3 className="font-semibold mb-2">Squad Accountability</h3>
-                <p className="text-muted-foreground text-sm">
-                  Clients post meals to group feeds. Peer pressure that drives
-                  results without extra work for you.
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-      </motion.section>
+          $
+        </span>
+        <input
+          id={id}
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="you@yourgym.com"
+          className="h-12 w-full bg-transparent px-4 text-sm text-ink placeholder:text-ink/30 outline-none sm:px-3"
+        />
+        <button
+          type="submit"
+          disabled={status === "sending"}
+          className="inline-flex h-12 shrink-0 items-center justify-center gap-2 bg-accent px-6 text-xs font-semibold uppercase tracking-[0.15em] text-paper transition-opacity hover:opacity-90 disabled:opacity-60"
+        >
+          {status === "sending" ? "Joining…" : "Join pilot"}
+          {status !== "sending" && <ArrowRight className="h-4 w-4" />}
+        </button>
+      </form>
+      {status === "error" && (
+        <p className="mt-2 text-xs text-red">
+          Something went wrong. Please try again.
+        </p>
+      )}
+    </div>
+  );
+}
 
-      {/* Detailed Features Section */}
-      <motion.section
-        className="mx-auto max-w-6xl px-6 py-20"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={stagger}
-      >
-        <motion.div className="text-center mb-16" variants={fadeUp}>
-          <div className="mb-4 inline-block rounded-full bg-emerald-400/10 px-4 py-1 text-sm font-semibold text-emerald-300">
-            POWERFUL FEATURES
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Everything you need to succeed
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Whether you&apos;re a client tracking your nutrition or a trainer managing your squad, FitLens has the tools you need
+/* ---------- sections ---------- */
+
+function Nav() {
+  const links = [
+    ["#how", "How it works"],
+    ["#demo", "Demo"],
+    ["#trainers", "Trainers"],
+    ["#features", "Features"],
+    ["#faq", "FAQ"],
+  ];
+  return (
+    <header className="sticky top-0 z-50 border-b border-line bg-paper/85 backdrop-blur-xl">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5 sm:px-8">
+        <Wordmark />
+        <div className="hidden items-center gap-7 text-[11px] uppercase tracking-[0.18em] text-ink/50 md:flex">
+          {links.map(([href, label]) => (
+            <a
+              key={href}
+              href={href}
+              className="transition-colors hover:text-accent"
+            >
+              {label}
+            </a>
+          ))}
+        </div>
+        <a
+          href="#pilot"
+          className="inline-flex items-center gap-1.5 bg-accent px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.15em] text-paper transition-opacity hover:opacity-90"
+        >
+          Join pilot
+          <ArrowRight className="h-3.5 w-3.5" />
+        </a>
+      </nav>
+    </header>
+  );
+}
+
+function FloatTag({
+  label,
+  color,
+  className,
+  delay = 0,
+}: {
+  label: string;
+  color: string;
+  className: string;
+  delay?: number;
+}) {
+  return (
+    <motion.span
+      aria-hidden
+      className={`absolute hidden items-center gap-1.5 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-paper md:inline-flex ${className}`}
+      style={{ background: color }}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1, y: [0, -6, 0] }}
+      transition={{
+        opacity: { duration: 0.4, delay: 0.6 + delay },
+        scale: { duration: 0.4, delay: 0.6 + delay },
+        y: { duration: 4 + delay, repeat: Infinity, ease: "easeInOut" },
+      }}
+    >
+      <span className="h-1.5 w-1.5 bg-paper/80" />
+      {label}
+    </motion.span>
+  );
+}
+
+function Hero() {
+  return (
+    <section className="relative">
+      <div
+        aria-hidden
+        className="grid-bg absolute inset-0 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_30%,black,transparent)]"
+      />
+      <div className="relative mx-auto max-w-6xl px-5 pb-16 pt-16 text-center sm:px-8 lg:pt-24">
+        <motion.p
+          {...reveal}
+          className="mx-auto mb-10 inline-flex flex-wrap justify-center gap-x-2 border border-line bg-card px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-ink/50"
+        >
+          <span className="text-accent">v1.0.1</span>
+          <span>{"// iPhone"}</span>
+          <span>{"// free pilot"}</span>
+          <span>{"// for trainers"}</span>
+        </motion.p>
+
+        <div className="relative mx-auto max-w-4xl">
+          <FloatTag
+            label="381 kcal"
+            color={GREEN}
+            className="-left-4 top-2 lg:-left-16"
+          />
+          <FloatTag
+            label="34g protein"
+            color={ORANGE}
+            className="-right-2 top-0 lg:-right-14"
+            delay={0.4}
+          />
+          <FloatTag
+            label="At risk"
+            color={AMBER}
+            className="-left-8 bottom-6 lg:-left-24"
+            delay={0.8}
+          />
+          <FloatTag
+            label="Logged"
+            color={BLUE}
+            className="-right-6 bottom-2 lg:-right-20"
+            delay={1.2}
+          />
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="font-display text-[3.1rem] uppercase leading-[0.92] sm:text-7xl lg:text-[6.4rem]"
+          >
+            Coach what they <br />
+            <em>actually eat.</em>
+          </motion.h1>
+        </div>
+
+        <motion.p
+          {...reveal}
+          transition={{ ...reveal.transition, delay: 0.15 }}
+          className="mx-auto mt-8 max-w-xl text-sm leading-relaxed text-ink/60 sm:text-[15px]"
+        >
+          FitLens is AI nutrition tracking for personal trainers. Clients snap a
+          photo of every meal; you get calories, macros and a daily list of who
+          needs you.
+        </motion.p>
+
+        <motion.div
+          {...reveal}
+          transition={{ ...reveal.transition, delay: 0.25 }}
+          className="mt-9 flex flex-col items-center gap-4"
+        >
+          <PilotForm id="hero-email" />
+          <p className="text-[11px] uppercase tracking-[0.18em] text-ink/40">
+            Free during the pilot <span className="text-ink/20">{"//"}</span>{" "}
+            clients always free
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {/* Client Features */}
-          <motion.div variants={fadeUp}>
-            <Card className="h-full rounded-3xl border-emerald-400/20 border-l-4 border-l-emerald-400 bg-white/[0.03]">
-              <CardContent className="p-8">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center">
-                    <Smartphone className="w-7 h-7 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold">For Clients</h3>
-                    <p className="text-sm text-muted-foreground">Track your fitness journey</p>
-                  </div>
-                </div>
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          className="relative mx-auto mt-20 max-w-sm"
+        >
+          <div
+            aria-hidden
+            className="absolute left-1/2 top-[40%] h-[70%] w-[120%] -translate-x-1/2 -translate-y-1/2 blur-3xl"
+            style={{
+              background: `radial-gradient(circle, ${ORANGE}33, transparent 65%)`,
+            }}
+          />
+          <ScreenDeck screens={heroScreens} className="relative" />
+        </motion.div>
+      </div>
+    </section>
+  );
+}
 
-                <div className="space-y-4">
-                  {clientFeatures.map((feature, index) => (
-                    <div key={index} className="flex items-start gap-3 pb-4 border-b border-border last:border-0">
-                      <div className="w-6 h-6 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <feature.icon className="w-4 h-4 text-emerald-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">{feature.title}</h4>
-                        <p className="text-sm text-muted-foreground">{feature.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+function Ticker() {
+  const colors = [ORANGE, GREEN, BLUE, AMBER];
+  const items = [...tickerMeals, ...tickerMeals];
+  return (
+    <div
+      className="overflow-hidden border-y border-line bg-card py-3.5"
+      aria-hidden
+    >
+      <div className="ticker-track flex w-max gap-10 whitespace-nowrap text-xs uppercase tracking-[0.12em]">
+        {items.map(([meal, kcal], i) => (
+          <span key={i} className="flex items-center gap-3">
+            <span
+              className="h-1.5 w-1.5"
+              style={{ background: colors[i % colors.length] }}
+            />
+            <span className="text-ink/50">{meal}</span>
+            <span className="text-ink">{kcal} kcal</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
 
-          {/* Trainer Features */}
-          <motion.div variants={fadeUp}>
-            <Card className="h-full rounded-3xl border-amber-400/20 border-l-4 border-l-amber-400 bg-white/[0.03]">
-              <CardContent className="p-8">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center">
-                    <Dumbbell className="w-7 h-7 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold">For Trainers</h3>
-                    <p className="text-sm text-muted-foreground">Scale your coaching business</p>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  {trainerFeatures.map((feature, index) => (
-                    <div key={index} className="flex items-start gap-3 pb-4 border-b border-border last:border-0">
-                      <div className="w-6 h-6 rounded-lg bg-amber-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <feature.icon className="w-4 h-4 text-amber-500" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">{feature.title}</h4>
-                        <p className="text-sm text-muted-foreground">{feature.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-
-        {/* Comparison Stats */}
-        <motion.div variants={fadeUp}>
-          <Card className="rounded-[2rem] border-0 bg-gradient-to-br from-emerald-400 via-emerald-500 to-teal-600 text-white shadow-2xl shadow-emerald-500/10">
-            <CardContent className="p-12 text-center">
-              <div className="flex items-center justify-center gap-2 mb-4">
-                <Sparkles className="w-6 h-6" />
-                <h3 className="text-2xl md:text-3xl font-bold">
-                  Built for Scale, Designed for Results
-                </h3>
-              </div>
-              <p className="text-emerald-50 text-lg mb-8 max-w-2xl mx-auto">
-                FitLens replaces spreadsheets, MyFitnessPal screenshots, and manual tracking with automated AI-powered compliance monitoring
+function HowItWorks() {
+  return (
+    <section id="how" className="scroll-mt-16 border-b border-line">
+      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
+        <SectionLabel>How it works</SectionLabel>
+        <TypeHeading
+          text="Plate to dashboard."
+          highlight="Three steps."
+          className="text-4xl leading-[0.95] sm:text-6xl"
+        />
+        <div className="mt-14 grid border-l border-t border-line md:grid-cols-3">
+          {steps.map((step, i) => (
+            <motion.div
+              key={step.n}
+              {...reveal}
+              transition={{ ...reveal.transition, delay: i * 0.08 }}
+              className="border-b border-r border-line p-7"
+            >
+              <span className="font-display text-5xl text-accent">
+                {step.n}
+              </span>
+              <h3 className="mt-6 text-sm font-semibold uppercase tracking-[0.15em]">
+                {step.title}
+              </h3>
+              <p className="mt-2 text-xs text-accent/80">{`$ ${step.cmd}`}</p>
+              <p className="mt-4 text-sm leading-relaxed text-ink/55">
+                {step.body}
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div>
-                  <div className="text-5xl font-bold mb-2">10x</div>
-                  <div className="text-emerald-100">Faster compliance checking</div>
-                </div>
-                <div>
-                  <div className="text-5xl font-bold mb-2">100%</div>
-                  <div className="text-emerald-100">Verified meal data</div>
-                </div>
-                <div>
-                  <div className="text-5xl font-bold mb-2">∞</div>
-                  <div className="text-emerald-100">Scalable clients</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </motion.section>
-
-      {/* App Screenshots */}
-      <motion.section
-        id="showcase"
-        className="mx-auto max-w-6xl px-6 py-20"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={stagger}
-      >
-        <motion.h2
-          className="text-3xl font-bold text-center mb-4"
-          variants={fadeUp}
-        >
-          See it in action
-        </motion.h2>
-        <motion.p
-          className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto"
-          variants={fadeUp}
-        >
-          A simple experience for clients. Powerful insights for trainers.
-        </motion.p>
-
-        {/* Trainer App */}
-        <motion.div className="mb-16" variants={fadeUp}>
-          <h3 className="text-xl font-semibold text-center mb-6 text-emerald-500">
-            Trainer Dashboard
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Card className="overflow-hidden rounded-2xl border-white/10 bg-white/[0.03] shadow-xl shadow-black/20 transition-transform hover:-translate-y-1">
-              <img
-                src="/images/trainer/dashboard.png"
-                alt="Trainer dashboard"
-                className="w-full h-auto"
-              />
-            </Card>
-            <Card className="overflow-hidden rounded-2xl border-white/10 bg-white/[0.03] shadow-xl shadow-black/20 transition-transform hover:-translate-y-1">
-              <img
-                src="/images/trainer/screen1.png"
-                alt="Trainer view"
-                className="w-full h-auto"
-              />
-            </Card>
-            <Card className="overflow-hidden rounded-2xl border-white/10 bg-white/[0.03] shadow-xl shadow-black/20 transition-transform hover:-translate-y-1">
-              <img
-                src="/images/trainer/screen2.png"
-                alt="Client details"
-                className="w-full h-auto"
-              />
-            </Card>
-            <Card className="overflow-hidden rounded-2xl border-white/10 bg-white/[0.03] shadow-xl shadow-black/20 transition-transform hover:-translate-y-1">
-              <img
-                src="/images/trainer/squad.png"
-                alt="Squad view"
-                className="w-full h-auto"
-              />
-            </Card>
-          </div>
-        </motion.div>
-
-        {/* Client App */}
-        <motion.div variants={fadeUp}>
-          <h3 className="text-xl font-semibold text-center mb-6 text-emerald-500">
-            Client App
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            <Card className="overflow-hidden rounded-2xl border-white/10 bg-white/[0.03] shadow-xl shadow-black/20 transition-transform hover:-translate-y-1">
-              <img
-                src="/images/client/screen1.png"
-                alt="Client home"
-                className="w-full h-auto"
-              />
-            </Card>
-            <Card className="overflow-hidden rounded-2xl border-white/10 bg-white/[0.03] shadow-xl shadow-black/20 transition-transform hover:-translate-y-1">
-              <img
-                src="/images/client/screen2.png"
-                alt="Meal logging"
-                className="w-full h-auto"
-              />
-            </Card>
-            <Card className="overflow-hidden rounded-2xl border-white/10 bg-white/[0.03] shadow-xl shadow-black/20 transition-transform hover:-translate-y-1">
-              <img
-                src="/images/client/screen3.png"
-                alt="AI analysis"
-                className="w-full h-auto"
-              />
-            </Card>
-            <Card className="overflow-hidden rounded-2xl border-white/10 bg-white/[0.03] shadow-xl shadow-black/20 transition-transform hover:-translate-y-1">
-              <img
-                src="/images/client/screen4.png"
-                alt="Progress view"
-                className="w-full h-auto"
-              />
-            </Card>
-            <Card className="overflow-hidden rounded-2xl border-white/10 bg-white/[0.03] shadow-xl shadow-black/20 transition-transform hover:-translate-y-1">
-              <img
-                src="/images/client/screen5.png"
-                alt="Squad feed"
-                className="w-full h-auto"
-              />
-            </Card>
-          </div>
-        </motion.div>
-      </motion.section>
-
-      {/* Waitlist */}
-      <motion.section
-        id="waitlist"
-        className="mx-auto max-w-4xl px-6 py-24 text-center"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={stagger}
-      >
-        <motion.div className="rounded-[2rem] border border-emerald-400/20 bg-gradient-to-br from-emerald-400/10 via-white/[0.04] to-transparent px-6 py-14 shadow-2xl shadow-emerald-500/5 md:px-16" variants={fadeUp}>
-          <div className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-300">Your clients. Your clarity.</div>
-          <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">Ready to coach with proof?</h2>
-          <motion.p className="mb-8 text-muted-foreground" variants={fadeUp}>
-            We&apos;re onboarding trainers for our pilot program. Join the
-            waitlist and be first in line.
-          </motion.p>
-          <motion.div variants={fadeUp}>
-            {submitted ? (
-              <Card className="border-emerald-400/30 bg-emerald-400/10">
-                <CardContent className="p-6">
-                  <p className="font-medium text-emerald-300">
-                    You&apos;re on the list! We&apos;ll be in touch soon.
-                  </p>
-                </CardContent>
-              </Card>
-            ) : (
-              <form
-                onSubmit={handleSubmit}
-                className="mx-auto flex max-w-lg flex-col gap-3 sm:flex-row"
-              >
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="h-11 flex-1 rounded-full border-white/10 bg-black/20 px-5"
-                />
-                <Button type="submit" size="lg" className="rounded-full px-6" disabled={loading}>
-                  {loading ? "Joining..." : "Join Waitlist"}
-                  {!loading && <ArrowRight />}
-                </Button>
-              </form>
-            )}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+      {/* Stats bar */}
+      <div className="grid grid-cols-2 bg-accent text-paper md:grid-cols-4">
+        {stats.map(([value, label], i) => (
+          <motion.div
+            key={label}
+            {...reveal}
+            transition={{ ...reveal.transition, delay: i * 0.06 }}
+            className="border-paper/20 px-6 py-8 sm:px-10 [&:not(:last-child)]:border-r"
+          >
+            <p className="font-display text-5xl leading-none">{value}</p>
+            <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.18em]">
+              {label}
+            </p>
           </motion.div>
-        </motion.div>
-      </motion.section>
+        ))}
+      </div>
+    </section>
+  );
+}
 
-      {/* Footer */}
-      <footer className="border-t border-white/10 px-6 py-8">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-muted-foreground text-sm">
-            © {currentYear} FitLens. All rights reserved.
-          </div>
-          <div className="flex items-center gap-6">
-            <Link
-              href="/privacy"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/terms"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Terms
-            </Link>
-            <div className="text-2xl font-bold tracking-tight">
-              <span className="text-emerald-500">Fit</span>Lens
+function StorySection() {
+  return (
+    <section id="story" className="scroll-mt-16 border-b border-line">
+      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
+        <SectionLabel>How it feels</SectionLabel>
+        <TypeHeading
+          text="Point. Snap."
+          highlight="Tracked."
+          className="text-4xl leading-[0.95] sm:text-6xl"
+        />
+        <p className="mt-6 max-w-lg text-sm leading-relaxed text-ink/55">
+          No food scales, no searching a database. Your client points their
+          phone at the plate and the meal is in their day.
+        </p>
+        <motion.div {...reveal} className="mt-12">
+          <TrackingStory />
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function DemoSection() {
+  return (
+    <section id="demo" className="scroll-mt-16 border-b border-line">
+      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
+        <SectionLabel>See it in action</SectionLabel>
+        <TypeHeading
+          text="Type it or snap it."
+          highlight="Macros in seconds."
+          className="text-4xl leading-[0.95] sm:text-6xl"
+        />
+        <p className="mt-6 max-w-lg text-sm leading-relaxed text-ink/55">
+          A real analysis from the app: the meal, the macros and every
+          ingredient it found.
+        </p>
+        <motion.div {...reveal} className="mt-12">
+          <AiDemo />
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function TrainerSection() {
+  return (
+    <section id="trainers" className="scroll-mt-16 border-b border-line">
+      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
+        <FeatureTabs
+          features={trainerFeatures}
+          header={
+            <div>
+              <SectionLabel>For trainers</SectionLabel>
+              <TypeHeading
+                text="Your whole roster."
+                highlight="At a glance."
+                className="text-4xl leading-[0.95] sm:text-6xl"
+              />
+              <p className="mt-6 max-w-md text-sm leading-relaxed text-ink/55">
+                Stop chasing screenshots and food diaries. See what every client
+                ate, how they&apos;re trending, and who needs you today.
+              </p>
             </div>
+          }
+        />
+      </div>
+    </section>
+  );
+}
+
+function FeatureGrid() {
+  return (
+    <section id="features" className="scroll-mt-16 border-b border-line">
+      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
+        <SectionLabel>Features</SectionLabel>
+        <TypeHeading
+          text="Everything a coach needs."
+          highlight="Nothing they don't."
+          className="text-4xl leading-[0.95] sm:text-6xl"
+        />
+        <div className="mt-14 grid border-l border-t border-line sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((feature, i) => {
+            const lead = i === 0;
+            return (
+              <motion.div
+                key={feature.title}
+                {...reveal}
+                transition={{ ...reveal.transition, delay: (i % 3) * 0.06 }}
+                className={`border-b border-r border-line p-7 ${lead ? "bg-accent text-paper" : ""}`}
+              >
+                <span
+                  className={`font-display text-4xl ${lead ? "" : "text-accent"}`}
+                >
+                  0{i + 1}
+                </span>
+                <h3 className="mt-5 text-sm font-semibold uppercase tracking-[0.12em]">
+                  {feature.title}
+                </h3>
+                <span
+                  className={`mt-3 inline-block border px-2 py-0.5 text-[10px] uppercase tracking-[0.15em] ${
+                    lead ? "border-paper/40" : "border-accent/50 text-accent"
+                  }`}
+                >
+                  [{feature.tag}]
+                </span>
+                <p
+                  className={`mt-4 text-[13px] leading-relaxed ${lead ? "text-paper/80" : "text-ink/55"}`}
+                >
+                  {feature.body}
+                </p>
+              </motion.div>
+            );
+          })}
+        </div>
+        <motion.div {...reveal} className="mt-6 flex flex-wrap gap-2">
+          {extras.map((extra) => (
+            <span
+              key={extra}
+              className="border border-line px-2.5 py-1 text-[10px] uppercase tracking-[0.15em] text-ink/50"
+            >
+              {extra}
+            </span>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function RosterSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+  return (
+    <section className="border-b border-line">
+      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
+        <SectionLabel>Who needs you today</SectionLabel>
+        <TypeHeading
+          text="See who's slipping."
+          highlight="Before they quit."
+          className="text-4xl leading-[0.95] sm:text-6xl"
+        />
+        <div
+          ref={ref}
+          className="mt-14 grid gap-10 lg:grid-cols-[1.15fr_0.85fr]"
+        >
+          <div className="border border-line bg-card p-6">
+            <div className="mb-5 flex items-center justify-between text-[10px] uppercase tracking-[0.18em] text-ink/40">
+              <span>Example roster {"//"} 7-day adherence</span>
+              <span>%</span>
+            </div>
+            <ul className="space-y-4">
+              {roster.map((client, i) => (
+                <li
+                  key={client.name}
+                  className="grid grid-cols-[7.5rem_1fr_2.5rem] items-center gap-4 text-xs sm:grid-cols-[9rem_1fr_3rem]"
+                >
+                  <span className="truncate uppercase tracking-[0.1em] text-ink/70">
+                    {client.name}
+                  </span>
+                  <span className="h-2 bg-line">
+                    <motion.span
+                      className="block h-full"
+                      style={{ background: client.color }}
+                      initial={{ width: 0 }}
+                      animate={{ width: inView ? `${client.score}%` : 0 }}
+                      transition={{
+                        duration: 1,
+                        delay: 0.1 + i * 0.1,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
+                    />
+                  </span>
+                  <span
+                    className="text-right tabular-nums"
+                    style={{ color: client.color }}
+                  >
+                    {client.score}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="space-y-3">
+            {signals.map((signal, i) => (
+              <motion.div
+                key={signal.level}
+                {...reveal}
+                transition={{ ...reveal.transition, delay: i * 0.08 }}
+                className="border-l-2 bg-card px-5 py-4"
+                style={{ borderColor: signal.color }}
+              >
+                <p
+                  className="text-[10px] font-semibold uppercase tracking-[0.2em]"
+                  style={{ color: signal.color }}
+                >
+                  {signal.level}
+                </p>
+                <p className="mt-1.5 text-[13px] text-ink/65">{signal.body}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
-      </footer>
-    </main>
+      </div>
+    </section>
+  );
+}
+
+function ClientSection() {
+  return (
+    <section id="clients" className="scroll-mt-16 border-b border-line">
+      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
+        <div className="text-center">
+          <SectionLabel color={GREEN}>For clients</SectionLabel>
+          <TypeHeading
+            text="Logging a meal takes"
+            highlight="five seconds."
+            className="text-4xl leading-[0.95] sm:text-6xl"
+          />
+          <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-ink/55">
+            The easier it is to log, the more your clients do it. FitLens makes
+            it a photo, not a chore.
+          </p>
+        </div>
+        <div className="mt-16">
+          <FanSpread screens={clientScreens} />
+        </div>
+        <dl className="mt-16 grid border-l border-t border-line sm:grid-cols-2 lg:grid-cols-4">
+          {clientPoints.map(([term, detail]) => (
+            <motion.div
+              key={term}
+              {...reveal}
+              className="border-b border-r border-line p-6"
+            >
+              <dt className="text-xs font-semibold uppercase tracking-[0.12em]">
+                {term}
+              </dt>
+              <dd className="mt-2.5 text-[13px] leading-relaxed text-ink/55">
+                {detail}
+              </dd>
+            </motion.div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  );
+}
+
+function BeforeAfter() {
+  return (
+    <section className="border-b border-line">
+      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
+        <SectionLabel>Before / after</SectionLabel>
+        <TypeHeading
+          text="Coaching, minus"
+          highlight="the guesswork."
+          className="text-4xl leading-[0.95] sm:text-6xl"
+        />
+        <div className="mt-14 grid gap-px border border-line bg-line md:grid-cols-2">
+          <motion.div {...reveal} className="bg-paper p-8">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-ink/40">
+              Without FitLens
+            </p>
+            <ul className="mt-6 space-y-4">
+              {withoutFitLens.map((item) => (
+                <li key={item} className="flex gap-3 text-sm text-ink/45">
+                  <X className="mt-0.5 h-4 w-4 shrink-0 text-red/70" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+          <motion.div
+            {...reveal}
+            transition={{ ...reveal.transition, delay: 0.1 }}
+            className="bg-card p-8"
+          >
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-accent">
+              With FitLens
+            </p>
+            <ul className="mt-6 space-y-4">
+              {withFitLens.map((item) => (
+                <li key={item} className="flex gap-3 text-sm">
+                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-green" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Faq() {
+  return (
+    <section id="faq" className="scroll-mt-16 border-b border-line">
+      <div className="mx-auto grid max-w-6xl gap-12 px-5 py-24 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:py-28">
+        <div>
+          <SectionLabel>FAQ</SectionLabel>
+          <TypeHeading
+            text="Questions"
+            highlight="people ask."
+            className="text-4xl leading-[0.95] sm:text-6xl"
+          />
+        </div>
+        <motion.div {...reveal} className="border-t border-line">
+          {faqs.map(({ q, a }, i) => (
+            <details key={q} className="group border-b border-line py-5">
+              <summary className="flex cursor-pointer list-none items-start justify-between gap-6 [&::-webkit-details-marker]:hidden">
+                <span className="flex gap-4">
+                  <span className="text-xs text-accent">0{i + 1}</span>
+                  <span className="text-sm font-medium uppercase tracking-[0.08em]">
+                    {q}
+                  </span>
+                </span>
+                <Plus className="h-4 w-4 shrink-0 text-ink/40 transition-transform duration-300 group-open:rotate-45 group-open:text-accent" />
+              </summary>
+              <p className="mt-3 max-w-xl pl-9 text-[13px] leading-relaxed text-ink/55">
+                {a}
+              </p>
+            </details>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function FinalCta() {
+  return (
+    <section id="pilot" className="scroll-mt-16 border-b border-line">
+      <div className="relative mx-auto max-w-6xl overflow-hidden px-5 py-24 sm:px-8 lg:py-32">
+        <div
+          aria-hidden
+          className="grid-bg absolute inset-0 [mask-image:radial-gradient(ellipse_60%_70%_at_20%_50%,black,transparent)]"
+        />
+        <div className="relative">
+          <SectionLabel>Join the pilot</SectionLabel>
+          <TypeHeading
+            text="Coach with"
+            highlight="proof."
+            className="text-5xl leading-[0.92] sm:text-8xl"
+          />
+          <p className="mt-6 max-w-md text-sm leading-relaxed text-ink/55">
+            We&apos;re onboarding a small group of personal trainers first.
+            Leave your email and we&apos;ll set you up, free during the pilot.
+          </p>
+          <div className="mt-10">
+            <PilotForm id="pilot-email" />
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
