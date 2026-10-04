@@ -20,6 +20,11 @@ FitLens is an iPhone app. It is free for trainers during the pilot, and clients 
 - Nutrition values are AI estimates for coaching, not medical advice
 - Data is never sold or used for advertising; users can delete their account in the app
 
+## Guides
+- [How to track your clients' nutrition as a personal trainer](https://usefitlens.com/guides/track-client-nutrition)
+- [How accurate are AI calorie counters from photos?](https://usefitlens.com/guides/ai-calorie-counter-accuracy)
+- [Food diaries vs. photo logging](https://usefitlens.com/guides/food-diary-vs-photo-logging)
+
 ## Pages
 - [Home](https://usefitlens.com/): product overview, demo and FAQ
 - [Support](https://usefitlens.com/support): contact and help
