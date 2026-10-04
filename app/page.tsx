@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { track } from "@vercel/analytics";
 import {
   MotionConfig,
   motion,
@@ -378,6 +379,7 @@ function PilotForm({ id }: { id: string }) {
         body: JSON.stringify({ email }),
       });
       setStatus(res.ok ? "done" : "error");
+      if (res.ok) track("Pilot signup", { form: id });
     } catch {
       setStatus("error");
     }
@@ -440,7 +442,7 @@ function Nav() {
   const links = [
     ["#how", "How it works"],
     ["#demo", "Demo"],
-    ["#trainers", "Trainers"],
+    ["/for-trainers", "Trainers"],
     ["#features", "Features"],
     ["#faq", "FAQ"],
     ["/guides", "Guides"],
@@ -735,6 +737,13 @@ function TrainerSection() {
                 Stop chasing screenshots and food diaries. See what every client
                 ate, how they&apos;re trending, and who needs you today.
               </p>
+              <a
+                href="/for-trainers"
+                className="mt-5 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent hover:opacity-80"
+              >
+                Everything FitLens does for trainers{" "}
+                <ArrowRight className="h-3.5 w-3.5" />
+              </a>
             </div>
           }
         />

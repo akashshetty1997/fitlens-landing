@@ -48,6 +48,18 @@ export function SiteFooter() {
     <footer className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-5 py-10 sm:flex-row sm:items-center sm:px-8">
       <Wordmark />
       <div className="flex flex-wrap items-center gap-x-7 gap-y-2 text-[11px] uppercase tracking-[0.18em] text-ink/60">
+        <Link
+          href="/for-trainers"
+          className="transition-colors hover:text-accent"
+        >
+          For trainers
+        </Link>
+        <Link
+          href="/compare/trainerize-alternative"
+          className="transition-colors hover:text-accent"
+        >
+          Trainerize alternative
+        </Link>
         <Link href="/guides" className="transition-colors hover:text-accent">
           Guides
         </Link>
