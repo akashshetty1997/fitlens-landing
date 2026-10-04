@@ -544,8 +544,8 @@ function Hero() {
             delay={1.2}
           />
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ y: 30 }}
+            animate={{ y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="font-display text-[3.1rem] uppercase leading-[0.92] sm:text-7xl lg:text-[6.4rem]"
           >
@@ -570,7 +570,7 @@ function Hero() {
           className="mt-9 flex flex-col items-center gap-4"
         >
           <PilotForm id="hero-email" />
-          <p className="text-[11px] uppercase tracking-[0.18em] text-ink/40">
+          <p className="text-[11px] uppercase tracking-[0.18em] text-ink/55">
             Free during the pilot <span className="text-ink/20">{"//"}</span>{" "}
             clients always free
           </p>
@@ -818,7 +818,7 @@ function RosterSection() {
           className="mt-14 grid gap-10 lg:grid-cols-[1.15fr_0.85fr]"
         >
           <div className="border border-line bg-card p-6">
-            <div className="mb-5 flex items-center justify-between text-[10px] uppercase tracking-[0.18em] text-ink/40">
+            <div className="mb-5 flex items-center justify-between text-[10px] uppercase tracking-[0.18em] text-ink/60">
               <span>Example roster {"//"} 7-day adherence</span>
               <span>%</span>
             </div>
@@ -931,12 +931,12 @@ function BeforeAfter() {
         />
         <div className="mt-14 grid gap-px border border-line bg-line md:grid-cols-2">
           <motion.div {...reveal} className="bg-paper p-8">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-ink/40">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-ink/55">
               Without FitLens
             </p>
             <ul className="mt-6 space-y-4">
               {withoutFitLens.map((item) => (
-                <li key={item} className="flex gap-3 text-sm text-ink/45">
+                <li key={item} className="flex gap-3 text-sm text-ink/55">
                   <X className="mt-0.5 h-4 w-4 shrink-0 text-red/70" />
                   {item}
                 </li>

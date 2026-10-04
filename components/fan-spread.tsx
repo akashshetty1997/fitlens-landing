@@ -81,7 +81,7 @@ function FanCard({
       <div className="aspect-[1320/2868]">
         <PhoneFrame screen={screen} />
       </div>
-      <p className="mt-4 text-center text-[10px] uppercase tracking-[0.18em] text-ink/45">
+      <p className="mt-4 text-center text-[10px] uppercase tracking-[0.18em] text-ink/60">
         {screen.caption}
       </p>
     </motion.div>

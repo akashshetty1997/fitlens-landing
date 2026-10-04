@@ -68,7 +68,7 @@ export function FeatureTabs({
               >
                 <span className="flex items-baseline gap-4">
                   <span
-                    className={`text-xs tabular-nums transition-colors ${selected ? "text-accent" : "text-ink/30"}`}
+                    className={`text-xs tabular-nums transition-colors ${selected ? "text-accent" : "text-ink/55"}`}
                   >
                     0{i + 1}
                   </span>
