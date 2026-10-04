@@ -12,4 +12,4 @@ export const SITE_TITLE =
 export const SITE_DESCRIPTION =
   "Clients snap a photo of every meal and FitLens AI turns it into calories and macros. Trainers see every client's nutrition, compliance and who needs attention today.";
 
-export const SUPPORT_EMAIL = "akashshetty022.as@gmail.com";
+export const SUPPORT_EMAIL = "support@usefitlens.com";

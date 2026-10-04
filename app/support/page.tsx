@@ -32,7 +32,7 @@ export default function SupportPage() {
 
         <div className="mx-auto mt-12 grid max-w-3xl gap-5 text-left md:grid-cols-3">
           <a
-            href="mailto:akashshetty022.as@gmail.com"
+            href="mailto:support@usefitlens.com"
             className="group rounded-3xl border border-accent/20 bg-accent/5 p-6 transition-colors hover:bg-accent/10"
           >
             <Mail className="mb-5 h-6 w-6 text-accent" />
@@ -79,9 +79,9 @@ export default function SupportPage() {
             For account deletion, data access, or privacy questions, email{" "}
             <a
               className="text-accent hover:underline"
-              href="mailto:akashshetty022.as@gmail.com"
+              href="mailto:support@usefitlens.com"
             >
-              akashshetty022.as@gmail.com
+              support@usefitlens.com
             </a>
             . Please include the email address associated with your FitLens
             account so we can verify your request.

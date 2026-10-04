@@ -246,9 +246,9 @@ export default function TermsPage() {
                 your account by emailing{" "}
                 <a
                   className="text-accent hover:underline"
-                  href="mailto:akashshetty022.as@gmail.com"
+                  href="mailto:support@usefitlens.com"
                 >
-                  akashshetty022.as@gmail.com
+                  support@usefitlens.com
                 </a>
                 . We may suspend or terminate access if you violate these Terms,
                 create risk for users or FitLens, are required to do so by law,
@@ -328,9 +328,9 @@ export default function TermsPage() {
                     Contact FitLens at{" "}
                     <a
                       className="text-accent hover:underline"
-                      href="mailto:akashshetty022.as@gmail.com"
+                      href="mailto:support@usefitlens.com"
                     >
-                      akashshetty022.as@gmail.com
+                      support@usefitlens.com
                     </a>
                     .
                   </p>
