@@ -227,9 +227,9 @@ export default function PrivacyPolicyPage() {
                   personal information by emailing us at{" "}
                   <a
                     className="text-accent hover:underline"
-                    href="mailto:support@usefitlens.com"
+                    href="mailto:contact@usefitlens.com"
                   >
-                    support@usefitlens.com
+                    contact@usefitlens.com
                   </a>
                   . We may need to verify your identity before completing a
                   request.
@@ -298,9 +298,9 @@ export default function PrivacyPolicyPage() {
                     Contact FitLens at{" "}
                     <a
                       className="text-accent hover:underline"
-                      href="mailto:support@usefitlens.com"
+                      href="mailto:contact@usefitlens.com"
                     >
-                      support@usefitlens.com
+                      contact@usefitlens.com
                     </a>
                     .
                   </p>

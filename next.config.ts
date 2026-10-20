@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
         destination: "https://usefitlens.com/:path*",
         permanent: true,
       },
+      // The Trainerize comparison page was removed; send old links and search results to the trainer page
+      {
+        source: "/compare/:path*",
+        destination: "/for-trainers",
+        permanent: true,
+      },
     ];
   },
 };

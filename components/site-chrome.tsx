@@ -54,12 +54,6 @@ export function SiteFooter() {
         >
           For trainers
         </Link>
-        <Link
-          href="/compare/trainerize-alternative"
-          className="transition-colors hover:text-accent"
-        >
-          Trainerize alternative
-        </Link>
         <Link href="/guides" className="transition-colors hover:text-accent">
           Guides
         </Link>

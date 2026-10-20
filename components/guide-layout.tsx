@@ -105,7 +105,7 @@ export function GuideLayout({
           <p className="mt-3 text-sm leading-relaxed text-ink/65">
             Clients snap a photo of each meal, FitLens estimates the calories
             and macros, and you get a daily list of who needs you. Free for
-            trainers during the pilot.
+            trainers with up to 10 clients.
           </p>
           <Link
             href="/#pilot"

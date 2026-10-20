@@ -191,14 +191,6 @@ export default function ForTrainersPage() {
           </tr>
         </tbody>
       </table>
-      <p>
-        Already on an all-in-one platform? See how FitLens compares in{" "}
-        <Link href="/compare/trainerize-alternative">
-          FitLens vs. Trainerize for nutrition coaching
-        </Link>
-        .
-      </p>
-
       <h2>A note on accuracy</h2>
       <p>
         Photo-based nutrition estimates are best at everyday plated meals and at
@@ -264,9 +256,9 @@ export default function ForTrainersPage() {
 
       <h2>Pricing</h2>
       <p>
-        FitLens is <strong>free for trainers during the pilot</strong>, and
-        clients always use it for free. We&apos;ll share pricing with pilot
-        trainers well before anything changes.
+        FitLens is <strong>free for trainers coaching up to 10 clients</strong>,
+        and clients always use it for free. Coaching more than 10? Email
+        contact@usefitlens.com and we&apos;ll add room for more.
       </p>
     </PageShell>
   );

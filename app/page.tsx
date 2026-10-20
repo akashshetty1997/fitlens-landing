@@ -37,8 +37,8 @@ const screens: Record<string, Screen> = {
   },
   client: {
     src: "/screens/client-detail.webp",
-    alt: "Client snapshot with adherence and weight trend",
-    caption: "Client snapshot",
+    alt: "Client overview with weight, goal and today's nutrition",
+    caption: "Client overview",
   },
   meal: {
     src: "/screens/meal-result.webp",
@@ -109,7 +109,7 @@ const stats = [
   ["5s", "To log a meal"],
   ["4", "Numbers per meal"],
   ["1", "Dashboard per roster"],
-  ["$0", "During the pilot"],
+  ["$0", "Up to 10 clients"],
 ];
 
 const trainerFeatures: FeatureTab[] = [
@@ -240,7 +240,7 @@ const withFitLens = [
 const faqs = [
   {
     q: "How much does FitLens cost?",
-    a: "FitLens is free for trainers during the pilot, and clients always use the app for free. We'll share pricing with pilot trainers well before anything changes.",
+    a: "FitLens is free for trainers coaching up to 10 clients, and clients always use the app for free. Coaching more than 10? Email contact@usefitlens.com and we'll add room for more.",
   },
   {
     q: "How accurate is the AI?",
@@ -518,7 +518,7 @@ function Hero() {
         >
           <span className="text-accent">v1.0.1</span>
           <span>{"// iPhone"}</span>
-          <span>{"// free pilot"}</span>
+          <span>{"// free for 10 clients"}</span>
           <span>{"// for trainers"}</span>
         </motion.p>
 
@@ -574,7 +574,7 @@ function Hero() {
         >
           <PilotForm id="hero-email" />
           <p className="text-[11px] uppercase tracking-[0.18em] text-ink/55">
-            Free during the pilot <span className="text-ink/20">{"//"}</span>{" "}
+            Free for up to 10 clients <span className="text-ink/20">{"//"}</span>{" "}
             clients always free
           </p>
         </motion.div>
@@ -1028,7 +1028,7 @@ function FinalCta() {
           />
           <p className="mt-6 max-w-md text-sm leading-relaxed text-ink/55">
             We&apos;re onboarding a small group of personal trainers first.
-            Leave your email and we&apos;ll set you up, free during the pilot.
+            Leave your email and we&apos;ll set you up, free for up to 10 clients.
           </p>
           <div className="mt-10">
             <PilotForm id="pilot-email" />
