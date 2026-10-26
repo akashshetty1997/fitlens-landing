@@ -843,6 +843,13 @@ function WorkoutSection() {
             Build the plan once and share it. Your clients follow it one set at
             a time, and every set lands in FitLens next to their meals.
           </p>
+          <a
+            href="/workout-plans"
+            className="mt-5 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent hover:opacity-80"
+          >
+            How workout plans work in FitLens{" "}
+            <ArrowRight className="h-3.5 w-3.5" />
+          </a>
         </div>
         <div className="mt-16">
           <FanSpread screens={workoutScreens} />

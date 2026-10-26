@@ -54,6 +54,12 @@ export function SiteFooter() {
         >
           For trainers
         </Link>
+        <Link
+          href="/workout-plans"
+          className="transition-colors hover:text-accent"
+        >
+          Workout plans
+        </Link>
         <Link href="/guides" className="transition-colors hover:text-accent">
           Guides
         </Link>

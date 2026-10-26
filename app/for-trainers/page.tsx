@@ -124,7 +124,8 @@ export default function ForTrainersPage() {
           <strong>Workout plans.</strong> Build weekly or rotating plans from
           more than 650 exercises (or your own), with sets, reps, weight, rest
           and your own demo video on any exercise. Share a plan with any
-          client and see every session they log, set by set.
+          client and see every session they log, set by set.{" "}
+          <Link href="/workout-plans">How workout plans work</Link>.
         </li>
         <li>
           <strong>Shared tasks.</strong> Habits and to-dos that you or your
@@ -180,8 +181,8 @@ export default function ForTrainersPage() {
         </thead>
         <tbody>
           <tr>
-            <td>Nutrition is a big part of how you coach</td>
-            <td>You only need workout programming</td>
+            <td>You coach nutrition and training together</td>
+            <td>You need advanced periodisation and program-design tools</td>
           </tr>
           <tr>
             <td>

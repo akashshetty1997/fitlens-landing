@@ -4,12 +4,20 @@ import { GUIDES } from "@/lib/guides";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date("2026-10-04");
+  // Pages updated when workout plans were added
+  const workoutsLaunch = new Date("2026-10-26");
   return [
     {
       url: `${SITE_URL}/`,
-      lastModified,
+      lastModified: workoutsLaunch,
       changeFrequency: "weekly",
       priority: 1,
+    },
+    {
+      url: `${SITE_URL}/workout-plans`,
+      lastModified: workoutsLaunch,
+      changeFrequency: "monthly",
+      priority: 0.9,
     },
     {
       url: `${SITE_URL}/support`,
@@ -25,7 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${SITE_URL}/for-trainers`,
-      lastModified,
+      lastModified: workoutsLaunch,
       changeFrequency: "monthly",
       priority: 0.9,
     },

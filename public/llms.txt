@@ -32,6 +32,7 @@ FitLens is an iPhone app. It is free for trainers coaching up to 10 clients, and
 ## Pages
 - [Home](https://usefitlens.com/): product overview, demo and FAQ
 - [For trainers](https://usefitlens.com/for-trainers): nutrition tracking app for personal trainers, features and getting started
+- [Workout plans](https://usefitlens.com/workout-plans): workout plan app for personal trainers: building plans, what clients see, session logs, FAQ
 - [Support](https://usefitlens.com/support): contact and help
 - [Privacy Policy](https://usefitlens.com/privacy-policy)
 - [Terms of Service](https://usefitlens.com/terms)
