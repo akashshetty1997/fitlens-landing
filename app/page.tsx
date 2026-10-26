@@ -60,11 +60,27 @@ const screens: Record<string, Screen> = {
     alt: "Chat between a client and their coach",
     caption: "Coach chat",
   },
+  workoutBuilder: {
+    src: "/screens/workout-builder.webp",
+    alt: "Workout plan builder with sets, reps and weight on each exercise",
+    caption: "Workout builder",
+  },
+  workoutPlayer: {
+    src: "/screens/workout-player.webp",
+    alt: "Workout player with the exercise, weight and reps, and every set with its own tick",
+    caption: "Workout player",
+  },
+  workoutRest: {
+    src: "/screens/workout-rest.webp",
+    alt: "Rest countdown between sets with the next set shown",
+    caption: "Rest timer",
+  },
 };
 
 const heroScreens = [
   screens.dashboard,
   screens.meal,
+  screens.workoutBuilder,
   screens.plans,
   screens.home,
   screens.squad,
@@ -72,6 +88,33 @@ const heroScreens = [
   screens.chat,
 ];
 const clientScreens = [screens.meal, screens.home, screens.squad, screens.chat];
+const workoutScreens = [screens.workoutBuilder, screens.workoutPlayer, screens.workoutRest];
+
+const workoutCoachPoints = [
+  [
+    "650+ exercises",
+    "Search by muscle or equipment, or add your own. Exercise data by RepDB.",
+  ],
+  [
+    "Sets, reps and weight in place",
+    "Type the targets right on each exercise. Rest, notes and timed holds too.",
+  ],
+  [
+    "Your own demo videos",
+    "Record a quick demo or paste a link, and it shows on that exercise.",
+  ],
+  [
+    "Every session, logged",
+    "See each set your client did against your targets, and how long it took.",
+  ],
+] as const;
+
+const workoutClientPoints = [
+  "Today's workout on their home screen",
+  "One set at a time, ticked as they go",
+  "Rest countdown between sets",
+  "Swap an exercise when the machine is busy",
+] as const;
 
 const tickerMeals = [
   ["Greek yogurt, blueberries & granola", 319],
@@ -124,6 +167,11 @@ const trainerFeatures: FeatureTab[] = [
     screen: screens.plans,
   },
   {
+    title: "Workout plans",
+    body: "Build weekly or rotating workouts and follow every set your clients log.",
+    screen: screens.workoutBuilder,
+  },
+  {
     title: "Client snapshots",
     body: "Adherence, weight trend and meals awaiting your review on one screen.",
     screen: screens.client,
@@ -152,6 +200,21 @@ const features = [
     body: "Single meals or full days with macros, shared with as many clients as you like.",
   },
   {
+    title: "Workout plans",
+    tag: "650+ exercises",
+    body: "Weekly or rotating plans with sets, reps, weight and rest, plus your own demo videos.",
+  },
+  {
+    title: "Guided workouts",
+    tag: "Set by set",
+    body: "Clients tick each set, rest on a countdown and log weight, reps and time as they go.",
+  },
+  {
+    title: "Shared tasks",
+    tag: "Coach + client",
+    body: "Habits and to-dos either side can add, linked to a meal or workout and ticked off in chat.",
+  },
+  {
     title: "Client snapshots",
     tag: "Per client",
     body: "Adherence, weight trend, targets, notes and meals awaiting review in one place.",
@@ -169,6 +232,9 @@ const features = [
 ];
 
 const extras = [
+  "Rest timer",
+  "Exercise swaps",
+  "Workout history",
   "Water tracking",
   "Weight trends",
   "Calorie targets",
@@ -216,7 +282,10 @@ const clientPoints = [
     "A full breakdown of every meal, with ingredients you can check.",
   ],
   ["Today at a glance", "Calories, protein, carbs, fat and water in one ring."],
-  ["Plans from your coach", "Meals your trainer shares, ready to follow."],
+  [
+    "Plans from your coach",
+    "Meals and workouts your trainer shares, ready to follow.",
+  ],
   [
     "A squad that keeps you honest",
     "Share meals, cheer each other on, message your coach.",
@@ -228,6 +297,7 @@ const withoutFitLens = [
   "Guessing portions from blurry screenshots",
   "Finding out a client fell off weeks later",
   "Rewriting the same meal plan for every client",
+  "Workout plans in PDFs nobody fills in",
 ];
 
 const withFitLens = [
@@ -235,6 +305,7 @@ const withFitLens = [
   "A daily queue of who needs you, prioritised",
   "Spot a slipping client the day it happens",
   "Write a plan once, share it with anyone",
+  "Every set your clients do, logged in the app",
 ];
 
 const faqs = [
@@ -245,6 +316,10 @@ const faqs = [
   {
     q: "How accurate is the AI?",
     a: "FitLens estimates each meal ingredient by ingredient and shows a confidence score, so clients can check what it found. It's built for coaching decisions, not medical advice, and you can review every meal from your dashboard.",
+  },
+  {
+    q: "Can I build workout plans too?",
+    a: "Yes. Pick from more than 650 exercises (or add your own), set sets, reps, weight and rest, and share the plan with any client. Clients follow it set by set with a rest timer, and you see every session they log.",
   },
   {
     q: "What do my clients need?",
@@ -279,6 +354,7 @@ export default function Home() {
         <StorySection />
         <DemoSection />
         <TrainerSection />
+        <WorkoutSection />
         <FeatureGrid />
         <RosterSection />
         <ClientSection />
@@ -516,7 +592,7 @@ function Hero() {
           {...reveal}
           className="mx-auto mb-10 inline-flex flex-wrap justify-center gap-x-2 border border-line bg-card px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-ink/50"
         >
-          <span className="text-accent">v1.0.1</span>
+          <span className="text-accent">v1.1</span>
           <span>{"// iPhone"}</span>
           <span>{"// free for 10 clients"}</span>
           <span>{"// for trainers"}</span>
@@ -564,7 +640,7 @@ function Hero() {
         >
           FitLens is AI nutrition tracking for personal trainers. Clients snap a
           photo of every meal; you get calories, macros and a daily list of who
-          needs you.
+          needs you. Plus workout plans they follow set by set.
         </motion.p>
 
         <motion.div
@@ -747,6 +823,67 @@ function TrainerSection() {
             </div>
           }
         />
+      </div>
+    </section>
+  );
+}
+
+function WorkoutSection() {
+  return (
+    <section id="workouts" className="scroll-mt-16 border-b border-line">
+      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
+        <div className="text-center">
+          <SectionLabel color={BLUE}>Workouts</SectionLabel>
+          <TypeHeading
+            text="Training plans,"
+            highlight="logged set by set."
+            className="text-4xl leading-[0.95] sm:text-6xl"
+          />
+          <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-ink/55">
+            Build the plan once and share it. Your clients follow it one set at
+            a time, and every set lands in FitLens next to their meals.
+          </p>
+        </div>
+        <div className="mt-16">
+          <FanSpread screens={workoutScreens} />
+        </div>
+        <div className="mt-16 grid gap-10 lg:grid-cols-[1.4fr_1fr]">
+          <dl className="grid border-l border-t border-line sm:grid-cols-2">
+            {workoutCoachPoints.map(([term, detail]) => (
+              <motion.div
+                key={term}
+                {...reveal}
+                className="border-b border-r border-line p-6"
+              >
+                <dt className="text-xs font-semibold uppercase tracking-[0.12em]">
+                  {term}
+                </dt>
+                <dd className="mt-2.5 text-[13px] leading-relaxed text-ink/55">
+                  {detail}
+                </dd>
+              </motion.div>
+            ))}
+          </dl>
+          <motion.div {...reveal} className="border border-line bg-card p-7">
+            <p
+              className="text-[10px] font-semibold uppercase tracking-[0.2em]"
+              style={{ color: GREEN }}
+            >
+              Your clients get
+            </p>
+            <ul className="mt-5 space-y-3.5">
+              {workoutClientPoints.map((point) => (
+                <li key={point} className="flex gap-3 text-sm text-ink/70">
+                  <Check
+                    className="mt-0.5 h-4 w-4 shrink-0"
+                    style={{ color: GREEN }}
+                  />
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

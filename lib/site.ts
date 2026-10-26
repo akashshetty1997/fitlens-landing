@@ -10,6 +10,6 @@ export const SITE_TITLE =
   "FitLens: AI Nutrition Tracking App for Personal Trainers";
 
 export const SITE_DESCRIPTION =
-  "Clients snap a photo of every meal and FitLens AI turns it into calories and macros. Trainers see every client's nutrition, compliance and who needs attention today.";
+  "Clients snap a photo of every meal and FitLens AI turns it into calories and macros. Trainers see every client's nutrition, compliance and who needs attention today, and share workout plans clients follow set by set.";
 
 export const SUPPORT_EMAIL = "contact@usefitlens.com";

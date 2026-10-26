@@ -69,6 +69,14 @@ export function SiteFooter() {
         <Link href="/support" className="transition-colors hover:text-accent">
           Support
         </Link>
+        <a
+          href="https://repdb.co"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="transition-colors hover:text-accent"
+        >
+          Exercise data by RepDB
+        </a>
         <span>© {new Date().getFullYear()} FitLens</span>
       </div>
     </footer>

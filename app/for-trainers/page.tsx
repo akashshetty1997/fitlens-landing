@@ -121,6 +121,17 @@ export default function ForTrainersPage() {
           full day with macros and share it with as many clients as you like.
         </li>
         <li>
+          <strong>Workout plans.</strong> Build weekly or rotating plans from
+          more than 650 exercises (or your own), with sets, reps, weight, rest
+          and your own demo video on any exercise. Share a plan with any
+          client and see every session they log, set by set.
+        </li>
+        <li>
+          <strong>Shared tasks.</strong> Habits and to-dos that you or your
+          client can add, like a daily step goal or &ldquo;check my squat
+          form&rdquo;, ticked off in the app or right in chat.
+        </li>
+        <li>
           <strong>Targets per client.</strong> Set calorie and macro targets
           that FitLens tracks against every day.
         </li>
@@ -142,6 +153,10 @@ export default function ForTrainersPage() {
           they stand.
         </li>
         <li>Meal plans from you, ready to follow.</li>
+        <li>
+          Your workout plans, one set at a time, with a rest timer and their
+          weights and reps logged as they go.
+        </li>
         <li>Weight tracking with trends, not just daily numbers.</li>
         <li>A squad that keeps them accountable, and a direct line to you.</li>
       </ul>
