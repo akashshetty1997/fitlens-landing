@@ -185,6 +185,19 @@ html {
   }
 }
 
+/* Hero over the background video: dark in both themes. The video sits under
+   a 66% black overlay, so white text stays above 7:1 and --ink-2 above 5:1
+   even over the gym's ceiling lights. */
+.landing .hero-dark {
+  --ink: #ffffff;
+  --ink-2: rgb(255 255 255 / 0.82);
+  --line: rgb(255 255 255 / 0.22);
+  --paper: rgb(9 9 11 / 0.6);
+  --accent-text: #f97316;
+  color: var(--ink);
+  color-scheme: dark;
+}
+
 .landing ::selection {
   background: rgb(249 115 22 / 0.3);
 }

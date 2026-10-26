@@ -14,11 +14,14 @@ export type Screen = {
 export function Phone({
   screen,
   priority = false,
+  eager = false,
   sizes = "(min-width: 1024px) 320px, 70vw",
   className = "",
 }: {
   screen: Screen;
   priority?: boolean;
+  /** Load straight away at normal priority: above the fold, but not the LCP */
+  eager?: boolean;
   sizes?: string;
   className?: string;
 }) {
@@ -33,6 +36,7 @@ export function Phone({
         height={2868}
         sizes={sizes}
         priority={priority}
+        loading={eager && !priority ? "eager" : undefined}
         fetchPriority={priority ? "high" : undefined}
         className="h-auto w-full rounded-[2.25rem] bg-paper"
       />

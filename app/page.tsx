@@ -1,21 +1,58 @@
 import Link from "next/link";
 import {
   ArrowRight,
+  Bell,
   BellRing,
+  CalendarDays,
+  Camera,
+  ChartColumn,
   Check,
+  CirclePlay,
+  ClipboardCheck,
   ClipboardList,
+  Copy,
+  Droplet,
   FileText,
+  Flag,
+  Heart,
+  History,
   Images,
+  KeyRound,
+  LayoutDashboard,
+  Library,
   LineChart,
+  ListChecks,
+  LogIn,
   MessageCircle,
+  Mic,
+  Moon,
+  NotebookPen,
+  Repeat,
+  Scale,
+  ScanBarcode,
+  Share2,
+  ShieldCheck,
   Sheet,
+  SlidersHorizontal,
+  Smartphone,
+  SquarePlus,
+  Target,
+  Timer,
+  Trash2,
+  Trophy,
+  Type,
   UserPlus,
+  UserRound,
+  Users,
+  Utensils,
+  Video,
 } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-chrome";
 import { StructuredData } from "@/components/structured-data";
 import { PilotForm } from "@/components/pilot-form";
-import { MealExample } from "@/components/meal-example";
+import { HeroVideo } from "@/components/hero-video";
+import { AiDemo } from "@/components/ai-demo";
 import { Phone, type Screen } from "@/components/phone";
 
 // Server-rendered home page. The only client code is the navigation's mobile
@@ -119,16 +156,79 @@ const pilotFacts = [
   ["Private by default", "No ads. Data is never sold, and clients can delete their account any time."],
 ];
 
-const alsoIncluded = [
-  "Meal plans for single meals or full days",
-  "Shared tasks and habits, ticked off in chat",
-  "Private squads with a group feed",
-  "Direct messages with every client",
-  "Water and weight trends",
-  "Calorie and macro targets per client",
-  "Rest timer and set timer for workouts",
-  "Exercise swaps and your own demo videos",
-  "Report and block built in",
+// Every feature in the app today, grouped. The hero's feature count comes
+// from this list, so the two always match.
+const featureGroups = [
+  {
+    title: "Trainer tools",
+    features: [
+      { icon: LayoutDashboard, name: "Daily attention queue", body: "Clients who stop logging or miss targets, ranked by urgency." },
+      { icon: UserRound, name: "Client snapshots", body: "Adherence, weight trend, targets and notes on one screen." },
+      { icon: ClipboardCheck, name: "Meal review", body: "Check each meal's photo and breakdown, then verify it." },
+      { icon: Target, name: "Targets per client", body: "Calorie and macro goals FitLens tracks every day." },
+      { icon: SlidersHorizontal, name: "Coaching style and rules", body: "Set how strict alerts are and what counts as off track." },
+      { icon: ChartColumn, name: "Workout analytics", body: "Who's training consistently and how their strength is moving." },
+      { icon: NotebookPen, name: "Private client notes", body: "Notes only you can see, kept with each client." },
+      { icon: KeyRound, name: "Trainer code", body: "Clients join your roster with one code." },
+    ],
+  },
+  {
+    title: "Workouts",
+    features: [
+      { icon: CalendarDays, name: "Workout plan builder", body: "Weekly days or a rotation, with sets, reps, weight and rest." },
+      { icon: Library, name: "650+ exercise library", body: "Search by muscle or equipment, with illustrations." },
+      { icon: SquarePlus, name: "Custom exercises", body: "Add your own exercises with instructions and a photo." },
+      { icon: Video, name: "Your demo videos", body: "Record a demo or paste a YouTube or Vimeo link." },
+      { icon: Copy, name: "Templates and duplicates", body: "Start from a template or copy a plan you wrote." },
+      { icon: CirclePlay, name: "Guided workouts", body: "Clients follow one set at a time and tick each set." },
+      { icon: Timer, name: "Rest and set timers", body: "A rest countdown and a timer for every set." },
+      { icon: Repeat, name: "Exercise swaps", body: "Swap for a similar exercise when a machine is taken." },
+      { icon: History, name: "Workout history", body: "Every session, set by set, against your targets." },
+    ],
+  },
+  {
+    title: "Nutrition",
+    features: [
+      { icon: Camera, name: "Photo meal logging", body: "Snap a plate; FitLens estimates calories and macros." },
+      { icon: Type, name: "Describe a meal", body: "Type what you ate in one sentence instead." },
+      { icon: ScanBarcode, name: "Barcode scanning", body: "Scan packaged food for its nutrition." },
+      { icon: Mic, name: "Voice logging", body: "Say what you ate and it's written down for you." },
+      { icon: Utensils, name: "Meal plans", body: "Single meals or full days, shared with any client." },
+      { icon: Droplet, name: "Water tracking", body: "Daily water against a goal, in a tap." },
+      { icon: Scale, name: "Weight trends", body: "Weigh-ins and trends, not just today's number." },
+    ],
+  },
+  {
+    title: "Communication and accountability",
+    features: [
+      { icon: MessageCircle, name: "Direct chat", body: "One-to-one messages between you and each client." },
+      { icon: Share2, name: "Share meals in chat", body: "Send a meal straight into the conversation." },
+      { icon: ListChecks, name: "Shared tasks and habits", body: "To-dos either side can add, ticked off in the app or chat." },
+      { icon: Users, name: "Private squads", body: "A group feed for your clients." },
+      { icon: Trophy, name: "Leaderboard", body: "Friendly competition inside your squad." },
+      { icon: Heart, name: "Reactions and comments", body: "Clients cheer each other on." },
+      { icon: Bell, name: "Reminders and notifications", body: "Nudges to log, plus alerts you choose." },
+    ],
+  },
+  {
+    title: "Account and privacy",
+    features: [
+      { icon: LogIn, name: "Sign in with Apple or Google", body: "Or email and password." },
+      { icon: Moon, name: "Dark mode", body: "Light or dark, like the rest of your phone." },
+      { icon: Flag, name: "Report and block", body: "Built in for chat and squads." },
+      { icon: Smartphone, name: "Shake to report a problem", body: "Send us a note and screenshot from any screen." },
+      { icon: Trash2, name: "Delete your account", body: "Any time, from the app." },
+      { icon: ShieldCheck, name: "No ads", body: "Data is never sold or used for advertising." },
+    ],
+  },
+];
+const featureCount = featureGroups.reduce((total, group) => total + group.features.length, 0);
+
+const heroStats = [
+  [String(featureCount), "features in one app"],
+  ["650+", "exercises for your plans"],
+  ["5 s", "for a client to log a meal"],
+  ["$0", "for up to 10 clients"],
 ];
 
 const faqs = [
@@ -154,7 +254,7 @@ const faqs = [
   },
   {
     q: "Is there an Android app?",
-    a: "FitLens is launching on iPhone first. Leave your email and we'll let you know when more platforms arrive.",
+    a: "FitLens is on iPhone now, and the Android app is in testing. Leave your email and we'll let you know when it's on Google Play.",
   },
   {
     q: "What happens to my clients' data?",
@@ -252,10 +352,11 @@ export default function Home() {
       <Dashboard />
       <Workouts />
       <Nutrition />
+      <Demo />
       <Clients />
       <HowItWorks />
       <Pilot />
-      <AlsoIncluded />
+      <Features />
       <Faq />
       <FinalCta />
       <SiteFooter />
@@ -265,41 +366,64 @@ export default function Home() {
 
 function Hero() {
   return (
-    <section className="pt-14 sm:pt-20">
-      <div className={`${container} text-center`}>
-        <h1 className="mx-auto max-w-4xl">
-          <span className="block text-base font-semibold text-ink-2 sm:text-lg">
-            Personal trainer app
-          </span>{" "}
-          {/* the space keeps "app" and "More" separate words for search engines */}
-          <span className="mt-3 block text-[2.9rem] font-bold leading-[1.02] tracking-tight text-ink sm:text-7xl lg:text-[5.5rem]">
-            <span className="block">More clients.</span>{" "}
-            <em className="block">Less admin.</em>
-          </span>
-        </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-ink-2 sm:text-xl">
-          FitLens is the personal trainer app for coaching nutrition and
-          training in one place. Clients log meals with a photo and follow your
-          workouts set by set; you get one dashboard that shows who needs you
-          today. Less chasing, more coaching, room to grow your client list.
-        </p>
+    <section className="px-2 pt-2 sm:px-4 sm:pt-4">
+      {/* Dark panel over the coaching video; the phones overlap its bottom edge */}
+      <div className="hero-dark relative isolate overflow-hidden rounded-[28px] bg-[#09090b] pb-40 pt-16 sm:pb-52 sm:pt-24">
+        <HeroVideo />
+        <div className={`${container} relative text-center`}>
+          <h1 className="mx-auto max-w-4xl">
+            <span className="block text-base font-semibold text-ink-2 sm:text-lg">
+              Personal trainer app
+            </span>{" "}
+            {/* the space keeps "app" and "More" separate words for search engines */}
+            <span className="mt-3 block text-[2.9rem] font-bold leading-[1.02] tracking-tight text-ink sm:text-7xl lg:text-[5.5rem]">
+              <span className="block">More clients.</span>{" "}
+              <em className="block">Less admin.</em>
+            </span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-ink-2 sm:text-xl">
+            FitLens is the personal trainer app for coaching nutrition and
+            training in one place. Clients log meals with a photo and follow your
+            workouts set by set; you get one dashboard that shows who needs you
+            today. Less chasing, more coaching, room to grow your client list.
+          </p>
 
-        <div className="mt-9 flex flex-col items-center gap-4">
-          <PilotForm id="hero-email" />
-          <Link
-            href="#how"
-            className="inline-flex min-h-11 items-center gap-1.5 text-[15px] font-medium text-ink-2 transition-colors hover:text-ink"
-          >
-            See how it works <ArrowRight className="h-4 w-4" aria-hidden />
-          </Link>
-          <p className="text-sm text-ink-2">
-            Free for up to 10 clients · Clients always free · iPhone
+          <div className="mt-9 flex flex-col items-center gap-4">
+            <PilotForm id="hero-email" />
+            <Link
+              href="#how"
+              className="inline-flex min-h-11 items-center gap-1.5 text-[15px] font-medium text-ink-2 transition-colors hover:text-ink"
+            >
+              See how it works <ArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
+          </div>
+
+          <dl className="mx-auto mt-12 grid max-w-3xl grid-cols-2 gap-y-6 sm:grid-cols-4">
+            {heroStats.map(([value, label]) => (
+              <div key={label} className="px-3 sm:border-l sm:border-line sm:first:border-l-0">
+                <dt className="sr-only">{label}</dt>
+                <dd className="m-0">
+                  <span className="block text-3xl font-bold tracking-tight text-ink tabular-nums sm:text-4xl">
+                    {value}
+                  </span>
+                  <span className="mt-1 block text-sm text-ink-2" aria-hidden>
+                    {label}
+                  </span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-6 text-sm text-ink-2">
+            Clients always free · iPhone, with Android in testing ·{" "}
+            <Link href="#features" className="font-medium text-ink underline decoration-accent decoration-2 underline-offset-4">
+              See every feature
+            </Link>
           </p>
         </div>
       </div>
 
       {/* The real trainer dashboard, with the builder and a client's day either side */}
-      <div className={`${container} mt-14 sm:mt-20`}>
+      <div className={`${container} relative -mt-28 sm:-mt-36`}>
         <div className="flex items-end justify-center gap-6 lg:gap-10">
           <Phone
             screen={screens.builder}
@@ -308,7 +432,7 @@ function Hero() {
           />
           <Phone
             screen={screens.dashboard}
-            priority
+            eager
             sizes="(min-width: 1024px) 330px, (min-width: 640px) 300px, 72vw"
             className="w-[72vw] max-w-[300px] lg:max-w-[330px]"
           />
@@ -329,7 +453,7 @@ function Problem() {
       <div className={container}>
         <SectionHeading
           eyebrow="The problem"
-          title="Coaching shouldn't live in"
+          title="Client coaching shouldn't live in"
           accent="five apps."
           intro="Most trainers juggle WhatsApp, spreadsheets, PDFs and screenshots to keep track of clients. It works for a few clients, then the admin decides how many more you can take on."
         />
@@ -393,8 +517,8 @@ function Dashboard() {
         <div className="order-1 lg:order-2">
           <SectionHeading
             eyebrow="The trainer dashboard"
-            title="Your whole roster."
-            accent="At a glance."
+            title="A client dashboard for"
+            accent="your whole roster."
             intro="Stop chasing screenshots and food diaries. See what every client ate, how they're trending, and who needs you today, ranked by urgency."
           />
           <div className="mt-8 space-y-2.5">
@@ -452,7 +576,7 @@ function Workouts() {
         <div>
           <SectionHeading
             eyebrow="Workout plans"
-            title="Training plans,"
+            title="Workout plans,"
             accent="logged set by set."
             intro="Build the plan once from more than 650 exercises and share it. Your clients follow it one set at a time, and every set lands in FitLens next to their meals."
           />
@@ -501,8 +625,8 @@ function Nutrition() {
         <div className="order-1 lg:order-2">
           <SectionHeading
             eyebrow="Nutrition tracking"
-            title="See what clients"
-            accent="actually eat."
+            title="Nutrition tracking that shows"
+            accent="what clients actually eat."
             intro="Clients snap a photo of their plate or type what they ate. FitLens estimates calories, protein, carbs and fat ingredient by ingredient, and the meal lands on your dashboard for review."
           />
           <CheckList
@@ -516,9 +640,6 @@ function Nutrition() {
         </div>
       </div>
 
-      <div className={`${container} reveal mt-16`}>
-        <MealExample />
-      </div>
     </section>
   );
 }
@@ -530,8 +651,8 @@ function Clients() {
         <SectionHeading
           center
           eyebrow="For your clients"
-          title="Logging a meal takes"
-          accent="five seconds."
+          title="A client app"
+          accent="they'll actually use."
           intro="The easier it is for clients to log, the more of their week you actually see. FitLens makes it a photo, not a chore, and today's workout is waiting on their home screen."
         />
         {/* Three screens on larger displays; on phones just today's workout, at a readable size */}
@@ -575,7 +696,7 @@ function HowItWorks() {
   return (
     <section id="how" className={section}>
       <div className={container}>
-        <SectionHeading center eyebrow="How it works" title="Invite. Plan." accent="Coach." />
+        <SectionHeading center eyebrow="How it works" title="Start coaching clients in" accent="three steps." />
         <ol className="mt-14 grid gap-4 md:grid-cols-3">
           {steps.map(({ icon: Icon, title, body }, i) => (
             <li key={title} className="reveal rounded-[var(--radius-card)] bg-card p-7">
@@ -601,7 +722,8 @@ function Pilot() {
       <div className={container}>
         <SectionHeading
           eyebrow="The pilot"
-          title="Straightforward terms."
+          title="The free trainer pilot."
+          accent="Straightforward terms."
           intro="We're onboarding a small group of personal trainers first. Here is exactly what that means."
         />
         <dl className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -617,23 +739,57 @@ function Pilot() {
   );
 }
 
-function AlsoIncluded() {
+function Demo() {
+  return (
+    <section id="demo" className={`${section} pt-0 sm:pt-0`}>
+      <div className={container}>
+        <SectionHeading
+          eyebrow="See it in action"
+          title="AI macro tracking."
+          accent="Type it or snap it."
+          intro="A real analysis from the app: the meal a client described, the macros and every ingredient FitLens found."
+        />
+        <div className="reveal mt-10">
+          <AiDemo />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Features() {
   return (
     <section id="features" className={section}>
       <div className={container}>
         <SectionHeading
-          eyebrow="Also included"
-          title="Everything a coach needs."
+          eyebrow={`All ${featureCount} features`}
+          title="Everything a personal trainer needs."
           accent="Nothing they don't."
+          intro="Everything in FitLens today, for you and for your clients."
         />
-        <ul className="mt-10 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
-          {alsoIncluded.map((item) => (
-            <li key={item} className="flex gap-3 border-b border-line py-3.5 text-[15px] text-ink">
-              <Check className="mt-0.5 h-5 w-5 shrink-0 text-accent" aria-hidden />
-              {item}
-            </li>
+        <div className="mt-12 space-y-12">
+          {featureGroups.map((group) => (
+            <div key={group.title}>
+              <div className="flex items-baseline gap-2">
+                <h3 className="text-lg font-bold tracking-tight text-ink">{group.title}</h3>
+                <span className="text-lg font-medium text-ink-2">{group.features.length}</span>
+              </div>
+              <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {group.features.map(({ icon: Icon, name, body }) => (
+                  <li key={name} className="flex gap-3.5 rounded-[var(--radius-card)] bg-card p-4">
+                    <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-accent text-on-accent">
+                      <Icon className="h-[18px] w-[18px]" aria-hidden />
+                    </span>
+                    <span>
+                      <span className="block text-[15px] font-semibold text-ink">{name}</span>
+                      <span className="mt-0.5 block text-sm leading-6 text-ink-2">{body}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     </section>
   );
@@ -643,7 +799,7 @@ function Faq() {
   return (
     <section id="faq" className={`${section} bg-card`}>
       <div className={`${container} grid gap-10 lg:grid-cols-[0.8fr_1.2fr]`}>
-        <SectionHeading eyebrow="FAQ" title="Questions trainers ask." />
+        <SectionHeading eyebrow="FAQ" title="Questions trainers ask about FitLens." />
         <div className="divide-y divide-line rounded-[var(--radius-card)] bg-paper px-6">
           {faqs.map(({ q, a }) => (
             <details key={q} className="group py-4">
