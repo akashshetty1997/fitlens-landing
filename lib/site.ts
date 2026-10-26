@@ -7,9 +7,9 @@ export const SITE_URL = (
 export const SITE_NAME = "FitLens";
 
 export const SITE_TITLE =
-  "FitLens: AI Nutrition Tracking App for Personal Trainers";
+  "FitLens: Personal Trainer App to Coach More Clients";
 
 export const SITE_DESCRIPTION =
-  "Clients snap a photo of every meal and FitLens AI turns it into calories and macros. Trainers see every client's nutrition, compliance and who needs attention today, and share workout plans clients follow set by set.";
+  "Take on more clients without more admin: AI meal tracking, workout plans clients follow set by set, and a daily list of who needs you, in one app.";
 
 export const SUPPORT_EMAIL = "contact@usefitlens.com";

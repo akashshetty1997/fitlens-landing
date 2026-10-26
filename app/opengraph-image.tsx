@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
-export const alt = "FitLens: AI nutrition tracking for personal trainers";
+export const alt = "FitLens: the personal trainer app to coach more clients";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -42,7 +42,7 @@ export default async function OpengraphImage() {
             letterSpacing: -3,
           }}
         >
-          COACH WHAT THEY
+          MORE CLIENTS.
         </span>
         <span
           style={{
@@ -53,10 +53,10 @@ export default async function OpengraphImage() {
             color: "#F97316",
           }}
         >
-          ACTUALLY EAT.
+          LESS ADMIN.
         </span>
         <span style={{ marginTop: 28, fontSize: 30, color: "#a1a1aa" }}>
-          AI nutrition tracking for personal trainers
+          Meals, workouts and check-ins for personal trainers
         </span>
       </div>
       <div
@@ -75,7 +75,7 @@ export default async function OpengraphImage() {
           />
         ))}
         <span style={{ marginLeft: 8 }}>
-          Snap a meal · get macros · coach with proof
+          Meals · workouts · who needs you today
         </span>
       </div>
     </div>,

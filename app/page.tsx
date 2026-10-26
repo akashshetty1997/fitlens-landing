@@ -130,28 +130,28 @@ const tickerMeals = [
 const steps = [
   {
     n: "01",
-    title: "Snap",
-    cmd: "photo → meal",
-    body: "Your client photographs their plate or types what they ate. No scales, no barcode hunting.",
+    title: "Invite",
+    cmd: "trainer code → roster",
+    body: "Share your trainer code. Clients download FitLens for free and land in your roster and your squad.",
   },
   {
     n: "02",
-    title: "Analyse",
-    cmd: "meal → macros",
-    body: "FitLens estimates calories, protein, carbs and fat ingredient by ingredient, in seconds.",
+    title: "Plan",
+    cmd: "write once → share",
+    body: "Write a meal plan or a workout plan once and give it to as many clients as you like.",
   },
   {
     n: "03",
     title: "Coach",
-    cmd: "macros → dashboard",
-    body: "It lands on your dashboard. You see who's on track and who needs a nudge, before they drift.",
+    cmd: "logs → dashboard",
+    body: "Meals and workouts land on your dashboard, with a daily list of who needs you. Step in before anyone drifts.",
   },
 ];
 
 const stats = [
-  ["5s", "To log a meal"],
-  ["4", "Numbers per meal"],
-  ["1", "Dashboard per roster"],
+  ["1", "App for meals and training"],
+  ["5s", "For a client to log a meal"],
+  ["650+", "Exercises for your plans"],
   ["$0", "Up to 10 clients"],
 ];
 
@@ -293,6 +293,8 @@ const clientPoints = [
 ] as const;
 
 const withoutFitLens = [
+  "Hours a week chasing check-ins and screenshots",
+  "A roster capped by how many clients you can chase",
   "Food diaries over WhatsApp, if clients remember",
   "Guessing portions from blurry screenshots",
   "Finding out a client fell off weeks later",
@@ -301,6 +303,8 @@ const withoutFitLens = [
 ];
 
 const withFitLens = [
+  "Check-ins replaced by one dashboard that updates itself",
+  "Room for more clients without more admin",
   "Every meal logged with calories and macros",
   "A daily queue of who needs you, prioritised",
   "Spot a slipping client the day it happens",
@@ -309,6 +313,10 @@ const withFitLens = [
 ];
 
 const faqs = [
+  {
+    q: "How does FitLens help me coach more clients?",
+    a: "It takes over the admin that limits how many clients one trainer can handle: chasing food diaries, rewriting the same plans, and working out who is slipping. Clients log meals and workouts themselves, you write each plan once, and a daily list tells you who needs you. That time goes back into coaching, or into taking on more clients.",
+  },
   {
     q: "How much does FitLens cost?",
     a: "FitLens is free for trainers coaching up to 10 clients, and clients always use the app for free. Coaching more than 10? Email contact@usefitlens.com and we'll add room for more.",
@@ -351,9 +359,9 @@ export default function Home() {
         <Hero />
         <Ticker />
         <HowItWorks />
+        <TrainerSection />
         <StorySection />
         <DemoSection />
-        <TrainerSection />
         <WorkoutSection />
         <FeatureGrid />
         <RosterSection />
@@ -517,8 +525,8 @@ function PilotForm({ id }: { id: string }) {
 function Nav() {
   const links = [
     ["#how", "How it works"],
-    ["#demo", "Demo"],
-    ["/for-trainers", "Trainers"],
+    ["/workout-plans", "Workouts"],
+    ["/for-trainers", "Nutrition"],
     ["#features", "Features"],
     ["#faq", "FAQ"],
     ["/guides", "Guides"],
@@ -605,19 +613,19 @@ function Hero() {
             className="-left-4 top-2 lg:-left-16"
           />
           <FloatTag
-            label="34g protein"
+            label="Workout done"
             color={ORANGE}
             className="-right-2 top-0 lg:-right-14"
             delay={0.4}
           />
           <FloatTag
-            label="At risk"
+            label="Needs a check-in"
             color={AMBER}
             className="-left-8 bottom-6 lg:-left-24"
             delay={0.8}
           />
           <FloatTag
-            label="Logged"
+            label="Plan shared"
             color={BLUE}
             className="-right-6 bottom-2 lg:-right-20"
             delay={1.2}
@@ -628,8 +636,8 @@ function Hero() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="font-display text-[3.1rem] uppercase leading-[0.92] sm:text-7xl lg:text-[6.4rem]"
           >
-            Coach what they <br />
-            <em>actually eat.</em>
+            More clients. <br />
+            <em>Less admin.</em>
           </motion.h1>
         </div>
 
@@ -638,9 +646,10 @@ function Hero() {
           transition={{ ...reveal.transition, delay: 0.15 }}
           className="mx-auto mt-8 max-w-xl text-sm leading-relaxed text-ink/60 sm:text-[15px]"
         >
-          FitLens is AI nutrition tracking for personal trainers. Clients snap a
-          photo of every meal; you get calories, macros and a daily list of who
-          needs you. Plus workout plans they follow set by set.
+          FitLens is the personal trainer app for coaching nutrition and
+          training in one place. Clients log meals with a photo and follow your
+          workouts set by set; you get one dashboard that shows who needs you
+          today. Less chasing, more coaching, room to grow your client list.
         </motion.p>
 
         <motion.div
@@ -705,8 +714,8 @@ function HowItWorks() {
       <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
         <SectionLabel>How it works</SectionLabel>
         <TypeHeading
-          text="Plate to dashboard."
-          highlight="Three steps."
+          text="Invite. Plan."
+          highlight="Coach."
           className="text-4xl leading-[0.95] sm:text-6xl"
         />
         <div className="mt-14 grid border-l border-t border-line md:grid-cols-3">
@@ -1166,13 +1175,14 @@ function FinalCta() {
         <div className="relative">
           <SectionLabel>Join the pilot</SectionLabel>
           <TypeHeading
-            text="Coach with"
-            highlight="proof."
+            text="Grow your"
+            highlight="client list."
             className="text-5xl leading-[0.92] sm:text-8xl"
           />
           <p className="mt-6 max-w-md text-sm leading-relaxed text-ink/55">
             We&apos;re onboarding a small group of personal trainers first.
-            Leave your email and we&apos;ll set you up, free for up to 10 clients.
+            Leave your email and we&apos;ll set you up, free for up to 10
+            clients.
           </p>
           <div className="mt-10">
             <PilotForm id="pilot-email" />
