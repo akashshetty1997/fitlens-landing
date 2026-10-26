@@ -214,6 +214,13 @@ html {
   letter-spacing: -0.03em;
 }
 
+/* Even line lengths in headings, so none ends on a single orphaned word */
+.landing h1,
+.landing h2,
+.landing h3 {
+  text-wrap: balance;
+}
+
 /* Highlighted words in headlines */
 .landing h1 em,
 .landing h2 em {
