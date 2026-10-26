@@ -70,10 +70,10 @@ const screens: Record<string, Screen> = {
     alt: "Workout player with the exercise, weight and reps, and every set with its own tick",
     caption: "Workout player",
   },
-  workoutRest: {
-    src: "/screens/workout-rest.webp",
-    alt: "Rest countdown between sets with the next set shown",
-    caption: "Rest timer",
+  workoutToday: {
+    src: "/screens/workout-today.webp",
+    alt: "Client home with today's workout, coach tasks and logged meals",
+    caption: "Today's workout",
   },
 };
 
@@ -88,7 +88,7 @@ const heroScreens = [
   screens.chat,
 ];
 const clientScreens = [screens.meal, screens.home, screens.squad, screens.chat];
-const workoutScreens = [screens.workoutBuilder, screens.workoutPlayer, screens.workoutRest];
+const workoutScreens = [screens.workoutBuilder, screens.workoutPlayer, screens.workoutToday];
 
 const workoutCoachPoints = [
   [
