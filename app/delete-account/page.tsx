@@ -24,6 +24,9 @@ const deleted = [
   "Weight, water and progress entries, and progress photos",
   "Chat messages, squad posts, comments and reactions",
   "Meal plans you created or that were assigned to you",
+  "Workouts you logged, workout plans assigned to you, and shared tasks",
+  "Exercise demo videos you recorded or uploaded",
+  "Problem reports you sent, including their screenshots",
   "Your notification settings and device push tokens",
 ];
 
@@ -88,7 +91,10 @@ export default function DeleteAccountPage() {
           may remain in encrypted backups for up to 30 days before those
           backups are deleted.
           If you were a trainer&apos;s client, your trainer loses access to your
-          data as soon as your account is deleted.
+          data as soon as your account is deleted. If you were a trainer,
+          workout plans and custom exercises you wrote stay attached to the
+          workouts your clients already logged, so their history still makes
+          sense, but they are no longer linked to your account.
         </p>
 
         <p className="mt-12 text-sm text-ink/50">

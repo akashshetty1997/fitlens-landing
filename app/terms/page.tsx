@@ -58,7 +58,7 @@ export default function TermsPage() {
             <h1 className="mb-4 text-4xl font-display md:text-5xl">
               Terms of Service
             </h1>
-            <p className="text-ink/60">Last updated: October 2, 2026</p>
+            <p className="text-ink/60">Last updated: October 26, 2026</p>
           </div>
 
           <div className="space-y-10 text-[15px] leading-7 text-ink/60">
@@ -128,7 +128,9 @@ export default function TermsPage() {
               <p>
                 FitLens provides tools for meal logging, nutrition estimates,
                 hydration tracking, progress tracking, trainer-client coaching,
-                squad accountability, meal plans, messaging, and notifications.
+                squad accountability, meal plans, workout plans and workout
+                logging, shared tasks, messaging, problem reports, and
+                notifications.
                 Features may change, be improved, or be removed as we develop
                 the Services.
               </p>
@@ -140,6 +142,19 @@ export default function TermsPage() {
                 professional before making decisions about your health, diet,
                 exercise, or treatment.
               </div>
+              <div className="mt-4 rounded-2xl border border-amber-400/20 bg-amber-400/5 p-5 text-amber-100/80">
+                Workout plans in FitLens are written by trainers, not by
+                FitLens. Exercise carries a risk of injury. Check with a
+                qualified professional before starting a new program, use
+                weights and form you can manage safely, and stop if you feel
+                pain or discomfort. Trainers are responsible for the plans,
+                demo videos, and instructions they share.
+              </div>
+              <p className="mt-4">
+                Exercise names, instructions, and illustrations in the exercise
+                library are provided by RepDB (repdb.co) and may be used only
+                within the Services; you may not copy or redistribute them.
+              </p>
               <p className="mt-4">
                 The Services may be available at no charge during the current
                 pilot or waitlist period. If we introduce paid features, we will
@@ -155,8 +170,9 @@ export default function TermsPage() {
               </h2>
               <p>
                 You keep ownership of the photos, meal descriptions, voice
-                input, messages, notes, posts, comments, and other material you
-                submit to FitLens (&quot;Your Content&quot;). You give FitLens a
+                input, messages, notes, posts, comments, workout logs, demo
+                videos, custom exercises, tasks, and other material you submit
+                to FitLens (&quot;Your Content&quot;). You give FitLens a
                 worldwide, non-exclusive, royalty-free license to host, store,
                 process, display, and transmit Your Content only as needed to
                 operate, secure, and improve the Services and to show it to the

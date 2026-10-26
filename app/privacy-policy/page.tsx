@@ -58,15 +58,15 @@ export default function PrivacyPolicyPage() {
             <h1 className="mb-4 text-4xl font-display md:text-5xl">
               Privacy Policy
             </h1>
-            <p className="text-ink/60">Last updated: October 1, 2026</p>
+            <p className="text-ink/60">Last updated: October 26, 2026</p>
           </div>
 
           <div className="space-y-10 text-[15px] leading-7 text-ink/60">
             <section>
               <p>
                 FitLens (&quot;FitLens,&quot; &quot;we,&quot; &quot;us,&quot; or
-                &quot;our&quot;) provides nutrition tracking and coaching tools
-                for clients and personal trainers. This Privacy Policy explains
+                &quot;our&quot;) provides nutrition tracking, workout and
+                coaching tools for clients and personal trainers. This Privacy Policy explains
                 how we collect, use, disclose, and protect information when you
                 use the FitLens mobile application, website, and related
                 services (collectively, the &quot;Services&quot;).
@@ -99,13 +99,38 @@ export default function PrivacyPolicyPage() {
                   age, gender, height, weight, target weight, activity level,
                   nutrition goals, meals, ingredients, portions, calories,
                   macronutrients, hydration, weight history, and progress
-                  information.
+                  information; workout plans you create or are given, and the
+                  workouts you log (exercises, any exercise you swap in, sets,
+                  repetitions, weights, rest, and how long each set took); and
+                  shared tasks and habits and when they are completed.
                 </li>
                 <li>
                   <strong className="text-ink">Content you provide:</strong>{" "}
                   meal photos, text descriptions, barcode data, voice-based meal
                   input or its transcription, trainer notes, messages, squad
-                  posts, comments, and reactions.
+                  posts, comments, and reactions; and, for trainers, exercise
+                  demo videos (including their sound) that you record or
+                  choose, video links you add, and custom exercises with their
+                  names, instructions, and photos.
+                </li>
+                <li>
+                  <strong className="text-ink">
+                    Camera, microphone, and photos:
+                  </strong>{" "}
+                  used only when you take or choose a photo, scan a barcode, or
+                  record or choose an exercise demo video. FitLens does not
+                  access them in the background.
+                </li>
+                <li>
+                  <strong className="text-ink">Problem reports:</strong> when
+                  you shake your device or use Report a problem and choose to
+                  send a report, we receive your note, a screenshot of the
+                  screen you were on if you keep it attached (it may show any
+                  information that was on that screen), the app&apos;s recent
+                  activity log with passwords and sign-in tokens removed, the
+                  screen you were on, the app version, and your device model and
+                  operating system version. If you are signed out, we also
+                  receive the email address you enter so we can reply.
                 </li>
                 <li>
                   <strong className="text-ink">
@@ -113,7 +138,10 @@ export default function PrivacyPolicyPage() {
                   </strong>{" "}
                   device identifiers or push-notification tokens, app activity,
                   logs, approximate technical information, and information
-                  needed to keep the Services secure and reliable.
+                  needed to keep the Services secure and reliable. The app reads
+                  your device&apos;s motion sensor on the device only to notice
+                  a shake for problem reports; motion data is not stored or
+                  sent to us.
                 </li>
                 <li>
                   <strong className="text-ink">Waitlist information:</strong> if
@@ -133,8 +161,9 @@ export default function PrivacyPolicyPage() {
                   create and maintain your account and authenticate sign-ins;
                 </li>
                 <li>
-                  provide meal logging, nutrition analysis, hydration, progress,
-                  and coaching features;
+                  provide meal logging, nutrition analysis, workout plans and
+                  workout logging, shared tasks, hydration, progress, and
+                  coaching features;
                 </li>
                 <li>
                   use automated tools to analyze meal inputs and generate
@@ -149,8 +178,10 @@ export default function PrivacyPolicyPage() {
                   enable;
                 </li>
                 <li>
-                  respond to support requests, communicate with waitlist
-                  members, and improve the Services;
+                  respond to support requests and problem reports (using the
+                  screenshot and logs you choose to send to find and fix the
+                  problem), communicate with waitlist members, and improve the
+                  Services;
                 </li>
                 <li>
                   detect abuse, prevent fraud, protect users, and comply with
@@ -172,7 +203,10 @@ export default function PrivacyPolicyPage() {
                 <li>
                   <strong className="text-ink">With people you choose:</strong>{" "}
                   information may be visible to your assigned trainer or to
-                  members of a squad when you use those features. Content you
+                  members of a squad when you use those features. Your trainer
+                  can see the meals and workouts you log and the tasks you
+                  share. A trainer&apos;s demo videos and custom exercises are
+                  visible to the clients they share plans with. Content you
                   post to a squad should be treated as shared with that squad.
                 </li>
                 <li>
@@ -182,6 +216,12 @@ export default function PrivacyPolicyPage() {
                   processing, analytics, security, and push notifications. They
                   may access information only to perform services for us and
                   under appropriate confidentiality and security obligations.
+                </li>
+                <li>
+                  <strong className="text-ink">Video links:</strong> if a
+                  trainer adds a YouTube or Vimeo link to an exercise, opening
+                  it takes you to that service, and its own privacy policy
+                  applies there.
                 </li>
                 <li>
                   <strong className="text-ink">
@@ -252,6 +292,17 @@ export default function PrivacyPolicyPage() {
                 resolve disputes, enforce agreements, and comply with legal
                 obligations. When information is no longer needed, we take
                 reasonable steps to delete it or de-identify it.
+              </p>
+              <p className="mt-4">
+                Problem reports are kept only as long as we need them to
+                investigate and fix the problem. When you delete your account,
+                we delete your account data, including your logged workouts,
+                shared tasks, demo videos, and problem reports, as described on
+                our{" "}
+                <Link className="text-accent hover:underline" href="/delete-account">
+                  account deletion page
+                </Link>
+                .
               </p>
               <p className="mt-4">
                 We use administrative, technical, and organizational safeguards
