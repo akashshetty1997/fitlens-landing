@@ -118,7 +118,7 @@ const withoutFitLens = [
 
 const withFitLens = [
   "Check-ins replaced by one dashboard that updates itself",
-  "Room for more clients without more admin",
+  "The app handles the managing, so you have room for more clients",
   "Spot a slipping client the day it happens",
   "Write a plan once, share it with anyone",
   "Every meal and every set your clients do, logged in the app",
@@ -234,7 +234,7 @@ const heroStats = [
 const faqs = [
   {
     q: "How does FitLens help me coach more clients?",
-    a: "It takes over the admin that limits how many clients one trainer can handle: chasing food diaries, rewriting the same plans, and working out who is slipping. Clients log meals and workouts themselves, you write each plan once, and a daily list tells you who needs you. That time goes back into coaching, or into taking on more clients.",
+    a: "It takes over the managing that limits how many clients one trainer can handle: chasing food diaries, rewriting the same plans, and working out who is slipping. Clients log meals and workouts themselves, you write each plan once, and a daily list tells you who needs you. That time goes back into coaching, or into taking on more clients.",
   },
   {
     q: "How much does FitLens cost?",
@@ -378,14 +378,15 @@ function Hero() {
             {/* the space keeps "app" and "More" separate words for search engines */}
             <span className="mt-3 block text-[2.9rem] font-bold leading-[1.02] tracking-tight text-ink sm:text-7xl lg:text-[5.5rem]">
               <span className="block">More clients.</span>{" "}
-              <em className="block">Less admin.</em>
+              <em className="block">Less chasing.</em>
             </span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-ink-2 sm:text-xl">
             FitLens is the personal trainer app for coaching nutrition and
             training in one place. Clients log meals with a photo and follow your
             workouts set by set; you get one dashboard that shows who needs you
-            today. Less chasing, more coaching, room to grow your client list.
+            today. FitLens takes care of the managing, so you can coach more
+            clients and take on new ones.
           </p>
 
           <div className="mt-9 flex flex-col items-center gap-4">
@@ -455,7 +456,7 @@ function Problem() {
           eyebrow="The problem"
           title="Client coaching shouldn't live in"
           accent="five apps."
-          intro="Most trainers juggle WhatsApp, spreadsheets, PDFs and screenshots to keep track of clients. It works for a few clients, then the admin decides how many more you can take on."
+          intro="Most trainers juggle WhatsApp, spreadsheets, PDFs and screenshots to keep track of clients. It works for a few clients, then all the chasing decides how many more you can take on."
         />
 
         <div className="reveal mt-12 grid gap-4 lg:grid-cols-2">

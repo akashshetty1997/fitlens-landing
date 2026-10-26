@@ -10,6 +10,6 @@ export const SITE_TITLE =
   "FitLens: Personal Trainer App to Coach More Clients";
 
 export const SITE_DESCRIPTION =
-  "Take on more clients without more admin: AI meal tracking, workout plans clients follow set by set, and a daily list of who needs you, in one app.";
+  "Take on more clients without the chasing: AI meal tracking, workout plans clients follow set by set, and a daily list of who needs you, in one app.";
 
 export const SUPPORT_EMAIL = "contact@usefitlens.com";

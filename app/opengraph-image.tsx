@@ -53,7 +53,7 @@ export default async function OpengraphImage() {
             color: "#F97316",
           }}
         >
-          LESS ADMIN.
+          LESS CHASING.
         </span>
         <span style={{ marginTop: 28, fontSize: 30, color: "#a1a1aa" }}>
           Meals, workouts and check-ins for personal trainers
