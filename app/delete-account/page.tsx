@@ -36,12 +36,12 @@ export default function DeleteAccountPage() {
       <PageHeader />
 
       <section className="mx-auto max-w-3xl px-6 py-20 md:py-28">
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-accent/10 px-3 py-1.5 text-sm font-medium text-accent">
+        <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-accent/10 px-3 py-1.5 text-sm font-medium text-ink">
           <Trash2 className="h-4 w-4" />
           FitLens AI account deletion
         </div>
-        <h1 className="text-4xl font-display md:text-5xl">Delete your account</h1>
-        <p className="mt-6 text-lg leading-8 text-ink/60">
+        <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Delete your account</h1>
+        <p className="mt-6 text-lg leading-8 text-ink-2">
           You can delete your FitLens AI account and its data at any time, from
           the app or by email. Deletion is permanent and can&apos;t be undone.
         </p>
@@ -64,7 +64,7 @@ export default function DeleteAccountPage() {
             <p className="text-sm leading-6 text-ink/70">
               Can&apos;t open the app? Email{" "}
               <a
-                className="text-accent hover:underline"
+                className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80"
                 href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("Delete my FitLens account")}`}
               >
                 {SUPPORT_EMAIL}
@@ -76,14 +76,14 @@ export default function DeleteAccountPage() {
           </div>
         </div>
 
-        <h2 className="mt-14 text-2xl font-display">What gets deleted</h2>
+        <h2 className="mt-14 text-2xl font-bold tracking-tight">What gets deleted</h2>
         <ul className="mt-5 list-disc space-y-2 pl-5 text-ink/70">
           {deleted.map((item) => (
             <li key={item}>{item}</li>
           ))}
         </ul>
 
-        <h2 className="mt-12 text-2xl font-display">What we keep</h2>
+        <h2 className="mt-12 text-2xl font-bold tracking-tight">What we keep</h2>
         <p className="mt-4 leading-7 text-ink/70">
           Your account and the data above are removed from the live service.
           If another user reported something you posted, that safety report is
@@ -97,9 +97,9 @@ export default function DeleteAccountPage() {
           sense, but they are no longer linked to your account.
         </p>
 
-        <p className="mt-12 text-sm text-ink/50">
+        <p className="mt-12 text-sm text-ink-2">
           Questions? Read our{" "}
-          <Link href="/privacy-policy" className="text-accent hover:underline">
+          <Link href="/privacy-policy" className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80">
             privacy policy
           </Link>{" "}
           or email {SUPPORT_EMAIL}.

@@ -33,7 +33,7 @@ export default function PrivacyPolicyPage() {
 
       <div className="mx-auto grid max-w-5xl gap-12 px-6 py-16 lg:grid-cols-[220px_1fr] lg:py-24">
         <aside className="hidden lg:block">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-ink/60">
+          <p className="mb-4 text-sm font-semibold text-ink">
             On this page
           </p>
           <nav className="space-y-3 text-sm">
@@ -41,7 +41,7 @@ export default function PrivacyPolicyPage() {
               <a
                 key={section.id}
                 href={`#${section.id}`}
-                className="block text-ink/60 transition-colors hover:text-ink"
+                className="block text-ink-2 transition-colors hover:text-ink"
               >
                 {section.label}
               </a>
@@ -51,17 +51,17 @@ export default function PrivacyPolicyPage() {
 
         <article className="min-w-0 max-w-3xl">
           <div className="mb-10">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-accent">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-ink">
               <ShieldCheck className="h-4 w-4" />
               Your privacy matters
             </div>
-            <h1 className="mb-4 text-4xl font-display md:text-5xl">
+            <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
               Privacy Policy
             </h1>
-            <p className="text-ink/60">Last updated: October 26, 2026</p>
+            <p className="text-ink-2">Last updated: October 26, 2026</p>
           </div>
 
-          <div className="space-y-10 text-[15px] leading-7 text-ink/60">
+          <div className="space-y-10 text-[15px] leading-7 text-ink-2">
             <section>
               <p>
                 FitLens (&quot;FitLens,&quot; &quot;we,&quot; &quot;us,&quot; or
@@ -266,7 +266,7 @@ export default function PrivacyPolicyPage() {
                   You may request access to, correction of, or deletion of your
                   personal information by emailing us at{" "}
                   <a
-                    className="text-accent hover:underline"
+                    className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80"
                     href="mailto:contact@usefitlens.com"
                   >
                     contact@usefitlens.com
@@ -299,7 +299,7 @@ export default function PrivacyPolicyPage() {
                 we delete your account data, including your logged workouts,
                 shared tasks, demo videos, and problem reports, as described on
                 our{" "}
-                <Link className="text-accent hover:underline" href="/delete-account">
+                <Link className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80" href="/delete-account">
                   account deletion page
                 </Link>
                 .
@@ -348,7 +348,7 @@ export default function PrivacyPolicyPage() {
                   <p>
                     Contact FitLens at{" "}
                     <a
-                      className="text-accent hover:underline"
+                      className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80"
                       href="mailto:contact@usefitlens.com"
                     >
                       contact@usefitlens.com
@@ -361,20 +361,6 @@ export default function PrivacyPolicyPage() {
           </div>
         </article>
       </div>
-
-      <footer className="border-t border-ink/10 px-6 py-8">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 text-sm text-ink/60">
-          <span>
-            © {new Date().getFullYear()} FitLens. All rights reserved.
-          </span>
-          <Link href="/" className="text-accent hover:underline">
-            FitLens home
-          </Link>
-          <Link href="/terms" className="text-accent hover:underline">
-            Terms of Service
-          </Link>
-        </div>
-      </footer>
       <SiteFooter />
     </main>
   );

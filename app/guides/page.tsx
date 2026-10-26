@@ -23,12 +23,12 @@ export default function GuidesPage() {
     <main className="landing min-h-screen antialiased">
       <PageHeader />
       <section className="mx-auto max-w-4xl px-5 py-16 sm:px-8 lg:py-24">
-        <p className="mb-5 text-xs font-medium uppercase tracking-[0.2em] text-accent">
-          {"// Guides"}
+        <p className="mb-5 text-sm font-semibold text-ink">
+          Guides
         </p>
-        <h1 className="font-display text-4xl uppercase leading-[0.98] sm:text-6xl">
+        <h1 className="text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl">
           Nutrition coaching,{" "}
-          <em className="not-italic text-accent">explained.</em>
+          <em className="not-italic text-accent-text">explained.</em>
         </h1>
         <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-ink/65">
           {description}
@@ -41,19 +41,19 @@ export default function GuidesPage() {
                 href={`/guides/${guide.slug}`}
                 className="group grid gap-3 py-7 sm:grid-cols-[3rem_1fr_auto] sm:gap-6"
               >
-                <span className="text-xs text-accent">0{i + 1}</span>
+                <span className="text-sm font-semibold text-ink-2">0{i + 1}</span>
                 <span>
                   <span className="block text-lg font-medium leading-snug group-hover:text-accent">
                     {guide.title}
                   </span>
-                  <span className="mt-2 block text-sm leading-relaxed text-ink/60">
+                  <span className="mt-2 block text-sm leading-relaxed text-ink-2">
                     {guide.description}
                   </span>
-                  <span className="mt-3 block text-[11px] uppercase tracking-[0.18em] text-ink/55">
+                  <span className="mt-3 block text-sm text-ink-2">
                     {guide.readMinutes} min read
                   </span>
                 </span>
-                <ArrowRight className="hidden h-5 w-5 text-ink/40 group-hover:text-accent sm:block" />
+                <ArrowRight className="hidden h-5 w-5 text-ink-2 group-hover:text-accent sm:block" />
               </Link>
             </li>
           ))}

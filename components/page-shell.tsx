@@ -69,21 +69,21 @@ export function PageShell({
       <div className="mx-auto max-w-4xl px-5 py-16 sm:px-8 lg:py-24">
         <nav
           aria-label="Breadcrumb"
-          className="text-[11px] uppercase tracking-[0.18em] text-ink/55"
+          className="text-sm text-ink-2"
         >
           {trail.slice(0, -1).map((c) => (
             <span key={c.path}>
               <Link href={c.path} className="hover:text-accent">
                 {c.name}
               </Link>
-              <span className="mx-2 text-ink/30">/</span>
+              <span className="mx-2 text-ink-2">/</span>
             </span>
           ))}
           <span aria-current="page">{trail[trail.length - 1].name}</span>
         </nav>
 
-        <p className="mt-8 text-xs font-medium uppercase tracking-[0.2em] text-accent">{`// ${eyebrow}`}</p>
-        <h1 className="font-display mt-4 text-4xl uppercase leading-[0.98] sm:text-6xl">
+        <p className="mt-8 text-sm font-semibold text-ink">{eyebrow}</p>
+        <h1 className="mt-3 text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl">
           {heading}
         </h1>
         <div className="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink/70">
@@ -92,11 +92,11 @@ export function PageShell({
 
         <div className="guide-prose mt-12">{children}</div>
 
-        <aside className="mt-16 border border-line bg-card p-7">
-          <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent">
-            {"// Join the pilot"}
+        <aside className="mt-16 rounded-[20px] bg-card p-7">
+          <p className="text-sm font-semibold text-ink">
+            Join the pilot
           </p>
-          <p className="font-display mt-3 text-2xl uppercase">
+          <p className="mt-3 text-2xl font-bold tracking-tight">
             Coach with proof, not guesswork.
           </p>
           <p className="mt-3 text-sm leading-relaxed text-ink/65">
@@ -105,14 +105,14 @@ export function PageShell({
           </p>
           <Link
             href="/#pilot"
-            className="mt-6 inline-flex items-center gap-2 bg-accent px-5 py-3 text-xs font-semibold uppercase tracking-[0.15em] text-paper hover:opacity-90"
+            className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-accent px-6 text-[15px] font-semibold text-on-accent hover:opacity-90"
           >
             Join the pilot <ArrowRight className="h-4 w-4" />
           </Link>
         </aside>
 
         {updated && (
-          <p className="mt-8 text-[11px] uppercase tracking-[0.18em] text-ink/55">
+          <p className="mt-8 text-sm text-ink-2">
             Last updated{" "}
             {new Date(`${updated}T12:00:00Z`).toLocaleDateString("en-US", {
               year: "numeric",

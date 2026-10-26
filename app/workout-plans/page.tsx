@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
-import { PhoneFrame } from "@/components/screen-deck";
+import { Phone } from "@/components/phone";
 import { SITE_URL } from "@/lib/site";
 
 const path = "/workout-plans";
@@ -81,7 +81,7 @@ export default function WorkoutPlansPage() {
       heading={
         <>
           Workout plans your clients{" "}
-          <em className="not-italic text-accent">actually follow.</em>
+          <em className="not-italic text-accent-text">actually follow.</em>
         </>
       }
       intro={
@@ -103,9 +103,9 @@ export default function WorkoutPlansPage() {
         {screens.map((screen) => (
           <figure key={screen.src} className="m-0">
             <div className="aspect-[1320/2868]">
-              <PhoneFrame screen={screen} />
+              <Phone screen={screen} />
             </div>
-            <figcaption className="mt-3 text-center text-[10px] uppercase tracking-[0.18em] text-ink/60">
+            <figcaption className="mt-3 text-center text-sm text-ink-2">
               {screen.caption}
             </figcaption>
           </figure>
@@ -194,7 +194,7 @@ export default function WorkoutPlansPage() {
         <strong>free for trainers coaching up to 10 clients</strong>, and
         clients always use it for free.
       </p>
-      <p className="text-sm text-ink/55">
+      <p className="text-sm text-ink-2">
         Exercise data by{" "}
         <a href="https://repdb.co" target="_blank" rel="noopener noreferrer">
           RepDB

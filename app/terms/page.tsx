@@ -33,7 +33,7 @@ export default function TermsPage() {
 
       <div className="mx-auto grid max-w-5xl gap-12 px-6 py-16 lg:grid-cols-[220px_1fr] lg:py-24">
         <aside className="hidden lg:block">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-ink/60">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-ink-2">
             On this page
           </p>
           <nav className="space-y-3 text-sm">
@@ -41,7 +41,7 @@ export default function TermsPage() {
               <a
                 key={section.id}
                 href={`#${section.id}`}
-                className="block text-ink/60 transition-colors hover:text-ink"
+                className="block text-ink-2 transition-colors hover:text-ink"
               >
                 {section.label}
               </a>
@@ -51,17 +51,17 @@ export default function TermsPage() {
 
         <article className="min-w-0 max-w-3xl">
           <div className="mb-10">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-accent">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-ink">
               <FileText className="h-4 w-4" />
               Simple, clear terms
             </div>
-            <h1 className="mb-4 text-4xl font-display md:text-5xl">
+            <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
               Terms of Service
             </h1>
-            <p className="text-ink/60">Last updated: October 26, 2026</p>
+            <p className="text-ink-2">Last updated: October 26, 2026</p>
           </div>
 
-          <div className="space-y-10 text-[15px] leading-7 text-ink/60">
+          <div className="space-y-10 text-[15px] leading-7 text-ink-2">
             <section>
               <p>
                 These Terms of Service (&quot;Terms&quot;) are an agreement
@@ -73,7 +73,7 @@ export default function TermsPage() {
               <p className="mt-4">
                 By creating an account, joining the waitlist, or using the
                 Services, you agree to these Terms and our{" "}
-                <Link className="text-accent hover:underline" href="/privacy">
+                <Link className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80" href="/privacy">
                   Privacy Policy
                 </Link>
                 . If you do not agree, do not use the Services.
@@ -134,7 +134,7 @@ export default function TermsPage() {
                 Features may change, be improved, or be removed as we develop
                 the Services.
               </p>
-              <div className="mt-4 rounded-2xl border border-amber-400/20 bg-amber-400/5 p-5 text-amber-100/80">
+              <div className="mt-4 rounded-2xl border border-amber/40 bg-amber/10 p-5 text-ink">
                 FitLens is a tracking and coaching tool, not a medical provider
                 or medical device. AI-generated nutrition estimates and other
                 information may be incomplete or inaccurate and are not medical,
@@ -142,7 +142,7 @@ export default function TermsPage() {
                 professional before making decisions about your health, diet,
                 exercise, or treatment.
               </div>
-              <div className="mt-4 rounded-2xl border border-amber-400/20 bg-amber-400/5 p-5 text-amber-100/80">
+              <div className="mt-4 rounded-2xl border border-amber/40 bg-amber/10 p-5 text-ink">
                 Workout plans in FitLens are written by trainers, not by
                 FitLens. Exercise carries a risk of injury. Check with a
                 qualified professional before starting a new program, use
@@ -261,7 +261,7 @@ export default function TermsPage() {
                 You may stop using FitLens at any time and request deletion of
                 your account by emailing{" "}
                 <a
-                  className="text-accent hover:underline"
+                  className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80"
                   href="mailto:contact@usefitlens.com"
                 >
                   contact@usefitlens.com
@@ -343,7 +343,7 @@ export default function TermsPage() {
                   <p>
                     Contact FitLens at{" "}
                     <a
-                      className="text-accent hover:underline"
+                      className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80"
                       href="mailto:contact@usefitlens.com"
                     >
                       contact@usefitlens.com
@@ -356,22 +356,6 @@ export default function TermsPage() {
           </div>
         </article>
       </div>
-
-      <footer className="border-t border-ink/10 px-6 py-8">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 text-sm text-ink/60">
-          <span>
-            © {new Date().getFullYear()} FitLens. All rights reserved.
-          </span>
-          <div className="flex items-center gap-5">
-            <Link href="/privacy" className="text-accent hover:underline">
-              Privacy
-            </Link>
-            <Link href="/" className="text-accent hover:underline">
-              FitLens home
-            </Link>
-          </div>
-        </div>
-      </footer>
       <SiteFooter />
     </main>
   );

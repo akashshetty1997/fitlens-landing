@@ -20,12 +20,12 @@ export default function SupportPage() {
       <PageHeader />
 
       <section className="mx-auto max-w-4xl px-6 py-20 text-center md:py-28">
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-accent/10 px-3 py-1.5 text-sm font-medium text-accent">
+        <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-accent/10 px-3 py-1.5 text-sm font-medium text-ink">
           <MessageCircle className="h-4 w-4" />
           We&apos;re here to help
         </div>
-        <h1 className="text-4xl font-display md:text-6xl">How can we help?</h1>
-        <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-ink/60">
+        <h1 className="text-4xl font-bold tracking-tight md:text-6xl">How can we help?</h1>
+        <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-ink-2">
           Whether you need help with your account, meal tracking, trainer tools,
           or privacy, send us a note and we&apos;ll get back to you.
         </p>
@@ -37,10 +37,10 @@ export default function SupportPage() {
           >
             <Mail className="mb-5 h-6 w-6 text-accent" />
             <h2 className="mb-2 text-lg font-semibold">Email support</h2>
-            <p className="text-sm leading-6 text-ink/60">
+            <p className="text-sm leading-6 text-ink-2">
               Reach the FitLens team directly.
             </p>
-            <span className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-accent">
+            <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-ink">
               Contact us <ArrowUpRight className="h-4 w-4" />
             </span>
           </a>
@@ -51,10 +51,10 @@ export default function SupportPage() {
           >
             <ShieldCheck className="mb-5 h-6 w-6 text-accent" />
             <h2 className="mb-2 text-lg font-semibold">Privacy requests</h2>
-            <p className="text-sm leading-6 text-ink/60">
+            <p className="text-sm leading-6 text-ink-2">
               Learn how we handle your information.
             </p>
-            <span className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-accent">
+            <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-ink">
               Read privacy policy <ArrowUpRight className="h-4 w-4" />
             </span>
           </Link>
@@ -65,20 +65,20 @@ export default function SupportPage() {
           >
             <MessageCircle className="mb-5 h-6 w-6 text-accent" />
             <h2 className="mb-2 text-lg font-semibold">Terms of service</h2>
-            <p className="text-sm leading-6 text-ink/60">
+            <p className="text-sm leading-6 text-ink-2">
               Review the rules for using FitLens.
             </p>
-            <span className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-accent">
+            <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-ink">
               Read the terms <ArrowUpRight className="h-4 w-4" />
             </span>
           </Link>
         </div>
 
-        <div className="mx-auto mt-10 max-w-3xl rounded-2xl border border-ink/10 bg-ink/[0.03]/60 p-6 text-left text-sm leading-6 text-ink/60">
+        <div className="mx-auto mt-10 max-w-3xl rounded-2xl border border-ink/10 bg-ink/[0.03]/60 p-6 text-left text-sm leading-6 text-ink-2">
           <p>
             For account deletion, data access, or privacy questions, email{" "}
             <a
-              className="text-accent hover:underline"
+              className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80"
               href="mailto:contact@usefitlens.com"
             >
               contact@usefitlens.com
@@ -88,22 +88,6 @@ export default function SupportPage() {
           </p>
         </div>
       </section>
-
-      <footer className="border-t border-ink/10 px-6 py-8">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 text-sm text-ink/60">
-          <span>
-            © {new Date().getFullYear()} FitLens. All rights reserved.
-          </span>
-          <div className="flex items-center gap-5">
-            <Link href="/privacy" className="text-accent hover:underline">
-              Privacy
-            </Link>
-            <Link href="/terms" className="text-accent hover:underline">
-              Terms
-            </Link>
-          </div>
-        </div>
-      </footer>
       <SiteFooter />
     </main>
   );

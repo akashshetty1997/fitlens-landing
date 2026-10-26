@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
-import { PhoneFrame } from "@/components/screen-deck";
+import { Phone } from "@/components/phone";
 
 const path = "/for-trainers";
 const title = "Nutrition Tracking App for Personal Trainers";
@@ -44,7 +44,7 @@ export default function ForTrainersPage() {
       heading={
         <>
           Nutrition tracking for{" "}
-          <em className="not-italic text-accent">personal trainers.</em>
+          <em className="not-italic text-accent-text">personal trainers.</em>
         </>
       }
       intro={
@@ -60,9 +60,9 @@ export default function ForTrainersPage() {
         {screens.map((screen) => (
           <figure key={screen.src} className="m-0">
             <div className="aspect-[1320/2868]">
-              <PhoneFrame screen={screen} />
+              <Phone screen={screen} />
             </div>
-            <figcaption className="mt-3 text-center text-[10px] uppercase tracking-[0.18em] text-ink/60">
+            <figcaption className="mt-3 text-center text-sm text-ink-2">
               {screen.caption}
             </figcaption>
           </figure>

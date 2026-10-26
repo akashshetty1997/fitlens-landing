@@ -1,315 +1,134 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
-import { track } from "@vercel/analytics";
+import Link from "next/link";
 import {
-  MotionConfig,
-  motion,
-  useInView,
-  useReducedMotion,
-} from "framer-motion";
-import { ArrowRight, Check, Plus, X } from "lucide-react";
-import { ScreenDeck, type Screen } from "@/components/screen-deck";
-import { FeatureTabs, type FeatureTab } from "@/components/feature-tabs";
-import { FanSpread } from "@/components/fan-spread";
-import { AiDemo } from "@/components/ai-demo";
-import { TrackingStory } from "@/components/tracking-story";
-import { SiteFooter, Wordmark } from "@/components/site-chrome";
+  ArrowRight,
+  BellRing,
+  Check,
+  ClipboardList,
+  FileText,
+  Images,
+  LineChart,
+  MessageCircle,
+  Sheet,
+  UserPlus,
+} from "lucide-react";
+import { SiteNav } from "@/components/site-nav";
+import { SiteFooter } from "@/components/site-chrome";
 import { StructuredData } from "@/components/structured-data";
+import { PilotForm } from "@/components/pilot-form";
+import { MealExample } from "@/components/meal-example";
+import { Phone, type Screen } from "@/components/phone";
 
-// FitLens app palette (fitness-app/constants/theme.js + macro colours)
-const ORANGE = "#F97316";
-const AMBER = "#F59E0B";
-const GREEN = "#10B981";
-const BLUE = "#3B82F6";
-const RED = "#EF4444";
+// Server-rendered home page. The only client code is the navigation's mobile
+// menu and the two pilot signup forms.
 
-const screens: Record<string, Screen> = {
+const screens = {
   dashboard: {
-    src: "/screens/trainer-dashboard.webp",
-    alt: "Trainer dashboard with a prioritised attention queue",
-    caption: "Trainer dashboard",
+    src: "/screens/hd/trainer-dashboard.webp",
+    alt: "FitLens trainer dashboard showing active clients, clients at risk and a list of who needs attention today",
   },
-  plans: {
-    src: "/screens/meal-plans.webp",
-    alt: "Meal plan library with plans shared with clients",
-    caption: "Meal plans",
-  },
-  client: {
+  clientDetail: {
     src: "/screens/client-detail.webp",
     alt: "Client overview with weight, goal and today's nutrition",
-    caption: "Client overview",
   },
-  meal: {
-    src: "/screens/meal-result.webp",
+  mealReview: {
+    src: "/screens/hd/meal-review.webp",
+    alt: "Trainer reviewing a client's logged meal with its photo, calories and macros",
+  },
+  builder: {
+    src: "/screens/hd/workout-builder.webp",
+    alt: "Workout plan builder with sets, reps, weight and a demo video on each exercise",
+  },
+  player: {
+    src: "/screens/hd/workout-player.webp",
+    alt: "Client workout player showing the exercise, weight, reps and a tick for every set",
+  },
+  mealResult: {
+    src: "/screens/hd/meal-result.webp",
     alt: "AI meal breakdown with calories, macros and ingredients",
-    caption: "AI meal breakdown",
   },
-  home: {
-    src: "/screens/client-home.webp",
-    alt: "Client home with calorie ring, macros and water",
-    caption: "Client home",
+  mealPlans: {
+    src: "/screens/hd/meal-plans.webp",
+    alt: "Meal plan library with plans shared with clients",
   },
-  squad: {
-    src: "/screens/squad.webp",
-    alt: "Squad feed with a coach post and a shared meal",
-    caption: "Squad feed",
+  clientHome: {
+    src: "/screens/hd/client-home.webp",
+    alt: "Client home with calorie ring, protein and water for the day",
   },
-  chat: {
-    src: "/screens/chat.webp",
-    alt: "Chat between a client and their coach",
-    caption: "Coach chat",
+  today: {
+    src: "/screens/hd/workout-today.webp",
+    alt: "Client home with today's workout, tasks from the coach and logged meals",
   },
-  workoutBuilder: {
-    src: "/screens/workout-builder.webp",
-    alt: "Workout plan builder with sets, reps and weight on each exercise",
-    caption: "Workout builder",
+  describe: {
+    src: "/screens/hd/describe-meal.webp",
+    alt: "Client describing a meal in one sentence to log it",
   },
-  workoutPlayer: {
-    src: "/screens/workout-player.webp",
-    alt: "Workout player with the exercise, weight and reps, and every set with its own tick",
-    caption: "Workout player",
-  },
-  workoutToday: {
-    src: "/screens/workout-today.webp",
-    alt: "Client home with today's workout, coach tasks and logged meals",
-    caption: "Today's workout",
-  },
-};
+} satisfies Record<string, Screen>;
 
-const heroScreens = [
-  screens.dashboard,
-  screens.meal,
-  screens.workoutBuilder,
-  screens.plans,
-  screens.home,
-  screens.squad,
-  screens.client,
-  screens.chat,
+const scattered = [
+  { icon: MessageCircle, label: "Food photos in WhatsApp" },
+  { icon: Sheet, label: "Check-in spreadsheets" },
+  { icon: FileText, label: "Workout plans in PDFs nobody fills in" },
+  { icon: Images, label: "Screenshots of food diaries" },
+  { icon: BellRing, label: "Reminders to log, again" },
 ];
-const clientScreens = [screens.meal, screens.home, screens.squad, screens.chat];
-const workoutScreens = [screens.workoutBuilder, screens.workoutPlayer, screens.workoutToday];
-
-const workoutCoachPoints = [
-  [
-    "650+ exercises",
-    "Search by muscle or equipment, or add your own. Exercise data by RepDB.",
-  ],
-  [
-    "Sets, reps and weight in place",
-    "Type the targets right on each exercise. Rest, notes and timed holds too.",
-  ],
-  [
-    "Your own demo videos",
-    "Record a quick demo or paste a link, and it shows on that exercise.",
-  ],
-  [
-    "Every session, logged",
-    "See each set your client did against your targets, and how long it took.",
-  ],
-] as const;
-
-const workoutClientPoints = [
-  "Today's workout on their home screen",
-  "One set at a time, ticked as they go",
-  "Rest countdown between sets",
-  "Swap an exercise when the machine is busy",
-] as const;
-
-const tickerMeals = [
-  ["Greek yogurt, blueberries & granola", 319],
-  ["Grilled chicken salad", 381],
-  ["High-protein chicken power bowl", 520],
-  ["Avocado toast & poached eggs", 395],
-  ["Overnight protein oats", 410],
-  ["Baked salmon & sweet potato", 536],
-  ["Salmon & quinoa plate", 610],
-  ["Turkey avocado wrap", 520],
-] as const;
-
-const steps = [
-  {
-    n: "01",
-    title: "Invite",
-    cmd: "trainer code → roster",
-    body: "Share your trainer code. Clients download FitLens for free and land in your roster and your squad.",
-  },
-  {
-    n: "02",
-    title: "Plan",
-    cmd: "write once → share",
-    body: "Write a meal plan or a workout plan once and give it to as many clients as you like.",
-  },
-  {
-    n: "03",
-    title: "Coach",
-    cmd: "logs → dashboard",
-    body: "Meals and workouts land on your dashboard, with a daily list of who needs you. Step in before anyone drifts.",
-  },
-];
-
-const stats = [
-  ["1", "App for meals and training"],
-  ["5s", "For a client to log a meal"],
-  ["650+", "Exercises for your plans"],
-  ["$0", "Up to 10 clients"],
-];
-
-const trainerFeatures: FeatureTab[] = [
-  {
-    title: "Daily attention queue",
-    body: "Clients who are slipping, prioritised, so you step in before they quit.",
-    screen: screens.dashboard,
-  },
-  {
-    title: "Meal plans, written once",
-    body: "Build a meal or a full day and share it with as many clients as you like.",
-    screen: screens.plans,
-  },
-  {
-    title: "Workout plans",
-    body: "Build weekly or rotating workouts and follow every set your clients log.",
-    screen: screens.workoutBuilder,
-  },
-  {
-    title: "Client snapshots",
-    body: "Adherence, weight trend and meals awaiting your review on one screen.",
-    screen: screens.client,
-  },
-  {
-    title: "Your own squad",
-    body: "A private group feed and direct chat. Invite clients with your trainer code.",
-    screen: screens.squad,
-  },
-];
-
-const features = [
-  {
-    title: "AI meal analysis",
-    tag: "Photo + text",
-    body: "Snap or describe a meal. Calories, protein, carbs and fat, ingredient by ingredient, with a confidence score.",
-  },
-  {
-    title: "Attention queue",
-    tag: "Auto-prioritised",
-    body: "Clients who stop logging or miss targets rise to the top of your day, ranked by urgency.",
-  },
-  {
-    title: "Meal plans",
-    tag: "Write once",
-    body: "Single meals or full days with macros, shared with as many clients as you like.",
-  },
-  {
-    title: "Workout plans",
-    tag: "650+ exercises",
-    body: "Weekly or rotating plans with sets, reps, weight and rest, plus your own demo videos.",
-  },
-  {
-    title: "Guided workouts",
-    tag: "Set by set",
-    body: "Clients tick each set, rest on a countdown and log weight, reps and time as they go.",
-  },
-  {
-    title: "Shared tasks",
-    tag: "Coach + client",
-    body: "Habits and to-dos either side can add, linked to a meal or workout and ticked off in chat.",
-  },
-  {
-    title: "Client snapshots",
-    tag: "Per client",
-    body: "Adherence, weight trend, targets, notes and meals awaiting review in one place.",
-  },
-  {
-    title: "Squads & chat",
-    tag: "Private groups",
-    body: "A feed for your clients plus direct messages, with report and block built in.",
-  },
-  {
-    title: "Private by default",
-    tag: "No ads",
-    body: "Data is never sold or used for advertising. Clients can delete their account any time.",
-  },
-];
-
-const extras = [
-  "Rest timer",
-  "Exercise swaps",
-  "Workout history",
-  "Water tracking",
-  "Weight trends",
-  "Calorie targets",
-  "Trainer code",
-  "Leaderboard",
-  "Meal favourites",
-  "Reminders",
-  "Dark mode",
-];
-
-const roster = [
-  { name: "Sam Rivera", score: 96, color: GREEN },
-  { name: "Maya Chen", score: 88, color: GREEN },
-  { name: "Jordan Lee", score: 81, color: GREEN },
-  { name: "Marcus Brown", score: 54, color: AMBER },
-  { name: "Priya Patel", score: 12, color: RED },
-];
-
-const signals = [
-  {
-    level: "Critical",
-    color: RED,
-    body: "No meals logged in 2 days. Reach out today.",
-  },
-  {
-    level: "Nutrition",
-    color: AMBER,
-    body: "Protein under target 5 of the last 7 days.",
-  },
-  {
-    level: "To review",
-    color: BLUE,
-    body: "3 meals awaiting your verification.",
-  },
-  {
-    level: "On track",
-    color: GREEN,
-    body: "Logging consistently and hitting targets.",
-  },
-];
-
-const clientPoints = [
-  [
-    "Photo in, macros out",
-    "A full breakdown of every meal, with ingredients you can check.",
-  ],
-  ["Today at a glance", "Calories, protein, carbs, fat and water in one ring."],
-  [
-    "Plans from your coach",
-    "Meals and workouts your trainer shares, ready to follow.",
-  ],
-  [
-    "A squad that keeps you honest",
-    "Share meals, cheer each other on, message your coach.",
-  ],
-] as const;
 
 const withoutFitLens = [
   "Hours a week chasing check-ins and screenshots",
   "A roster capped by how many clients you can chase",
-  "Food diaries over WhatsApp, if clients remember",
-  "Guessing portions from blurry screenshots",
   "Finding out a client fell off weeks later",
   "Rewriting the same meal plan for every client",
-  "Workout plans in PDFs nobody fills in",
 ];
 
 const withFitLens = [
   "Check-ins replaced by one dashboard that updates itself",
   "Room for more clients without more admin",
-  "Every meal logged with calories and macros",
-  "A daily queue of who needs you, prioritised",
   "Spot a slipping client the day it happens",
   "Write a plan once, share it with anyone",
-  "Every set your clients do, logged in the app",
+  "Every meal and every set your clients do, logged in the app",
+];
+
+const signals = [
+  { level: "Critical", color: "var(--color-red)", body: "No meals logged in 2 days. Reach out today." },
+  { level: "Nutrition", color: "var(--color-amber)", body: "Protein under target 5 of the last 7 days." },
+  { level: "To review", color: "var(--color-blue)", body: "3 meals awaiting your verification." },
+  { level: "On track", color: "var(--color-green)", body: "Logging consistently and hitting targets." },
+];
+
+const steps = [
+  {
+    icon: UserPlus,
+    title: "Invite your clients",
+    body: "Share your trainer code. Clients download FitLens for free and land in your roster and your squad.",
+  },
+  {
+    icon: ClipboardList,
+    title: "Build and assign their plans",
+    body: "Write a meal plan or a workout plan once and give it to as many clients as you like.",
+  },
+  {
+    icon: LineChart,
+    title: "Track progress and coach",
+    body: "Meals and workouts land on your dashboard, with a daily list of who needs you. Step in before anyone drifts.",
+  },
+];
+
+const pilotFacts = [
+  ["Free for up to 10 clients", "Trainers coaching more than 10 can email us and we'll add room."],
+  ["Clients always free", "Your clients never pay to use FitLens."],
+  ["iPhone first", "FitLens is on iPhone now, with Android in testing."],
+  ["Private by default", "No ads. Data is never sold, and clients can delete their account any time."],
+];
+
+const alsoIncluded = [
+  "Meal plans for single meals or full days",
+  "Shared tasks and habits, ticked off in chat",
+  "Private squads with a group feed",
+  "Direct messages with every client",
+  "Water and weight trends",
+  "Calorie and macro targets per client",
+  "Rest timer and set timer for workouts",
+  "Exercise swaps and your own demo videos",
+  "Report and block built in",
 ];
 
 const faqs = [
@@ -343,738 +162,454 @@ const faqs = [
   },
 ];
 
-const reveal = {
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-80px" },
-  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
-};
+/* ---------- shared pieces ---------- */
 
-export default function Home() {
+const container = "mx-auto max-w-6xl px-5 sm:px-8";
+const section = "scroll-mt-16 py-20 sm:py-28";
+
+// Small section label. Dark text with an orange bar: small orange text on
+// white would fail contrast, so the brand colour stays decorative here.
+function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <MotionConfig reducedMotion="user">
-      <main className="landing min-h-screen overflow-x-clip antialiased">
-        <StructuredData faqs={faqs} />
-        <Nav />
-        <Hero />
-        <Ticker />
-        <HowItWorks />
-        <TrainerSection />
-        <StorySection />
-        <DemoSection />
-        <WorkoutSection />
-        <FeatureGrid />
-        <RosterSection />
-        <ClientSection />
-        <BeforeAfter />
-        <Faq />
-        <FinalCta />
-        <SiteFooter />
-      </main>
-    </MotionConfig>
-  );
-}
-
-/* ---------- shared bits ---------- */
-
-function SectionLabel({
-  children,
-  color = ORANGE,
-}: {
-  children: React.ReactNode;
-  color?: string;
-}) {
-  return (
-    <p
-      className="mb-5 text-xs font-medium uppercase tracking-[0.2em]"
-      style={{ color }}
-    >
-      {"// "}
+    <p className="inline-flex items-center gap-2 text-sm font-semibold text-ink">
+      <span className="h-1.5 w-5 rounded-full bg-accent" aria-hidden />
       {children}
     </p>
   );
 }
 
-/** Uppercase headline that types itself in when scrolled into view */
-function TypeHeading({
-  text,
-  highlight,
-  className = "",
+function SectionHeading({
+  eyebrow,
+  title,
+  accent,
+  intro,
+  center = false,
 }: {
-  text: string;
-  highlight?: string;
-  className?: string;
+  eyebrow: string;
+  title: string;
+  accent?: string;
+  intro?: React.ReactNode;
+  center?: boolean;
 }) {
-  const ref = useRef<HTMLHeadingElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  const reduceMotion = useReducedMotion();
-  const full = highlight ? `${text} ${highlight}` : text;
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (reduceMotion) return setCount(full.length);
-    if (!inView) return;
-    let i = 0;
-    const timer = setInterval(() => {
-      i += 1;
-      setCount(i);
-      if (i >= full.length) clearInterval(timer);
-    }, 32);
-    return () => clearInterval(timer);
-  }, [inView, reduceMotion, full.length]);
-
-  const typed = full.slice(0, count);
-  const plain = typed.slice(0, text.length);
-  const accent = typed.length > text.length ? typed.slice(text.length + 1) : "";
-
   return (
-    <h2 ref={ref} className={`font-display uppercase ${className}`}>
-      <span className="sr-only">{full}</span>
-      <span aria-hidden>
-        {plain}
+    <div className={center ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
+      <Eyebrow>{eyebrow}</Eyebrow>
+      <h2 className="mt-3 text-[2rem] font-bold leading-[1.1] tracking-tight text-ink sm:text-5xl">
+        {title}
         {accent && (
           <>
             {" "}
             <em>{accent}</em>
           </>
         )}
-        <span className="cursor-blink ml-1 inline-block h-[0.8em] w-[0.08em] translate-y-[0.08em] bg-accent" />
-      </span>
-    </h2>
-  );
-}
-
-function PilotForm({ id }: { id: string }) {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">(
-    "idle",
-  );
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("sending");
-    try {
-      const res = await fetch("https://formspree.io/f/xzddzwjj", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
-      setStatus(res.ok ? "done" : "error");
-      if (res.ok) track("Pilot signup", { form: id });
-    } catch {
-      setStatus("error");
-    }
-  };
-
-  if (status === "done") {
-    return (
-      <p className="inline-flex items-center gap-2 border border-green/40 bg-green/10 px-4 py-3 text-sm text-green">
-        <Check className="h-4 w-4" /> You&apos;re on the list. We&apos;ll be in
-        touch soon.
-      </p>
-    );
-  }
-
-  return (
-    <div>
-      <form
-        onSubmit={handleSubmit}
-        className="flex w-full max-w-xl flex-col border border-line bg-card sm:flex-row"
-      >
-        <label htmlFor={id} className="sr-only">
-          Email address
-        </label>
-        <span
-          className="hidden items-center pl-4 text-accent sm:flex"
-          aria-hidden
-        >
-          $
-        </span>
-        <input
-          id={id}
-          type="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@yourgym.com"
-          className="h-12 w-full bg-transparent px-4 text-sm text-ink placeholder:text-ink/30 outline-none sm:px-3"
-        />
-        <button
-          type="submit"
-          disabled={status === "sending"}
-          className="inline-flex h-12 shrink-0 items-center justify-center gap-2 bg-accent px-6 text-xs font-semibold uppercase tracking-[0.15em] text-paper transition-opacity hover:opacity-90 disabled:opacity-60"
-        >
-          {status === "sending" ? "Joining…" : "Join pilot"}
-          {status !== "sending" && <ArrowRight className="h-4 w-4" />}
-        </button>
-      </form>
-      {status === "error" && (
-        <p className="mt-2 text-xs text-red">
-          Something went wrong. Please try again.
-        </p>
-      )}
+      </h2>
+      {intro && <p className="mt-5 text-lg leading-8 text-ink-2">{intro}</p>}
     </div>
   );
 }
 
-/* ---------- sections ---------- */
-
-function Nav() {
-  const links = [
-    ["#how", "How it works"],
-    ["/workout-plans", "Workouts"],
-    ["/for-trainers", "Nutrition"],
-    ["#features", "Features"],
-    ["#faq", "FAQ"],
-    ["/guides", "Guides"],
-  ];
+function TextLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-paper/85 backdrop-blur-xl">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5 sm:px-8">
-        <Wordmark />
-        <div className="hidden items-center gap-7 text-[11px] uppercase tracking-[0.18em] text-ink/50 md:flex">
-          {links.map(([href, label]) => (
-            <a
-              key={href}
-              href={href}
-              className="transition-colors hover:text-accent"
-            >
-              {label}
-            </a>
-          ))}
-        </div>
-        <a
-          href="#pilot"
-          className="inline-flex items-center gap-1.5 bg-accent px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.15em] text-paper transition-opacity hover:opacity-90"
-        >
-          Join pilot
-          <ArrowRight className="h-3.5 w-3.5" />
-        </a>
-      </nav>
-    </header>
+    <Link
+      href={href}
+      className="group mt-6 inline-flex min-h-11 items-center gap-1.5 text-[15px] font-semibold text-ink"
+    >
+      <span className="underline decoration-accent decoration-2 underline-offset-4">
+        {children}
+      </span>
+      <ArrowRight
+        className="h-4 w-4 text-accent transition-transform group-hover:translate-x-0.5"
+        aria-hidden
+      />
+    </Link>
   );
 }
 
-function FloatTag({
-  label,
-  color,
-  className,
-  delay = 0,
-}: {
-  label: string;
-  color: string;
-  className: string;
-  delay?: number;
-}) {
+function CheckList({ items }: { items: string[][] }) {
   return (
-    <motion.span
-      aria-hidden
-      className={`absolute hidden items-center gap-1.5 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-paper md:inline-flex ${className}`}
-      style={{ background: color }}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1, y: [0, -6, 0] }}
-      transition={{
-        opacity: { duration: 0.4, delay: 0.6 + delay },
-        scale: { duration: 0.4, delay: 0.6 + delay },
-        y: { duration: 4 + delay, repeat: Infinity, ease: "easeInOut" },
-      }}
-    >
-      <span className="h-1.5 w-1.5 bg-paper/80" />
-      {label}
-    </motion.span>
+    <ul className="mt-8 space-y-4">
+      {items.map(([title, body]) => (
+        <li key={title} className="flex gap-3">
+          <Check className="mt-0.5 h-5 w-5 shrink-0 text-accent" aria-hidden />
+          <p className="text-[15px] leading-6 text-ink-2">
+            <span className="font-semibold text-ink">{title}.</span> {body}
+          </p>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/* ---------- page ---------- */
+
+export default function Home() {
+  return (
+    <main className="landing min-h-screen overflow-x-clip">
+      <StructuredData faqs={faqs} />
+      <SiteNav />
+      <Hero />
+      <Problem />
+      <Dashboard />
+      <Workouts />
+      <Nutrition />
+      <Clients />
+      <HowItWorks />
+      <Pilot />
+      <AlsoIncluded />
+      <Faq />
+      <FinalCta />
+      <SiteFooter />
+    </main>
   );
 }
 
 function Hero() {
   return (
-    <section className="relative">
-      <div
-        aria-hidden
-        className="grid-bg absolute inset-0 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_30%,black,transparent)]"
-      />
-      <div className="relative mx-auto max-w-6xl px-5 pb-16 pt-16 text-center sm:px-8 lg:pt-24">
-        <motion.p
-          {...reveal}
-          className="mx-auto mb-10 inline-flex flex-wrap justify-center gap-x-2 border border-line bg-card px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-ink/50"
-        >
-          <span className="text-accent">v1.1</span>
-          <span>{"// iPhone"}</span>
-          <span>{"// free for 10 clients"}</span>
-          <span>{"// for trainers"}</span>
-        </motion.p>
-
-        <div className="relative mx-auto max-w-4xl">
-          <FloatTag
-            label="381 kcal"
-            color={GREEN}
-            className="-left-4 top-2 lg:-left-16"
-          />
-          <FloatTag
-            label="Workout done"
-            color={ORANGE}
-            className="-right-2 top-0 lg:-right-14"
-            delay={0.4}
-          />
-          <FloatTag
-            label="Needs a check-in"
-            color={AMBER}
-            className="-left-8 bottom-6 lg:-left-24"
-            delay={0.8}
-          />
-          <FloatTag
-            label="Plan shared"
-            color={BLUE}
-            className="-right-6 bottom-2 lg:-right-20"
-            delay={1.2}
-          />
-          <motion.h1
-            initial={{ y: 30 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="font-display text-[3.1rem] uppercase leading-[0.92] sm:text-7xl lg:text-[6.4rem]"
-          >
-            More clients. <br />
-            <em>Less admin.</em>
-          </motion.h1>
-        </div>
-
-        <motion.p
-          {...reveal}
-          transition={{ ...reveal.transition, delay: 0.15 }}
-          className="mx-auto mt-8 max-w-xl text-sm leading-relaxed text-ink/60 sm:text-[15px]"
-        >
+    <section className="pt-14 sm:pt-20">
+      <div className={`${container} text-center`}>
+        <h1 className="mx-auto max-w-4xl">
+          <span className="block text-base font-semibold text-ink-2 sm:text-lg">
+            Personal trainer app
+          </span>{" "}
+          {/* the space keeps "app" and "More" separate words for search engines */}
+          <span className="mt-3 block text-[2.9rem] font-bold leading-[1.02] tracking-tight text-ink sm:text-7xl lg:text-[5.5rem]">
+            <span className="block">More clients.</span>{" "}
+            <em className="block">Less admin.</em>
+          </span>
+        </h1>
+        <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-ink-2 sm:text-xl">
           FitLens is the personal trainer app for coaching nutrition and
           training in one place. Clients log meals with a photo and follow your
           workouts set by set; you get one dashboard that shows who needs you
           today. Less chasing, more coaching, room to grow your client list.
-        </motion.p>
+        </p>
 
-        <motion.div
-          {...reveal}
-          transition={{ ...reveal.transition, delay: 0.25 }}
-          className="mt-9 flex flex-col items-center gap-4"
-        >
+        <div className="mt-9 flex flex-col items-center gap-4">
           <PilotForm id="hero-email" />
-          <p className="text-[11px] uppercase tracking-[0.18em] text-ink/55">
-            Free for up to 10 clients <span className="text-ink/20">{"//"}</span>{" "}
-            clients always free
+          <Link
+            href="#how"
+            className="inline-flex min-h-11 items-center gap-1.5 text-[15px] font-medium text-ink-2 transition-colors hover:text-ink"
+          >
+            See how it works <ArrowRight className="h-4 w-4" aria-hidden />
+          </Link>
+          <p className="text-sm text-ink-2">
+            Free for up to 10 clients · Clients always free · iPhone
           </p>
-        </motion.div>
+        </div>
+      </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          className="relative mx-auto mt-20 max-w-sm"
-        >
-          <div
-            aria-hidden
-            className="absolute left-1/2 top-[40%] h-[70%] w-[120%] -translate-x-1/2 -translate-y-1/2 blur-3xl"
-            style={{
-              background: `radial-gradient(circle, ${ORANGE}33, transparent 65%)`,
-            }}
+      {/* The real trainer dashboard, with the builder and a client's day either side */}
+      <div className={`${container} mt-14 sm:mt-20`}>
+        <div className="flex items-end justify-center gap-6 lg:gap-10">
+          <Phone
+            screen={screens.builder}
+            sizes="260px"
+            className="hidden w-[240px] translate-y-10 md:block lg:w-[260px]"
           />
-          <ScreenDeck screens={heroScreens} className="relative" />
-        </motion.div>
+          <Phone
+            screen={screens.dashboard}
+            priority
+            sizes="(min-width: 1024px) 330px, (min-width: 640px) 300px, 72vw"
+            className="w-[72vw] max-w-[300px] lg:max-w-[330px]"
+          />
+          <Phone
+            screen={screens.clientHome}
+            sizes="260px"
+            className="hidden w-[240px] translate-y-10 md:block lg:w-[260px]"
+          />
+        </div>
       </div>
     </section>
   );
 }
 
-function Ticker() {
-  const colors = [ORANGE, GREEN, BLUE, AMBER];
-  const items = [...tickerMeals, ...tickerMeals];
+function Problem() {
   return (
-    <div
-      className="overflow-hidden border-y border-line bg-card py-3.5"
-      aria-hidden
-    >
-      <div className="ticker-track flex w-max gap-10 whitespace-nowrap text-xs uppercase tracking-[0.12em]">
-        {items.map(([meal, kcal], i) => (
-          <span key={i} className="flex items-center gap-3">
-            <span
-              className="h-1.5 w-1.5"
-              style={{ background: colors[i % colors.length] }}
-            />
-            <span className="text-ink/50">{meal}</span>
-            <span className="text-ink">{kcal} kcal</span>
-          </span>
+    <section id="problem" className={`${section} mt-10 bg-card`}>
+      <div className={container}>
+        <SectionHeading
+          eyebrow="The problem"
+          title="Coaching shouldn't live in"
+          accent="five apps."
+          intro="Most trainers juggle WhatsApp, spreadsheets, PDFs and screenshots to keep track of clients. It works for a few clients, then the admin decides how many more you can take on."
+        />
+
+        <div className="reveal mt-12 grid gap-4 lg:grid-cols-2">
+          <div className="rounded-[var(--radius-card)] bg-paper p-6 sm:p-8">
+            <p className="text-sm font-semibold text-ink-2">Without FitLens</p>
+            <ul className="mt-5 flex flex-wrap gap-2">
+              {scattered.map(({ icon: Icon, label }) => (
+                <li
+                  key={label}
+                  className="inline-flex items-center gap-2 rounded-full border border-line px-3.5 py-2 text-sm text-ink-2"
+                >
+                  <Icon className="h-4 w-4" aria-hidden />
+                  {label}
+                </li>
+              ))}
+            </ul>
+            <ul className="mt-6 space-y-3">
+              {withoutFitLens.map((item) => (
+                <li key={item} className="flex gap-3 text-[15px] leading-6 text-ink-2">
+                  <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-ink-2/50" aria-hidden />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="rounded-[var(--radius-card)] bg-paper p-6 ring-2 ring-accent/60 sm:p-8">
+            <p className="text-sm font-semibold text-ink">With FitLens</p>
+            <p className="mt-5 text-2xl font-bold tracking-tight text-ink">
+              One app for your clients&apos; meals, workouts and check-ins.
+            </p>
+            <ul className="mt-6 space-y-3">
+              {withFitLens.map((item) => (
+                <li key={item} className="flex gap-3 text-[15px] leading-6 text-ink">
+                  <Check className="mt-0.5 h-5 w-5 shrink-0 text-green" aria-hidden />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Dashboard() {
+  return (
+    <section id="dashboard" className={section}>
+      <div className={`${container} grid items-center gap-14 lg:grid-cols-2`}>
+        {/* On phones the hero already shows the dashboard just above */}
+        <div className="reveal order-2 hidden justify-center lg:order-1 lg:flex">
+          <Phone
+            screen={screens.dashboard}
+            sizes="(min-width: 1024px) 340px, 78vw"
+            className="w-[78vw] max-w-[340px]"
+          />
+        </div>
+        <div className="order-1 lg:order-2">
+          <SectionHeading
+            eyebrow="The trainer dashboard"
+            title="Your whole roster."
+            accent="At a glance."
+            intro="Stop chasing screenshots and food diaries. See what every client ate, how they're trending, and who needs you today, ranked by urgency."
+          />
+          <div className="mt-8 space-y-2.5">
+            <p className="text-sm text-ink-2">Example attention queue</p>
+            {signals.map((signal) => (
+              <div key={signal.level} className="flex items-start gap-3 rounded-2xl bg-card px-4 py-3.5">
+                <span
+                  className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full"
+                  style={{ background: signal.color }}
+                  aria-hidden
+                />
+                <p className="text-[15px] leading-6 text-ink">
+                  <span className="font-semibold">{signal.level}.</span>{" "}
+                  <span className="text-ink-2">{signal.body}</span>
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className={`${container} mt-20 grid gap-6 sm:grid-cols-2`}>
+        {[
+          {
+            screen: screens.clientDetail,
+            title: "Client snapshots",
+            body: "Adherence, weight trend, targets, notes and meals awaiting review on one screen.",
+          },
+          {
+            screen: screens.mealReview,
+            title: "Meal review",
+            body: "See each logged meal with its photo and AI breakdown, add a note, and mark it as verified.",
+          },
+        ].map(({ screen, title, body }) => (
+          <article
+            key={title}
+            className="reveal flex flex-col items-center overflow-hidden rounded-[var(--radius-card)] bg-card px-6 pt-8 text-center"
+          >
+            <h3 className="text-xl font-bold tracking-tight text-ink">{title}</h3>
+            <p className="mt-2 max-w-sm text-[15px] leading-6 text-ink-2">{body}</p>
+            <div className="mt-8 h-[300px] w-full max-w-[260px] overflow-hidden sm:h-[360px]">
+              <Phone screen={screen} sizes="260px" className="w-full" />
+            </div>
+          </article>
         ))}
       </div>
-    </div>
+    </section>
+  );
+}
+
+function Workouts() {
+  return (
+    <section id="workouts" className={`${section} bg-card`}>
+      <div className={`${container} grid items-center gap-14 lg:grid-cols-2`}>
+        <div>
+          <SectionHeading
+            eyebrow="Workout plans"
+            title="Training plans,"
+            accent="logged set by set."
+            intro="Build the plan once from more than 650 exercises and share it. Your clients follow it one set at a time, and every set lands in FitLens next to their meals."
+          />
+          <CheckList
+            items={[
+              ["Sets, reps and weight in place", "Type the targets right on each exercise, plus rest, notes and timed holds."],
+              ["Your own demo videos", "Record a quick demo or paste a link, and it shows on that exercise."],
+              ["Every session, logged", "See each set your client did against your targets, and how long it took."],
+            ]}
+          />
+          <TextLink href="/workout-plans">How workout plans work in FitLens</TextLink>
+        </div>
+        <div className="reveal flex items-end justify-center gap-5 pt-8">
+          <Phone
+            screen={screens.builder}
+            sizes="(min-width: 1024px) 260px, 42vw"
+            className="w-[42vw] max-w-[260px]"
+          />
+          <Phone
+            screen={screens.player}
+            sizes="(min-width: 1024px) 260px, 42vw"
+            className="w-[42vw] max-w-[260px] -translate-y-8"
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Nutrition() {
+  return (
+    <section id="nutrition" className={section}>
+      <div className={`${container} grid items-center gap-14 lg:grid-cols-2`}>
+        <div className="reveal order-2 flex items-end justify-center gap-5 pt-8 lg:order-1">
+          <Phone
+            screen={screens.mealResult}
+            sizes="(min-width: 1024px) 260px, 42vw"
+            className="w-[42vw] max-w-[260px] -translate-y-8"
+          />
+          <Phone
+            screen={screens.mealPlans}
+            sizes="(min-width: 1024px) 260px, 42vw"
+            className="w-[42vw] max-w-[260px]"
+          />
+        </div>
+        <div className="order-1 lg:order-2">
+          <SectionHeading
+            eyebrow="Nutrition tracking"
+            title="See what clients"
+            accent="actually eat."
+            intro="Clients snap a photo of their plate or type what they ate. FitLens estimates calories, protein, carbs and fat ingredient by ingredient, and the meal lands on your dashboard for review."
+          />
+          <CheckList
+            items={[
+              ["Photo in, macros out", "A full breakdown of every meal, with ingredients you can check."],
+              ["Meal plans, written once", "Build a single meal or a full day and share it with as many clients as you like."],
+              ["Trainer review", "Verify meals, leave notes, and spot patterns across the week."],
+            ]}
+          />
+          <TextLink href="/for-trainers">Nutrition tracking for personal trainers</TextLink>
+        </div>
+      </div>
+
+      <div className={`${container} reveal mt-16`}>
+        <MealExample />
+      </div>
+    </section>
+  );
+}
+
+function Clients() {
+  return (
+    <section id="clients" className={`${section} bg-card`}>
+      <div className={container}>
+        <SectionHeading
+          center
+          eyebrow="For your clients"
+          title="Logging a meal takes"
+          accent="five seconds."
+          intro="The easier it is for clients to log, the more of their week you actually see. FitLens makes it a photo, not a chore, and today's workout is waiting on their home screen."
+        />
+        {/* Three screens on larger displays; on phones just today's workout, at a readable size */}
+        <div className="reveal mt-14 grid items-end gap-8 sm:grid-cols-3">
+          {[
+            { screen: screens.describe, caption: "Log a meal", phoneOnly: false },
+            { screen: screens.today, caption: "Today's workout", phoneOnly: true },
+            { screen: screens.clientHome, caption: "Progress at a glance", phoneOnly: false },
+          ].map(({ screen, caption, phoneOnly }) => (
+            <figure key={caption} className={`m-0 ${phoneOnly ? "" : "hidden sm:block"}`}>
+              <Phone
+                screen={screen}
+                sizes="(min-width: 1024px) 280px, (min-width: 640px) 30vw, 70vw"
+                className="mx-auto w-[70vw] max-w-[280px] sm:w-full"
+              />
+              <figcaption className="mt-4 text-center text-sm font-medium text-ink-2">
+                {caption}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+        <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            ["Photo in, macros out", "A full breakdown of every meal, with ingredients they can check."],
+            ["Today at a glance", "Calories, protein, carbs, fat and water in one ring."],
+            ["Plans from your coach", "Meals and workouts their trainer shares, ready to follow."],
+            ["A squad that keeps them honest", "Share meals, cheer each other on, message their coach."],
+          ].map(([title, body]) => (
+            <li key={title} className="rounded-[var(--radius-card)] bg-paper p-5">
+              <p className="text-[15px] font-semibold text-ink">{title}</p>
+              <p className="mt-1.5 text-sm leading-6 text-ink-2">{body}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
   );
 }
 
 function HowItWorks() {
   return (
-    <section id="how" className="scroll-mt-16 border-b border-line">
-      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
-        <SectionLabel>How it works</SectionLabel>
-        <TypeHeading
-          text="Invite. Plan."
-          highlight="Coach."
-          className="text-4xl leading-[0.95] sm:text-6xl"
-        />
-        <div className="mt-14 grid border-l border-t border-line md:grid-cols-3">
-          {steps.map((step, i) => (
-            <motion.div
-              key={step.n}
-              {...reveal}
-              transition={{ ...reveal.transition, delay: i * 0.08 }}
-              className="border-b border-r border-line p-7"
-            >
-              <span className="font-display text-5xl text-accent">
-                {step.n}
-              </span>
-              <h3 className="mt-6 text-sm font-semibold uppercase tracking-[0.15em]">
-                {step.title}
-              </h3>
-              <p className="mt-2 text-xs text-accent/80">{`$ ${step.cmd}`}</p>
-              <p className="mt-4 text-sm leading-relaxed text-ink/55">
-                {step.body}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-      {/* Stats bar */}
-      <div className="grid grid-cols-2 bg-accent text-paper md:grid-cols-4">
-        {stats.map(([value, label], i) => (
-          <motion.div
-            key={label}
-            {...reveal}
-            transition={{ ...reveal.transition, delay: i * 0.06 }}
-            className="border-paper/20 px-6 py-8 sm:px-10 [&:not(:last-child)]:border-r"
-          >
-            <p className="font-display text-5xl leading-none">{value}</p>
-            <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.18em]">
-              {label}
-            </p>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function StorySection() {
-  return (
-    <section id="story" className="scroll-mt-16 border-b border-line">
-      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
-        <SectionLabel>How it feels</SectionLabel>
-        <TypeHeading
-          text="Point. Snap."
-          highlight="Tracked."
-          className="text-4xl leading-[0.95] sm:text-6xl"
-        />
-        <p className="mt-6 max-w-lg text-sm leading-relaxed text-ink/55">
-          No food scales, no searching a database. Your client points their
-          phone at the plate and the meal is in their day.
-        </p>
-        <motion.div {...reveal} className="mt-12">
-          <TrackingStory />
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-function DemoSection() {
-  return (
-    <section id="demo" className="scroll-mt-16 border-b border-line">
-      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
-        <SectionLabel>See it in action</SectionLabel>
-        <TypeHeading
-          text="Type it or snap it."
-          highlight="Macros in seconds."
-          className="text-4xl leading-[0.95] sm:text-6xl"
-        />
-        <p className="mt-6 max-w-lg text-sm leading-relaxed text-ink/55">
-          A real analysis from the app: the meal, the macros and every
-          ingredient it found.
-        </p>
-        <motion.div {...reveal} className="mt-12">
-          <AiDemo />
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-function TrainerSection() {
-  return (
-    <section id="trainers" className="scroll-mt-16 border-b border-line">
-      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
-        <FeatureTabs
-          features={trainerFeatures}
-          header={
-            <div>
-              <SectionLabel>For trainers</SectionLabel>
-              <TypeHeading
-                text="Your whole roster."
-                highlight="At a glance."
-                className="text-4xl leading-[0.95] sm:text-6xl"
-              />
-              <p className="mt-6 max-w-md text-sm leading-relaxed text-ink/55">
-                Stop chasing screenshots and food diaries. See what every client
-                ate, how they&apos;re trending, and who needs you today.
-              </p>
-              <a
-                href="/for-trainers"
-                className="mt-5 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent hover:opacity-80"
-              >
-                Everything FitLens does for trainers{" "}
-                <ArrowRight className="h-3.5 w-3.5" />
-              </a>
-            </div>
-          }
-        />
-      </div>
-    </section>
-  );
-}
-
-function WorkoutSection() {
-  return (
-    <section id="workouts" className="scroll-mt-16 border-b border-line">
-      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
-        <div className="text-center">
-          <SectionLabel color={BLUE}>Workouts</SectionLabel>
-          <TypeHeading
-            text="Training plans,"
-            highlight="logged set by set."
-            className="text-4xl leading-[0.95] sm:text-6xl"
-          />
-          <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-ink/55">
-            Build the plan once and share it. Your clients follow it one set at
-            a time, and every set lands in FitLens next to their meals.
-          </p>
-          <a
-            href="/workout-plans"
-            className="mt-5 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent hover:opacity-80"
-          >
-            How workout plans work in FitLens{" "}
-            <ArrowRight className="h-3.5 w-3.5" />
-          </a>
-        </div>
-        <div className="mt-16">
-          <FanSpread screens={workoutScreens} />
-        </div>
-        <div className="mt-16 grid gap-10 lg:grid-cols-[1.4fr_1fr]">
-          <dl className="grid border-l border-t border-line sm:grid-cols-2">
-            {workoutCoachPoints.map(([term, detail]) => (
-              <motion.div
-                key={term}
-                {...reveal}
-                className="border-b border-r border-line p-6"
-              >
-                <dt className="text-xs font-semibold uppercase tracking-[0.12em]">
-                  {term}
-                </dt>
-                <dd className="mt-2.5 text-[13px] leading-relaxed text-ink/55">
-                  {detail}
-                </dd>
-              </motion.div>
-            ))}
-          </dl>
-          <motion.div {...reveal} className="border border-line bg-card p-7">
-            <p
-              className="text-[10px] font-semibold uppercase tracking-[0.2em]"
-              style={{ color: GREEN }}
-            >
-              Your clients get
-            </p>
-            <ul className="mt-5 space-y-3.5">
-              {workoutClientPoints.map((point) => (
-                <li key={point} className="flex gap-3 text-sm text-ink/70">
-                  <Check
-                    className="mt-0.5 h-4 w-4 shrink-0"
-                    style={{ color: GREEN }}
-                  />
-                  {point}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function FeatureGrid() {
-  return (
-    <section id="features" className="scroll-mt-16 border-b border-line">
-      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
-        <SectionLabel>Features</SectionLabel>
-        <TypeHeading
-          text="Everything a coach needs."
-          highlight="Nothing they don't."
-          className="text-4xl leading-[0.95] sm:text-6xl"
-        />
-        <div className="mt-14 grid border-l border-t border-line sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature, i) => {
-            const lead = i === 0;
-            return (
-              <motion.div
-                key={feature.title}
-                {...reveal}
-                transition={{ ...reveal.transition, delay: (i % 3) * 0.06 }}
-                className={`border-b border-r border-line p-7 ${lead ? "bg-accent text-paper" : ""}`}
-              >
-                <span
-                  className={`font-display text-4xl ${lead ? "" : "text-accent"}`}
-                >
-                  0{i + 1}
+    <section id="how" className={section}>
+      <div className={container}>
+        <SectionHeading center eyebrow="How it works" title="Invite. Plan." accent="Coach." />
+        <ol className="mt-14 grid gap-4 md:grid-cols-3">
+          {steps.map(({ icon: Icon, title, body }, i) => (
+            <li key={title} className="reveal rounded-[var(--radius-card)] bg-card p-7">
+              <div className="flex items-center gap-3">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-on-accent">
+                  <Icon className="h-5 w-5" aria-hidden />
                 </span>
-                <h3 className="mt-5 text-sm font-semibold uppercase tracking-[0.12em]">
-                  {feature.title}
-                </h3>
-                <span
-                  className={`mt-3 inline-block border px-2 py-0.5 text-[10px] uppercase tracking-[0.15em] ${
-                    lead ? "border-paper/40" : "border-accent/50 text-accent"
-                  }`}
-                >
-                  [{feature.tag}]
-                </span>
-                <p
-                  className={`mt-4 text-[13px] leading-relaxed ${lead ? "text-paper/80" : "text-ink/55"}`}
-                >
-                  {feature.body}
-                </p>
-              </motion.div>
-            );
-          })}
-        </div>
-        <motion.div {...reveal} className="mt-6 flex flex-wrap gap-2">
-          {extras.map((extra) => (
-            <span
-              key={extra}
-              className="border border-line px-2.5 py-1 text-[10px] uppercase tracking-[0.15em] text-ink/50"
-            >
-              {extra}
-            </span>
+                <span className="text-sm font-semibold text-ink-2">Step {i + 1}</span>
+              </div>
+              <h3 className="mt-5 text-xl font-bold tracking-tight text-ink">{title}</h3>
+              <p className="mt-2 text-[15px] leading-6 text-ink-2">{body}</p>
+            </li>
           ))}
-        </motion.div>
+        </ol>
       </div>
     </section>
   );
 }
 
-function RosterSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+function Pilot() {
   return (
-    <section className="border-b border-line">
-      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
-        <SectionLabel>Who needs you today</SectionLabel>
-        <TypeHeading
-          text="See who's slipping."
-          highlight="Before they quit."
-          className="text-4xl leading-[0.95] sm:text-6xl"
+    <section id="pilot-details" className={`${section} bg-card`}>
+      <div className={container}>
+        <SectionHeading
+          eyebrow="The pilot"
+          title="Straightforward terms."
+          intro="We're onboarding a small group of personal trainers first. Here is exactly what that means."
         />
-        <div
-          ref={ref}
-          className="mt-14 grid gap-10 lg:grid-cols-[1.15fr_0.85fr]"
-        >
-          <div className="border border-line bg-card p-6">
-            <div className="mb-5 flex items-center justify-between text-[10px] uppercase tracking-[0.18em] text-ink/60">
-              <span>Example roster {"//"} 7-day adherence</span>
-              <span>%</span>
+        <dl className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {pilotFacts.map(([term, detail]) => (
+            <div key={term} className="reveal rounded-[var(--radius-card)] bg-paper p-6">
+              <dt className="text-lg font-bold tracking-tight text-ink">{term}</dt>
+              <dd className="m-0 mt-2 text-[15px] leading-6 text-ink-2">{detail}</dd>
             </div>
-            <ul className="space-y-4">
-              {roster.map((client, i) => (
-                <li
-                  key={client.name}
-                  className="grid grid-cols-[7.5rem_1fr_2.5rem] items-center gap-4 text-xs sm:grid-cols-[9rem_1fr_3rem]"
-                >
-                  <span className="truncate uppercase tracking-[0.1em] text-ink/70">
-                    {client.name}
-                  </span>
-                  <span className="h-2 bg-line">
-                    <motion.span
-                      className="block h-full"
-                      style={{ background: client.color }}
-                      initial={{ width: 0 }}
-                      animate={{ width: inView ? `${client.score}%` : 0 }}
-                      transition={{
-                        duration: 1,
-                        delay: 0.1 + i * 0.1,
-                        ease: [0.22, 1, 0.36, 1],
-                      }}
-                    />
-                  </span>
-                  <span
-                    className="text-right tabular-nums"
-                    style={{ color: client.color }}
-                  >
-                    {client.score}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="space-y-3">
-            {signals.map((signal, i) => (
-              <motion.div
-                key={signal.level}
-                {...reveal}
-                transition={{ ...reveal.transition, delay: i * 0.08 }}
-                className="border-l-2 bg-card px-5 py-4"
-                style={{ borderColor: signal.color }}
-              >
-                <p
-                  className="text-[10px] font-semibold uppercase tracking-[0.2em]"
-                  style={{ color: signal.color }}
-                >
-                  {signal.level}
-                </p>
-                <p className="mt-1.5 text-[13px] text-ink/65">{signal.body}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ClientSection() {
-  return (
-    <section id="clients" className="scroll-mt-16 border-b border-line">
-      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
-        <div className="text-center">
-          <SectionLabel color={GREEN}>For clients</SectionLabel>
-          <TypeHeading
-            text="Logging a meal takes"
-            highlight="five seconds."
-            className="text-4xl leading-[0.95] sm:text-6xl"
-          />
-          <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-ink/55">
-            The easier it is to log, the more your clients do it. FitLens makes
-            it a photo, not a chore.
-          </p>
-        </div>
-        <div className="mt-16">
-          <FanSpread screens={clientScreens} />
-        </div>
-        <dl className="mt-16 grid border-l border-t border-line sm:grid-cols-2 lg:grid-cols-4">
-          {clientPoints.map(([term, detail]) => (
-            <motion.div
-              key={term}
-              {...reveal}
-              className="border-b border-r border-line p-6"
-            >
-              <dt className="text-xs font-semibold uppercase tracking-[0.12em]">
-                {term}
-              </dt>
-              <dd className="mt-2.5 text-[13px] leading-relaxed text-ink/55">
-                {detail}
-              </dd>
-            </motion.div>
           ))}
         </dl>
       </div>
@@ -1082,48 +617,23 @@ function ClientSection() {
   );
 }
 
-function BeforeAfter() {
+function AlsoIncluded() {
   return (
-    <section className="border-b border-line">
-      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 lg:py-28">
-        <SectionLabel>Before / after</SectionLabel>
-        <TypeHeading
-          text="Coaching, minus"
-          highlight="the guesswork."
-          className="text-4xl leading-[0.95] sm:text-6xl"
+    <section id="features" className={section}>
+      <div className={container}>
+        <SectionHeading
+          eyebrow="Also included"
+          title="Everything a coach needs."
+          accent="Nothing they don't."
         />
-        <div className="mt-14 grid gap-px border border-line bg-line md:grid-cols-2">
-          <motion.div {...reveal} className="bg-paper p-8">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-ink/55">
-              Without FitLens
-            </p>
-            <ul className="mt-6 space-y-4">
-              {withoutFitLens.map((item) => (
-                <li key={item} className="flex gap-3 text-sm text-ink/55">
-                  <X className="mt-0.5 h-4 w-4 shrink-0 text-red/70" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-          <motion.div
-            {...reveal}
-            transition={{ ...reveal.transition, delay: 0.1 }}
-            className="bg-card p-8"
-          >
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-accent">
-              With FitLens
-            </p>
-            <ul className="mt-6 space-y-4">
-              {withFitLens.map((item) => (
-                <li key={item} className="flex gap-3 text-sm">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-green" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        </div>
+        <ul className="mt-10 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
+          {alsoIncluded.map((item) => (
+            <li key={item} className="flex gap-3 border-b border-line py-3.5 text-[15px] text-ink">
+              <Check className="mt-0.5 h-5 w-5 shrink-0 text-accent" aria-hidden />
+              {item}
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
@@ -1131,34 +641,25 @@ function BeforeAfter() {
 
 function Faq() {
   return (
-    <section id="faq" className="scroll-mt-16 border-b border-line">
-      <div className="mx-auto grid max-w-6xl gap-12 px-5 py-24 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:py-28">
-        <div>
-          <SectionLabel>FAQ</SectionLabel>
-          <TypeHeading
-            text="Questions"
-            highlight="people ask."
-            className="text-4xl leading-[0.95] sm:text-6xl"
-          />
-        </div>
-        <motion.div {...reveal} className="border-t border-line">
-          {faqs.map(({ q, a }, i) => (
-            <details key={q} className="group border-b border-line py-5">
-              <summary className="flex cursor-pointer list-none items-start justify-between gap-6 [&::-webkit-details-marker]:hidden">
-                <span className="flex gap-4">
-                  <span className="text-xs text-accent">0{i + 1}</span>
-                  <span className="text-sm font-medium uppercase tracking-[0.08em]">
-                    {q}
-                  </span>
+    <section id="faq" className={`${section} bg-card`}>
+      <div className={`${container} grid gap-10 lg:grid-cols-[0.8fr_1.2fr]`}>
+        <SectionHeading eyebrow="FAQ" title="Questions trainers ask." />
+        <div className="divide-y divide-line rounded-[var(--radius-card)] bg-paper px-6">
+          {faqs.map(({ q, a }) => (
+            <details key={q} className="group py-4">
+              <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 text-[17px] font-semibold text-ink [&::-webkit-details-marker]:hidden">
+                {q}
+                <span
+                  className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-card text-lg text-ink-2 transition-transform group-open:rotate-45"
+                  aria-hidden
+                >
+                  +
                 </span>
-                <Plus className="h-4 w-4 shrink-0 text-ink/40 transition-transform duration-300 group-open:rotate-45 group-open:text-accent" />
               </summary>
-              <p className="mt-3 max-w-xl pl-9 text-[13px] leading-relaxed text-ink/55">
-                {a}
-              </p>
+              <p className="mt-2 pb-2 text-[15px] leading-7 text-ink-2">{a}</p>
             </details>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -1166,27 +667,19 @@ function Faq() {
 
 function FinalCta() {
   return (
-    <section id="pilot" className="scroll-mt-16 border-b border-line">
-      <div className="relative mx-auto max-w-6xl overflow-hidden px-5 py-24 sm:px-8 lg:py-32">
-        <div
-          aria-hidden
-          className="grid-bg absolute inset-0 [mask-image:radial-gradient(ellipse_60%_70%_at_20%_50%,black,transparent)]"
-        />
-        <div className="relative">
-          <SectionLabel>Join the pilot</SectionLabel>
-          <TypeHeading
-            text="Grow your"
-            highlight="client list."
-            className="text-5xl leading-[0.92] sm:text-8xl"
-          />
-          <p className="mt-6 max-w-md text-sm leading-relaxed text-ink/55">
-            We&apos;re onboarding a small group of personal trainers first.
-            Leave your email and we&apos;ll set you up, free for up to 10
-            clients.
-          </p>
-          <div className="mt-10">
-            <PilotForm id="pilot-email" />
-          </div>
+    <section id="pilot" className={section}>
+      <div className={`${container} text-center`}>
+        <Eyebrow>Join the pilot</Eyebrow>
+        <h2 className="mx-auto mt-3 max-w-3xl text-[2.5rem] font-bold leading-[1.05] tracking-tight text-ink sm:text-6xl">
+          Grow your <em>client list.</em>
+        </h2>
+        <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-ink-2">
+          We&apos;re onboarding a small group of personal trainers first. Leave
+          your email and we&apos;ll set you up, free for up to 10 clients.
+          FitLens is on iPhone, and your clients always use it for free.
+        </p>
+        <div className="mt-9 flex justify-center">
+          <PilotForm id="pilot-email" />
         </div>
       </div>
     </section>

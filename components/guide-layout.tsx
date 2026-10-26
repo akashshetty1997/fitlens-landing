@@ -69,37 +69,37 @@ export function GuideLayout({
       <article className="mx-auto max-w-3xl px-5 py-16 sm:px-8 lg:py-24">
         <nav
           aria-label="Breadcrumb"
-          className="text-[11px] uppercase tracking-[0.18em] text-ink/55"
+          className="text-sm text-ink-2"
         >
           <Link href="/" className="hover:text-accent">
             Home
           </Link>
-          <span className="mx-2 text-ink/30">/</span>
+          <span className="mx-2 text-ink-2">/</span>
           <Link href="/guides" className="hover:text-accent">
             Guides
           </Link>
         </nav>
 
-        <h1 className="font-display mt-6 text-4xl uppercase leading-[0.98] sm:text-5xl">
+        <h1 className="mt-6 text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl">
           {guide.title}
         </h1>
         <p className="mt-6 text-[15px] leading-relaxed text-ink/65">
           {guide.description}
         </p>
-        <p className="mt-6 border-b border-line pb-8 text-[11px] uppercase tracking-[0.18em] text-ink/55">
-          By the FitLens team <span className="text-ink/30">{"//"}</span>{" "}
+        <p className="mt-6 border-b border-line pb-8 text-sm text-ink-2">
+          By the FitLens team <span className="text-ink-2">{"//"}</span>{" "}
           {formatDate(guide.published)}{" "}
-          <span className="text-ink/30">{"//"}</span> {guide.readMinutes} min
+          <span className="text-ink-2">{"//"}</span> {guide.readMinutes} min
           read
         </p>
 
         <div className="guide-prose mt-10">{children}</div>
 
-        <aside className="mt-16 border border-line bg-card p-7">
-          <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent">
-            {"// FitLens"}
+        <aside className="mt-16 rounded-[20px] bg-card p-7">
+          <p className="text-sm font-semibold text-ink">
+            FitLens
           </p>
-          <p className="font-display mt-3 text-2xl uppercase">
+          <p className="mt-3 text-2xl font-bold tracking-tight">
             See every client&apos;s meals in one place.
           </p>
           <p className="mt-3 text-sm leading-relaxed text-ink/65">
@@ -109,14 +109,14 @@ export function GuideLayout({
           </p>
           <Link
             href="/#pilot"
-            className="mt-6 inline-flex items-center gap-2 bg-accent px-5 py-3 text-xs font-semibold uppercase tracking-[0.15em] text-paper hover:opacity-90"
+            className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-accent px-6 text-[15px] font-semibold text-on-accent hover:opacity-90"
           >
             Join the pilot <ArrowRight className="h-4 w-4" />
           </Link>
         </aside>
 
         <section className="mt-16">
-          <h2 className="text-xs font-medium uppercase tracking-[0.2em] text-ink/55">
+          <h2 className="text-sm font-semibold text-ink">
             Related guides
           </h2>
           <ul className="mt-4 divide-y divide-line border-y border-line">
@@ -129,7 +129,7 @@ export function GuideLayout({
                   <span className="text-sm font-medium group-hover:text-accent">
                     {g.title}
                   </span>
-                  <ArrowRight className="h-4 w-4 shrink-0 text-ink/40 group-hover:text-accent" />
+                  <ArrowRight className="h-4 w-4 shrink-0 text-ink-2 group-hover:text-accent" />
                 </Link>
               </li>
             ))}
