@@ -144,6 +144,25 @@ export default function PrivacyPolicyPage() {
                   sent to us.
                 </li>
                 <li>
+                  <strong className="text-ink">
+                    Product analytics and error reports:
+                  </strong>{" "}
+                  we use PostHog to understand how the app is used and to find and
+                  fix errors. It receives the screens you open; actions such as
+                  logging a meal, finishing a workout, or sending a message (never
+                  the meal, photo, food description, body measurements, or message
+                  itself); error and crash reports; a random identifier created by
+                  the app; your FitLens user ID and role (trainer or client); for
+                  trainers, how many clients they have; and technical details such
+                  as device model, operating system, app version, language, and
+                  time zone. We do not record your screen or app sessions, we have
+                  set PostHog not to keep your IP address or work out your location
+                  from it, and we do not use this information for advertising or to
+                  track you across other companies&apos; apps or websites. PostHog
+                  stores this data in the United States. You can ask us to delete
+                  the analytics data linked to your account at any time.
+                </li>
+                <li>
                   <strong className="text-ink">Waitlist information:</strong> if
                   you join our website waitlist, we collect your email address
                   and any information you include with that submission.
@@ -182,6 +201,10 @@ export default function PrivacyPolicyPage() {
                   screenshot and logs you choose to send to find and fix the
                   problem), communicate with waitlist members, and improve the
                   Services;
+                </li>
+                <li>
+                  understand which features are used and fix crashes and errors
+                  (product analytics);
                 </li>
                 <li>
                   detect abuse, prevent fraud, protect users, and comply with
