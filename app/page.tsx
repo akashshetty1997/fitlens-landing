@@ -150,7 +150,7 @@ const steps = [
 ];
 
 const pilotFacts = [
-  ["Free for up to 10 clients", "Trainers coaching more than 10 can email us and we'll add room."],
+  ["Free for up to 10 clients", "Pilot trainers keep 10 free clients after launch. Coaching more? Email us and we'll add room."],
   ["Clients always free", "Your clients never pay to use FitLens."],
   ["iPhone first", "FitLens is on iPhone now, with Android in testing."],
   ["Private by default", "No ads. Data is never sold, and clients can delete their account any time."],
@@ -228,7 +228,7 @@ const heroStats = [
   [String(featureCount), "features in one app"],
   ["650+", "exercises for your plans"],
   ["5 s", "for a client to log a meal"],
-  ["$0", "for up to 10 clients"],
+  ["$0", "10 clients, for pilot trainers"],
 ];
 
 const faqs = [
@@ -238,7 +238,7 @@ const faqs = [
   },
   {
     q: "How much does FitLens cost?",
-    a: "FitLens is free for trainers coaching up to 10 clients, and clients always use the app for free. Coaching more than 10? Email contact@usefitlens.com and we'll add room for more.",
+    a: "During the pilot, FitLens is free for trainers coaching up to 10 clients, and trainers who join the pilot keep 10 free clients after launch. Clients always use the app for free. Coaching more than 10? Email contact@usefitlens.com and we'll add room for more.",
   },
   {
     q: "How accurate is the AI?",
@@ -832,7 +832,8 @@ function FinalCta() {
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-ink-2">
           We&apos;re onboarding a small group of personal trainers first. Leave
-          your email and we&apos;ll set you up, free for up to 10 clients.
+          your email and we&apos;ll set you up, free for up to 10 clients,
+          and you keep that after launch.
           FitLens is on iPhone, and your clients always use it for free.
         </p>
         <div className="mt-9 flex justify-center">

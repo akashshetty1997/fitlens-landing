@@ -54,7 +54,7 @@ const faqs = [
   },
   {
     q: "Do clients have to pay for workouts?",
-    a: "No. Clients always use FitLens for free, including workout plans. Trainers coaching up to 10 clients are free too.",
+    a: "No. Clients always use FitLens for free, including workout plans. Trainers in the pilot coach up to 10 clients free too, and keep that after launch.",
   },
 ];
 
@@ -190,9 +190,9 @@ export default function WorkoutPlansPage() {
 
       <h2>Pricing</h2>
       <p>
-        Workout plans are included in FitLens at no extra cost. FitLens is{" "}
-        <strong>free for trainers coaching up to 10 clients</strong>, and
-        clients always use it for free.
+        Workout plans are included in FitLens at no extra cost. Trainers who
+        join the pilot get <strong>up to 10 clients free</strong>, and keep that
+        after launch. Clients always use it for free.
       </p>
       <p className="text-sm text-ink-2">
         Exercise data by{" "}

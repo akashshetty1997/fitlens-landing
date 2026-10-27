@@ -272,8 +272,9 @@ export default function ForTrainersPage() {
 
       <h2>Pricing</h2>
       <p>
-        FitLens is <strong>free for trainers coaching up to 10 clients</strong>,
-        and clients always use it for free. Coaching more than 10? Email
+        Trainers who join the pilot get <strong>up to 10 clients free</strong>,
+        and keep that after launch. Clients always use it for free. Coaching
+        more than 10? Email
         contact@usefitlens.com and we&apos;ll add room for more.
       </p>
     </PageShell>

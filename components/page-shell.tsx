@@ -100,8 +100,9 @@ export function PageShell({
             Coach with proof, not guesswork.
           </p>
           <p className="mt-3 text-sm leading-relaxed text-ink/65">
-            FitLens is free for trainers with up to 10 clients, and always free
-            for clients. Leave your email and we&apos;ll set you up.
+            Pilot trainers get up to 10 clients free, and keep that after
+            launch. Clients always use it free. Leave your email and we&apos;ll
+            set you up.
           </p>
           <Link
             href="/#pilot"
