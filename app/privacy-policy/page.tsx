@@ -20,6 +20,8 @@ const sections = [
   { id: "information-we-collect", label: "Information we collect" },
   { id: "how-we-use-information", label: "How we use information" },
   { id: "how-we-share-information", label: "How we share information" },
+  { id: "health-data", label: "Apple Health and Health Connect" },
+  { id: "google-calendar", label: "Google Calendar" },
   { id: "your-choices", label: "Your choices and rights" },
   { id: "retention-and-security", label: "Retention and security" },
   { id: "children", label: "Children's privacy" },
@@ -58,7 +60,7 @@ export default function PrivacyPolicyPage() {
             <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
               Privacy Policy
             </h1>
-            <p className="text-ink-2">Last updated: October 29, 2026</p>
+            <p className="text-ink-2">Last updated: November 7, 2026</p>
           </div>
 
           <div className="space-y-10 text-[15px] leading-7 text-ink-2">
@@ -105,6 +107,37 @@ export default function PrivacyPolicyPage() {
                   shared tasks and habits and when they are completed.
                 </li>
                 <li>
+                  <strong className="text-ink">
+                    Steps and sleep from Apple Health or Health Connect:
+                  </strong>{" "}
+                  if you turn on Health sync, FitLens reads your daily step
+                  count and your sleep (time asleep, naps, and when you fell
+                  asleep and woke up). FitLens only reads this data; it never
+                  writes to or changes your health data. See{" "}
+                  <a
+                    className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80"
+                    href="#health-data"
+                  >
+                    Apple Health and Health Connect
+                  </a>
+                  .
+                </li>
+                <li>
+                  <strong className="text-ink">Calendar information:</strong>{" "}
+                  for trainers, the events you add to the FitLens calendar
+                  (title, notes, start and end time, reminder, and the clients
+                  a session is for); for clients, the sessions your trainer
+                  adds you to. If a trainer connects Google Calendar, we also
+                  receive the information described under{" "}
+                  <a
+                    className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80"
+                    href="#google-calendar"
+                  >
+                    Google Calendar
+                  </a>
+                  .
+                </li>
+                <li>
                   <strong className="text-ink">Content you provide:</strong>{" "}
                   meal photos, text descriptions, barcode data, voice-based meal
                   input or its transcription, trainer notes, messages, squad
@@ -131,6 +164,13 @@ export default function PrivacyPolicyPage() {
                   screen you were on, the app version, and your device model and
                   operating system version. If you are signed out, we also
                   receive the email address you enter so we can reply.
+                </li>
+                <li>
+                  <strong className="text-ink">Safety reports and blocks:</strong>{" "}
+                  when you report a post, comment, message, or person, we
+                  receive the reason and any details you add, together with a
+                  copy of the reported text; when you block someone, we keep a
+                  record of that block so their content stays hidden from you.
                 </li>
                 <li>
                   <strong className="text-ink">
@@ -189,6 +229,15 @@ export default function PrivacyPolicyPage() {
                   nutrition estimates;
                 </li>
                 <li>
+                  show your daily steps and sleep, and, if you choose, share
+                  them with your trainer;
+                </li>
+                <li>
+                  run the trainer calendar: send session reminders to trainers
+                  and the clients a session is for, and, for trainers who
+                  connect it, keep FitLens and Google Calendar in step;
+                </li>
+                <li>
                   connect trainers and clients, including sharing information
                   within an assigned trainer relationship or squad;
                 </li>
@@ -228,9 +277,21 @@ export default function PrivacyPolicyPage() {
                   information may be visible to your assigned trainer or to
                   members of a squad when you use those features. Your trainer
                   can see the meals and workouts you log and the tasks you
-                  share. A trainer&apos;s demo videos and custom exercises are
-                  visible to the clients they share plans with. Content you
-                  post to a squad should be treated as shared with that squad.
+                  share. If you turn on sharing in Health settings, your
+                  trainer can also see your daily steps and sleep. A
+                  trainer&apos;s demo videos and custom exercises are visible to
+                  the clients they share plans with, and clients see the
+                  calendar sessions their trainer adds them to (title, notes,
+                  and time). Content you post to a squad should be treated as
+                  shared with that squad.
+                </li>
+                <li>
+                  <strong className="text-ink">For meal analysis:</strong> when
+                  you use photo or text meal logging, and only after you agree
+                  in the app, we send the meal photo or description you add to
+                  OpenAI to estimate calories and nutrients. Nothing else from
+                  your account is sent with it, and OpenAI does not use it to
+                  train its models.
                 </li>
                 <li>
                   <strong className="text-ink">With service providers:</strong>{" "}
@@ -268,6 +329,109 @@ export default function PrivacyPolicyPage() {
               </p>
             </section>
 
+            <section id="health-data" className="scroll-mt-8">
+              <h2 className="mb-3 text-2xl font-semibold text-ink">
+                Apple Health and Health Connect
+              </h2>
+              <p>
+                Health sync is optional and off until you turn it on. With your
+                permission, FitLens reads your daily step count and sleep from
+                Apple Health on iPhone or Health Connect on Android. It does not
+                read any other health data, and it never writes to or changes
+                your health data.
+              </p>
+              <ul className="mt-4 list-disc space-y-2 pl-5">
+                <li>
+                  We use this data only to show you your activity and
+                  recovery in FitLens and, if you turn on sharing, to show it
+                  to your trainer. Your trainer sees nothing from Apple Health
+                  or Health Connect unless you choose to share.
+                </li>
+                <li>
+                  We do not use it for advertising or marketing, we do not
+                  sell it, we do not send it to our analytics provider, and we
+                  do not use it to train AI models. We do not share it with
+                  anyone else except as required by law.
+                </li>
+                <li>
+                  You can stop syncing, stop sharing with your trainer, or
+                  delete every synced day in the app&apos;s Health settings,
+                  and you can remove FitLens&apos;s access at any time in the
+                  Health app on iPhone or in Health Connect on Android. When
+                  you stop syncing, days already synced stay until you delete
+                  them or your account.
+                </li>
+              </ul>
+            </section>
+
+            <section id="google-calendar" className="scroll-mt-8">
+              <h2 className="mb-3 text-2xl font-semibold text-ink">
+                Google Calendar
+              </h2>
+              <p>
+                Trainers can choose to connect their Google account to keep the
+                FitLens calendar and their primary Google calendar in step.
+                When you connect, we receive your Google account email address
+                and permission to see and edit events on your calendars, and
+                we store an encrypted access token so syncing can continue.
+                FitLens uses this access only on your primary calendar, to:
+              </p>
+              <ul className="mt-4 list-disc space-y-2 pl-5">
+                <li>
+                  add the events and client sessions you create in FitLens to
+                  your Google calendar, and keep them updated;
+                </li>
+                <li>
+                  follow changes you make in Google to those events (a moved
+                  or deleted session is moved or cancelled in FitLens, and the
+                  clients it is for are told); and
+                </li>
+                <li>
+                  find Google events whose title or notes mention one of your
+                  import keywords or a client&apos;s name, and offer them to
+                  you. We keep the title, notes, and times of an offered event
+                  so you can review it; it is added to FitLens only if you
+                  choose. Other Google events are not stored.
+                </li>
+              </ul>
+              <p className="mt-4">
+                FitLens&apos;s use and transfer to any other app of information
+                received from Google APIs will adhere to the{" "}
+                <a
+                  className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80"
+                  href="https://developers.google.com/terms/api-services-user-data-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Google API Services User Data Policy
+                </a>
+                , including the Limited Use requirements. We use Google
+                Calendar data only to provide the sync features above. We do not
+                sell it, use it for advertising, or use it to train AI models,
+                and we do not send it to our analytics provider. People at
+                FitLens do not read it unless you ask us to (for example in a
+                support request), it is needed for security or to comply with
+                law, or it has been aggregated and de-identified.
+              </p>
+              <p className="mt-4">
+                You can disconnect Google Calendar at any time in the app. When
+                you disconnect, we revoke FitLens&apos;s access to your Google
+                account, delete the stored token and any events still waiting
+                for your review, and stop syncing; events already copied stay
+                in both calendars. You can also remove FitLens&apos;s access in
+                your{" "}
+                <a
+                  className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80"
+                  href="https://myaccount.google.com/permissions"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Google Account settings
+                </a>
+                .
+              </p>
+            </section>
+
             <section id="your-choices" className="scroll-mt-8">
               <h2 className="mb-3 text-2xl font-semibold text-ink">
                 Your choices and rights
@@ -280,6 +444,12 @@ export default function PrivacyPolicyPage() {
                 <li>
                   You can manage push-notification permissions through the app
                   and your device settings.
+                </li>
+                <li>
+                  You can turn Health sync and sharing with your trainer on or
+                  off, or delete your synced health data, in the app&apos;s
+                  Health settings. Trainers can disconnect Google Calendar in
+                  the app at any time.
                 </li>
                 <li>
                   You can stop receiving waitlist communications by using the
@@ -320,7 +490,9 @@ export default function PrivacyPolicyPage() {
                 Problem reports are kept only as long as we need them to
                 investigate and fix the problem. When you delete your account,
                 we delete your account data, including your logged workouts,
-                shared tasks, demo videos, and problem reports, as described on
+                shared tasks, demo videos, synced steps and sleep, calendar
+                events, your Google Calendar connection, and problem reports,
+                as described on
                 our{" "}
                 <Link className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80" href="/delete-account">
                   account deletion page

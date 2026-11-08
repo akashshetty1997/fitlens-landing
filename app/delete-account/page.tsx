@@ -26,6 +26,8 @@ const deleted = [
   "Meal plans you created or that were assigned to you",
   "Workouts you logged, workout plans assigned to you, and shared tasks",
   "Exercise demo videos you recorded or uploaded",
+  "Steps and sleep synced from Apple Health or Health Connect",
+  "Calendar events and sessions you created, and your Google Calendar connection",
   "Problem reports you sent, including their screenshots",
   "Your notification settings and device push tokens",
 ];
