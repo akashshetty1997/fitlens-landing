@@ -325,8 +325,7 @@ export default function PrivacyPolicyPage() {
                   <strong className="text-ink">For the FitLens AI assistant:</strong>{" "}
                   when a trainer uses it, we send their question and the data
                   needed to answer it, only from clients who have turned it on,
-                  to Anthropic&apos;s Claude model on Amazon Bedrock, a service
-                  of Amazon Web Services (AWS). See{" "}
+                  to Anthropic, the company that makes the Claude AI model. See{" "}
                   <a
                     className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80"
                     href="#fitlens-ai"
@@ -487,11 +486,13 @@ export default function PrivacyPolicyPage() {
                 unless the trainer confirms it in the app.
               </p>
               <p className="mt-4">
-                FitLens AI uses Anthropic&apos;s Claude model, which runs on
-                Amazon Bedrock, a service of Amazon Web Services (AWS). AWS
-                processes these requests for us as a service provider.
-                {/* Before publishing: add AWS's data retention and processing region for these
-                    requests, worded exactly as verified in the Bedrock check (Milestone 0). */}
+                FitLens AI uses Claude, an AI model made by Anthropic, through
+                Anthropic&apos;s API. Anthropic processes these requests for us
+                as a service provider. Under its commercial terms, Anthropic
+                does not use them to train its models, and it deletes them
+                within 30 days, except when a request is flagged for breaking
+                Anthropic&apos;s usage policy (kept for up to 2 years) or the
+                law requires it to keep them longer.
               </p>
               <ul className="mt-4 list-disc space-y-2 pl-5">
                 <li>
@@ -519,7 +520,8 @@ export default function PrivacyPolicyPage() {
                   then stop using their data straight away, stop any answer
                   being prepared that uses it, and delete every FitLens AI
                   message, answer, draft and proposal that used it. A request
-                  already sent to AWS before then can&apos;t be recalled.
+                  already sent to Anthropic before then can&apos;t be recalled;
+                  Anthropic deletes it as described above.
                 </li>
                 <li>
                   <strong className="text-ink">How long we keep it.</strong>{" "}
