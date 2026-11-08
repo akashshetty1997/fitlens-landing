@@ -22,6 +22,7 @@ const sections = [
   { id: "how-we-share-information", label: "How we share information" },
   { id: "health-data", label: "Apple Health and Health Connect" },
   { id: "google-calendar", label: "Google Calendar" },
+  { id: "fitlens-ai", label: "FitLens AI assistant" },
   { id: "your-choices", label: "Your choices and rights" },
   { id: "retention-and-security", label: "Retention and security" },
   { id: "children", label: "Children's privacy" },
@@ -60,7 +61,7 @@ export default function PrivacyPolicyPage() {
             <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
               Privacy Policy
             </h1>
-            <p className="text-ink-2">Last updated: November 7, 2026</p>
+            <p className="text-ink-2">Last updated: November 8, 2026</p>
           </div>
 
           <div className="space-y-10 text-[15px] leading-7 text-ink-2">
@@ -134,6 +135,28 @@ export default function PrivacyPolicyPage() {
                     href="#google-calendar"
                   >
                     Google Calendar
+                  </a>
+                  .
+                </li>
+                <li>
+                  <strong className="text-ink">Coaching profile:</strong> for
+                  each client, the notes their trainer keeps in FitLens:
+                  allergies, food preferences, injuries and limitations,
+                  available equipment, training experience, and training days
+                  per week.
+                </li>
+                <li>
+                  <strong className="text-ink">
+                    FitLens AI conversations (trainers):
+                  </strong>{" "}
+                  the questions trainers ask the FitLens AI assistant, its
+                  answers, the workout plans it drafts, and the feedback
+                  trainers give on answers. See{" "}
+                  <a
+                    className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80"
+                    href="#fitlens-ai"
+                  >
+                    FitLens AI assistant
                   </a>
                   .
                 </li>
@@ -229,6 +252,11 @@ export default function PrivacyPolicyPage() {
                   nutrition estimates;
                 </li>
                 <li>
+                  for trainers who use the FitLens AI assistant, answer their
+                  questions about clients who have turned it on and draft
+                  workout plans for the trainer to review;
+                </li>
+                <li>
                   show your daily steps and sleep, and, if you choose, share
                   them with your trainer;
                 </li>
@@ -292,6 +320,20 @@ export default function PrivacyPolicyPage() {
                   OpenAI to estimate calories and nutrients. Nothing else from
                   your account is sent with it, and OpenAI does not use it to
                   train its models.
+                </li>
+                <li>
+                  <strong className="text-ink">For the FitLens AI assistant:</strong>{" "}
+                  when a trainer uses it, we send their question and the data
+                  needed to answer it, only from clients who have turned it on,
+                  to Anthropic&apos;s Claude model on Amazon Bedrock, a service
+                  of Amazon Web Services (AWS). See{" "}
+                  <a
+                    className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80"
+                    href="#fitlens-ai"
+                  >
+                    FitLens AI assistant
+                  </a>
+                  .
                 </li>
                 <li>
                   <strong className="text-ink">With service providers:</strong>{" "}
@@ -432,6 +474,80 @@ export default function PrivacyPolicyPage() {
               </p>
             </section>
 
+            <section id="fitlens-ai" className="scroll-mt-8">
+              <h2 className="mb-3 text-2xl font-semibold text-ink">
+                FitLens AI assistant
+              </h2>
+              <p>
+                FitLens AI is an assistant for trainers. A trainer can ask it
+                about their clients (for example, how a client&apos;s week went
+                or who needs attention), and ask it to draft a workout plan.
+                Clients do not chat with it. It cannot message clients or
+                change their data, and nothing it drafts is saved or assigned
+                unless the trainer confirms it in the app.
+              </p>
+              <p className="mt-4">
+                FitLens AI uses Anthropic&apos;s Claude model, which runs on
+                Amazon Bedrock, a service of Amazon Web Services (AWS). AWS
+                processes these requests for us as a service provider.
+                {/* Before publishing: add AWS's data retention and processing region for these
+                    requests, worded exactly as verified in the Bedrock check (Milestone 0). */}
+              </p>
+              <ul className="mt-4 list-disc space-y-2 pl-5">
+                <li>
+                  <strong className="text-ink">Clients choose.</strong> FitLens
+                  AI uses a client&apos;s data only after the client turns it
+                  on in the app, and only for their current trainer. It is off
+                  until they do, and it ends if they change trainers. Data from
+                  clients who haven&apos;t turned it on is never sent, including
+                  in summaries of all of a trainer&apos;s clients.
+                </li>
+                <li>
+                  <strong className="text-ink">What is sent.</strong> The
+                  trainer&apos;s question and, for clients who have turned it
+                  on, the data needed to answer it: their profile and goals,
+                  the coaching profile their trainer keeps, the meals they log
+                  with their nutrition, their workouts, weight and progress,
+                  and their messages with their trainer, past and future.
+                  Steps and sleep are included only if the client shares them
+                  with their trainer in Health settings. Email addresses, phone
+                  numbers, passwords and photos are not sent.
+                </li>
+                <li>
+                  <strong className="text-ink">Turning it off.</strong> A
+                  client can turn FitLens AI off at any time in Settings. We
+                  then stop using their data straight away, stop any answer
+                  being prepared that uses it, and delete every FitLens AI
+                  message, answer, draft and proposal that used it. A request
+                  already sent to AWS before then can&apos;t be recalled.
+                </li>
+                <li>
+                  <strong className="text-ink">How long we keep it.</strong>{" "}
+                  FitLens deletes FitLens AI conversations, drafts and
+                  proposals 90 days after they were created, and sooner when a
+                  client turns FitLens AI off or an account is deleted.
+                </li>
+                <li>
+                  <strong className="text-ink">What we don&apos;t do.</strong>{" "}
+                  We do not use FitLens AI conversations for advertising, we do
+                  not sell them, and we do not use them to train AI models. Our
+                  analytics provider only learns events such as a message being
+                  sent, a proposal being confirmed or an answer being rated,
+                  never what was said.
+                </li>
+                <li>
+                  <strong className="text-ink">Not medical advice.</strong>{" "}
+                  Answers can be wrong. FitLens AI does not diagnose or treat
+                  anything, and trainers review its suggestions before acting
+                  on them.
+                </li>
+              </ul>
+              <p className="mt-4">
+                FitLens AI is separate from meal analysis, which uses OpenAI as
+                described above.
+              </p>
+            </section>
+
             <section id="your-choices" className="scroll-mt-8">
               <h2 className="mb-3 text-2xl font-semibold text-ink">
                 Your choices and rights
@@ -450,6 +566,10 @@ export default function PrivacyPolicyPage() {
                   off, or delete your synced health data, in the app&apos;s
                   Health settings. Trainers can disconnect Google Calendar in
                   the app at any time.
+                </li>
+                <li>
+                  Clients can turn the FitLens AI assistant on or off for their
+                  trainer in Settings at any time.
                 </li>
                 <li>
                   You can stop receiving waitlist communications by using the
@@ -488,10 +608,12 @@ export default function PrivacyPolicyPage() {
               </p>
               <p className="mt-4">
                 Problem reports are kept only as long as we need them to
-                investigate and fix the problem. When you delete your account,
+                investigate and fix the problem. FitLens AI conversations are
+                deleted after 90 days. When you delete your account,
                 we delete your account data, including your logged workouts,
                 shared tasks, demo videos, synced steps and sleep, calendar
-                events, your Google Calendar connection, and problem reports,
+                events, your Google Calendar connection, FitLens AI
+                conversations and coaching profiles, and problem reports,
                 as described on
                 our{" "}
                 <Link className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80" href="/delete-account">

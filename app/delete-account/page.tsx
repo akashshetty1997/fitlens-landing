@@ -28,6 +28,8 @@ const deleted = [
   "Exercise demo videos you recorded or uploaded",
   "Steps and sleep synced from Apple Health or Health Connect",
   "Calendar events and sessions you created, and your Google Calendar connection",
+  "FitLens AI assistant conversations and workout drafts, and coaching profiles (the notes a trainer keeps about you, or that you kept as a trainer)",
+  "Anything FitLens AI kept from your data, if you were a client who turned it on",
   "Problem reports you sent, including their screenshots",
   "Your notification settings and device push tokens",
 ];
