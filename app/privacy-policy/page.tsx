@@ -128,7 +128,7 @@ export default function PrivacyPolicyPage() {
                   for trainers, the events you add to the FitLens calendar
                   (title, notes, start and end time, reminder, and the clients
                   a session is for); for clients, the sessions your trainer
-                  adds you to. If a trainer connects Google Calendar, we also
+                  adds you to. If you connect Google Calendar, we also
                   receive the information described under{" "}
                   <a
                     className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80"
@@ -436,6 +436,19 @@ export default function PrivacyPolicyPage() {
                 </li>
               </ul>
               <p className="mt-4">
+                Clients can choose to add their plan to Google Calendar. FitLens
+                then creates a separate calendar named &quot;FitLens&quot; in
+                their Google account and adds all-day entries for the next two
+                weeks: the name of each day&apos;s workout and its number of
+                exercises, and the names and calories of that day&apos;s planned
+                meals. We receive their Google account email address and
+                permission to manage only calendars FitLens creates; we cannot
+                see their other calendars or events, and we read nothing back
+                from Google. Removing the connection in the app deletes the
+                FitLens calendar from their Google account and revokes
+                FitLens&apos;s access.
+              </p>
+              <p className="mt-4">
                 FitLens&apos;s use and transfer to any other app of information
                 received from Google APIs will adhere to the{" "}
                 <a
@@ -566,8 +579,8 @@ export default function PrivacyPolicyPage() {
                 <li>
                   You can turn Health sync and sharing with your trainer on or
                   off, or delete your synced health data, in the app&apos;s
-                  Health settings. Trainers can disconnect Google Calendar in
-                  the app at any time.
+                  Health settings. You can disconnect Google Calendar in the
+                  app at any time.
                 </li>
                 <li>
                   Clients can turn the FitLens AI assistant on or off for their
