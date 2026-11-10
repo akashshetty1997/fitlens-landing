@@ -61,7 +61,7 @@ export default function PrivacyPolicyPage() {
             <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
               Privacy Policy
             </h1>
-            <p className="text-ink-2">Last updated: November 8, 2026</p>
+            <p className="text-ink-2">Last updated: November 10, 2026</p>
           </div>
 
           <div className="space-y-10 text-[15px] leading-7 text-ink-2">
@@ -150,8 +150,8 @@ export default function PrivacyPolicyPage() {
                     FitLens AI conversations (trainers):
                   </strong>{" "}
                   the questions trainers ask the FitLens AI assistant, its
-                  answers, the workout plans it drafts, and the feedback
-                  trainers give on answers. See{" "}
+                  answers, the workout and meal plans it drafts, the sessions
+                  it proposes, and the feedback trainers give on answers. See{" "}
                   <a
                     className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80"
                     href="#fitlens-ai"
@@ -253,8 +253,9 @@ export default function PrivacyPolicyPage() {
                 </li>
                 <li>
                   for trainers who use the FitLens AI assistant, answer their
-                  questions about clients who have turned it on and draft
-                  workout plans for the trainer to review;
+                  questions about clients who have turned it on, draft
+                  workout and meal plans, and propose sessions for the trainer
+                  to review;
                 </li>
                 <li>
                   show your daily steps and sleep, and, if you choose, share
@@ -493,10 +494,12 @@ export default function PrivacyPolicyPage() {
               <p>
                 FitLens AI is an assistant for trainers. A trainer can ask it
                 about their clients (for example, how a client&apos;s week went
-                or who needs attention), and ask it to draft a workout plan.
-                Clients do not chat with it. It cannot message clients or
-                change their data, and nothing it drafts is saved or assigned
-                unless the trainer confirms it in the app.
+                or who needs attention), ask it to draft a workout or meal
+                plan, and ask it to book a session. Clients do not chat with
+                it. It cannot message clients or change their data on its
+                own: a plan is only assigned, and a session only booked, when
+                the trainer confirms it in the app, and the client is then
+                notified the same way as when the trainer does it by hand.
               </p>
               <p className="mt-4">
                 FitLens AI uses Claude, an AI model made by Anthropic, through
