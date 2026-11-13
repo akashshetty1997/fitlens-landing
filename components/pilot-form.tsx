@@ -6,12 +6,10 @@ import { ArrowRight, Check } from "lucide-react";
 
 // Pilot signup: posts the email to Formspree (same endpoint and payload as
 // before) and records a "Pilot signup" analytics event with the form id.
-// The form is also labelled for in-browser AI agents (declarative WebMCP,
-// Chrome only): an agent may fill in the email, but there is no auto-submit,
-// so the visitor still presses Join. Agent submissions are marked in analytics.
-// With agentTool, the form also registers a script-based WebMCP tool (the kind
-// ChatGPT's desktop browser calls). It only fills in the email; the visitor
-// still checks it and presses Join, so nothing is sent without them.
+// With agentTool, the form registers a WebMCP tool for in-browser AI agents
+// (ChatGPT's desktop browser, Chrome). It only fills in the email; the visitor
+// still checks it and presses Join, so nothing is sent without them. (Declarative
+// form labels were removed: ChatGPT exposed them as tools that send the form.)
 
 type ModelContext = {
   registerTool: (tool: unknown, options?: { signal?: AbortSignal }) => Promise<unknown>;
@@ -69,8 +67,6 @@ export function PilotForm({ id, agentTool = false }: { id: string; agentTool?: b
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // True when an AI agent submitted the form through WebMCP (Chrome only)
-    const agent = (e.nativeEvent as SubmitEvent & { agentInvoked?: boolean }).agentInvoked === true;
     setStatus("sending");
     try {
       const res = await fetch(FORMSPREE_URL, {
@@ -82,7 +78,7 @@ export function PilotForm({ id, agentTool = false }: { id: string; agentTool?: b
         body: JSON.stringify({ email }),
       });
       setStatus(res.ok ? "done" : "error");
-      if (res.ok) track("Pilot signup", { form: id, agent });
+      if (res.ok) track("Pilot signup", { form: id });
     } catch {
       setStatus("error");
     }
@@ -104,8 +100,6 @@ export function PilotForm({ id, agentTool = false }: { id: string; agentTool?: b
     <div className="w-full max-w-lg">
       <form
         onSubmit={handleSubmit}
-        toolname={`join_trainer_pilot_${id.replace(/-/g, "_")}`}
-        tooldescription="Join the free FitLens pilot for personal trainers. Sends the trainer's email address to FitLens so the team can get in touch about the pilot."
         className="flex flex-col gap-2 sm:flex-row"
         aria-describedby={status === "error" ? `${id}-error` : undefined}
       >
@@ -116,7 +110,6 @@ export function PilotForm({ id, agentTool = false }: { id: string; agentTool?: b
           id={id}
           type="email"
           name="email"
-          toolparamdescription="The personal trainer's email address"
           required
           autoComplete="email"
           value={email}
