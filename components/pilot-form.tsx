@@ -6,6 +6,9 @@ import { ArrowRight, Check } from "lucide-react";
 
 // Pilot signup: posts the email to Formspree (same endpoint and payload as
 // before) and records a "Pilot signup" analytics event with the form id.
+// The form is also labelled for in-browser AI agents (declarative WebMCP,
+// Chrome only): an agent may fill in the email, but there is no auto-submit,
+// so the visitor still presses Join. Agent submissions are marked in analytics.
 const FORMSPREE_URL = "https://formspree.io/f/xzddzwjj";
 
 export function PilotForm({ id }: { id: string }) {
@@ -14,8 +17,10 @@ export function PilotForm({ id }: { id: string }) {
     "idle",
   );
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // True when an AI agent submitted the form through WebMCP (Chrome only)
+    const agent = (e.nativeEvent as SubmitEvent & { agentInvoked?: boolean }).agentInvoked === true;
     setStatus("sending");
     try {
       const res = await fetch(FORMSPREE_URL, {
@@ -27,7 +32,7 @@ export function PilotForm({ id }: { id: string }) {
         body: JSON.stringify({ email }),
       });
       setStatus(res.ok ? "done" : "error");
-      if (res.ok) track("Pilot signup", { form: id });
+      if (res.ok) track("Pilot signup", { form: id, agent });
     } catch {
       setStatus("error");
     }
@@ -49,6 +54,8 @@ export function PilotForm({ id }: { id: string }) {
     <div className="w-full max-w-lg">
       <form
         onSubmit={handleSubmit}
+        toolname={`join_trainer_pilot_${id.replace(/-/g, "_")}`}
+        tooldescription="Join the free FitLens pilot for personal trainers. Sends the trainer's email address to FitLens so the team can get in touch about the pilot."
         className="flex flex-col gap-2 sm:flex-row"
         aria-describedby={status === "error" ? `${id}-error` : undefined}
       >
@@ -58,6 +65,8 @@ export function PilotForm({ id }: { id: string }) {
         <input
           id={id}
           type="email"
+          name="email"
+          toolparamdescription="The personal trainer's email address"
           required
           autoComplete="email"
           value={email}
