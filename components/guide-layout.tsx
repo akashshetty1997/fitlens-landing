@@ -30,7 +30,7 @@ export function GuideLayout({
         headline: guide.title,
         description: guide.description,
         datePublished: guide.published,
-        dateModified: guide.published,
+        dateModified: guide.updated ?? guide.published,
         mainEntityOfPage: url,
         url,
         image: `${SITE_URL}/opengraph-image`,
@@ -89,6 +89,11 @@ export function GuideLayout({
         <p className="mt-6 border-b border-line pb-8 text-sm text-ink-2">
           By the FitLens team <span className="text-ink-2">{"//"}</span>{" "}
           {formatDate(guide.published)}{" "}
+          {guide.updated && (
+            <>
+              <span className="text-ink-2">{"//"}</span> Updated {formatDate(guide.updated)}{" "}
+            </>
+          )}
           <span className="text-ink-2">{"//"}</span> {guide.readMinutes} min
           read
         </p>

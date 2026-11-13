@@ -4,6 +4,7 @@ export type Guide = {
   title: string;
   description: string;
   published: string; // ISO date
+  updated?: string; // ISO date of the last content change, if after publishing
   readMinutes: number;
 };
 
@@ -14,6 +15,7 @@ export const GUIDES: Guide[] = [
     description:
       "A practical system for tracking client nutrition: which method to use, what to measure, how to review it weekly without burning out, and how to give feedback that sticks.",
     published: "2026-10-04",
+    updated: "2026-11-13",
     readMinutes: 7,
   },
   {
@@ -22,6 +24,7 @@ export const GUIDES: Guide[] = [
     description:
       "How photo-based calorie estimation works, where it is reliable, where it struggles (oils, sauces, portions), and simple habits that make estimates much better.",
     published: "2026-10-04",
+    updated: "2026-11-13",
     readMinutes: 6,
   },
   {

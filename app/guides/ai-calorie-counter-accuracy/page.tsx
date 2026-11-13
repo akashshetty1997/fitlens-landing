@@ -29,6 +29,16 @@ export default function Page() {
         trends rather than to count every last calorie.
       </p>
 
+      <h2>The short version</h2>
+      <p>
+        Photo calorie counters are reliable enough for coaching on everyday
+        plated meals and common whole foods. They are least reliable for hidden
+        oils and butter, sauces and mixed dishes, drinks, and how deep a bowl
+        is. Use them to follow weekly trends rather than exact daily numbers,
+        and add a few words such as &ldquo;cooked in 1 tbsp olive oil&rdquo;
+        to fill in what the photo cannot show.
+      </p>
+
       <h2>How photo calorie estimation works</h2>
       <p>An AI calorie counter has to solve three problems, in order:</p>
       <ol>

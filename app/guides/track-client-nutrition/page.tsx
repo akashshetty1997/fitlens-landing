@@ -35,6 +35,16 @@ export default function Page() {
         little effort as possible from the client. This guide walks through one.
       </p>
 
+      <h2>The short version</h2>
+      <p>
+        Use a low-effort method your clients keep up, such as photo logging in
+        an app you can see. Watch a few numbers well: calories as a weekly
+        average, protein, how many days they logged, and their body-weight
+        trend. Give targets they can act on (a calorie range and a protein
+        number), scan daily for clients who stop logging or drift off target,
+        review each client weekly, and change one thing at a time.
+      </p>
+
       <h2>1. Pick a tracking method your clients will actually use</h2>
       <p>
         The best tracking method is the one a client keeps doing after the first
