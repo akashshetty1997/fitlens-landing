@@ -233,6 +233,10 @@ const heroStats = [
 
 const faqs = [
   {
+    q: "What is FitLens?",
+    a: "FitLens is a coaching app for personal trainers. Clients log meals with a photo or a short description and follow their trainer's workout plans set by set, and the trainer sees every client in one dashboard. It isn't related to the other apps called FitLens, such as posture or body-scan apps: this FitLens is made for trainers and their clients.",
+  },
+  {
     q: "How does FitLens help me coach more clients?",
     a: "It takes over the managing that limits how many clients one trainer can handle: chasing food diaries, rewriting the same plans, and working out who is slipping. Clients log meals and workouts themselves, you write each plan once, and a daily list tells you who needs you. That time goes back into coaching, or into taking on more clients.",
   },
@@ -518,9 +522,9 @@ function Dashboard() {
         <div className="order-1 lg:order-2">
           <SectionHeading
             eyebrow="The trainer dashboard"
-            title="A client dashboard for"
-            accent="your whole roster."
-            intro="Stop chasing screenshots and food diaries. See what every client ate, how they're trending, and who needs you today, ranked by urgency."
+            title="What does the trainer dashboard"
+            accent="show you?"
+            intro="What every client ate, how they're trending, and who needs you today, ranked by urgency. No more chasing screenshots and food diaries."
           />
           <div className="mt-8 space-y-2.5">
             <p className="text-sm text-ink-2">Example attention queue</p>
@@ -746,9 +750,9 @@ function Demo() {
       <div className={container}>
         <SectionHeading
           eyebrow="See it in action"
-          title="AI macro tracking."
-          accent="Type it or snap it."
-          intro="A real analysis from the app: the meal a client described, the macros and every ingredient FitLens found."
+          title="How does FitLens track"
+          accent="calories and macros?"
+          intro="Clients snap a photo of a meal or type a short description, and FitLens estimates calories, protein, carbs and fat, ingredient by ingredient. Below is a real analysis from the app: the meal a client described, the macros and every ingredient FitLens found."
         />
         <div className="reveal mt-10">
           <AiDemo />

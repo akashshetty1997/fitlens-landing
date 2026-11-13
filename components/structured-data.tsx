@@ -19,6 +19,10 @@ export function StructuredData({ faqs }: { faqs: Faq[] }) {
         "@type": "Organization",
         "@id": `${SITE_URL}/#organization`,
         name: SITE_NAME,
+        // Other products share the name, so say plainly which FitLens this is
+        alternateName: "FitLens for personal trainers",
+        description:
+          "FitLens is a coaching app for personal trainers: clients log meals by photo and follow workout plans set by set, and trainers see every client in one dashboard.",
         url: SITE_URL,
         logo: `${SITE_URL}/icon.png`,
         email: SUPPORT_EMAIL,
