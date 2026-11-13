@@ -61,7 +61,7 @@ export default function PrivacyPolicyPage() {
             <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
               Privacy Policy
             </h1>
-            <p className="text-ink-2">Last updated: November 10, 2026</p>
+            <p className="text-ink-2">Last updated: November 13, 2026</p>
           </div>
 
           <div className="space-y-10 text-[15px] leading-7 text-ink-2">
@@ -320,7 +320,11 @@ export default function PrivacyPolicyPage() {
                   in the app, we send the meal photo or description you add to
                   OpenAI to estimate calories and nutrients. Nothing else from
                   your account is sent with it, and OpenAI does not use it to
-                  train its models.
+                  train its models. You can turn AI meal analysis off at any
+                  time in your Profile. We then stop sending your meal photos
+                  and descriptions, and the app asks again before you next log
+                  a meal with a photo or description. Meals you already logged
+                  stay in your account.
                 </li>
                 <li>
                   <strong className="text-ink">For the FitLens AI assistant:</strong>{" "}
@@ -543,7 +547,10 @@ export default function PrivacyPolicyPage() {
                   <strong className="text-ink">How long we keep it.</strong>{" "}
                   FitLens deletes FitLens AI conversations, drafts and
                   proposals 90 days after they were created, and sooner when a
-                  client turns FitLens AI off or an account is deleted.
+                  trainer deletes a chat, a client turns FitLens AI off or an
+                  account is deleted. Deleting a chat removes its messages,
+                  answers, drafts and proposals; plans and sessions the trainer
+                  already confirmed stay.
                 </li>
                 <li>
                   <strong className="text-ink">What we don&apos;t do.</strong>{" "}
@@ -588,6 +595,11 @@ export default function PrivacyPolicyPage() {
                 <li>
                   Clients can turn the FitLens AI assistant on or off for their
                   trainer in Settings at any time.
+                </li>
+                <li>
+                  You can turn AI meal analysis off, or back on, in your Profile
+                  at any time. Trainers can delete a FitLens AI chat at any
+                  time.
                 </li>
                 <li>
                   You can stop receiving waitlist communications by using the
