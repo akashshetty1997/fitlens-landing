@@ -394,7 +394,7 @@ function Hero() {
           </p>
 
           <div className="mt-9 flex flex-col items-center gap-4">
-            <PilotForm id="hero-email" />
+            <PilotForm id="hero-email" agentTool />
             <Link
               href="#how"
               className="inline-flex min-h-11 items-center gap-1.5 text-[15px] font-medium text-ink-2 transition-colors hover:text-ink"

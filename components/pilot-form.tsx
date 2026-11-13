@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { track } from "@vercel/analytics";
 import { ArrowRight, Check } from "lucide-react";
 
@@ -9,13 +9,63 @@ import { ArrowRight, Check } from "lucide-react";
 // The form is also labelled for in-browser AI agents (declarative WebMCP,
 // Chrome only): an agent may fill in the email, but there is no auto-submit,
 // so the visitor still presses Join. Agent submissions are marked in analytics.
+// With agentTool, the form also registers a script-based WebMCP tool (the kind
+// ChatGPT's desktop browser calls). It only fills in the email; the visitor
+// still checks it and presses Join, so nothing is sent without them.
+
+type ModelContext = {
+  registerTool: (tool: unknown, options?: { signal?: AbortSignal }) => Promise<unknown>;
+};
 const FORMSPREE_URL = "https://formspree.io/f/xzddzwjj";
 
-export function PilotForm({ id }: { id: string }) {
+export function PilotForm({ id, agentTool = false }: { id: string; agentTool?: boolean }) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">(
     "idle",
   );
+
+  useEffect(() => {
+    if (!agentTool) return;
+    const modelContext =
+      (document as Document & { modelContext?: ModelContext }).modelContext ??
+      (navigator as Navigator & { modelContext?: ModelContext }).modelContext;
+    if (!modelContext?.registerTool) return;
+    const controller = new AbortController();
+    modelContext
+      .registerTool(
+        {
+          name: "join_trainer_pilot",
+          title: "Join the FitLens trainer pilot",
+          description:
+            "Fills in a personal trainer's email address on the FitLens pilot sign-up form. Nothing is sent until the visitor checks it and presses Join.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              email: { type: "string", format: "email", description: "The personal trainer's email address" },
+            },
+            required: ["email"],
+          },
+          async execute({ email: value }: { email: string }) {
+            setEmail(String(value ?? "").trim().slice(0, 254));
+            setStatus("idle");
+            const input = document.getElementById(id);
+            input?.scrollIntoView({ behavior: "smooth", block: "center" });
+            input?.focus();
+            return {
+              content: [
+                {
+                  type: "text",
+                  text: 'The email is filled in on the sign-up form. The visitor needs to check it and press "Join the free trainer pilot" to send it.',
+                },
+              ],
+            };
+          },
+        },
+        { signal: controller.signal },
+      )
+      .catch(() => {});
+    return () => controller.abort();
+  }, [agentTool, id]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
