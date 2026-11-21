@@ -61,7 +61,7 @@ export default function PrivacyPolicyPage() {
             <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
               Privacy Policy
             </h1>
-            <p className="text-ink-2">Last updated: November 13, 2026</p>
+            <p className="text-ink-2">Last updated: November 21, 2026</p>
           </div>
 
           <div className="space-y-10 text-[15px] leading-7 text-ink-2">
@@ -144,6 +144,12 @@ export default function PrivacyPolicyPage() {
                   allergies, food preferences, injuries and limitations,
                   available equipment, training experience, and training days
                   per week.
+                </li>
+                <li>
+                  <strong className="text-ink">Food preferences:</strong> if
+                  you use FitLens without a trainer, the diet, allergies and
+                  foods you avoid that you choose to add in your Profile. They
+                  are optional, and you can change or clear them at any time.
                 </li>
                 <li>
                   <strong className="text-ink">
@@ -499,11 +505,31 @@ export default function PrivacyPolicyPage() {
                 FitLens AI is an assistant for trainers. A trainer can ask it
                 about their clients (for example, how a client&apos;s week went
                 or who needs attention), ask it to draft a workout or meal
-                plan, and ask it to book a session. Clients do not chat with
-                it. It cannot message clients or change their data on its
-                own: a plan is only assigned, and a session only booked, when
-                the trainer confirms it in the app, and the client is then
-                notified the same way as when the trainer does it by hand.
+                plan, and ask it to book a session. It cannot message clients
+                or change their data on its own: a plan is only assigned, and
+                a session only booked, when the trainer confirms it in the app,
+                and the client is then notified the same way as when the
+                trainer does it by hand.
+              </p>
+              <p className="mt-4">
+                <strong className="text-ink">
+                  FitLens AI chat for people without a trainer.
+                </strong>{" "}
+                If you use FitLens without a trainer, you can chat with
+                FitLens AI as a help buddy about your own meals, goals and
+                weight. It is not a trainer. It only works after you agree in
+                the app, and it only reads your own data. To answer you, we
+                send your messages and the data needed to answer them: your
+                profile, goals and targets, your food preferences (diet,
+                allergies and foods you avoid, if you added them), the meals
+                you log with their nutrition, and your weight. It can suggest a meal plan, a goal
+                weight, a weigh-in to log or a weigh-in reminder, but nothing
+                is saved until you tap Confirm. Your email address, phone
+                number, password and photos are not sent. You can turn it off
+                in your Profile at any time; it then asks again before you
+                use it. If you later connect a trainer, FitLens AI chat is
+                replaced by chat with your trainer, and your trainer cannot
+                see your FitLens AI chats.
               </p>
               <p className="mt-4">
                 FitLens AI uses Claude, an AI model made by Anthropic, through
@@ -546,8 +572,8 @@ export default function PrivacyPolicyPage() {
                 <li>
                   <strong className="text-ink">How long we keep it.</strong>{" "}
                   FitLens deletes FitLens AI conversations, drafts and
-                  proposals 90 days after they were created, and sooner when a
-                  trainer deletes a chat, a client turns FitLens AI off or an
+                  proposals 90 days after they were created, and sooner when
+                  you delete a chat, a client turns FitLens AI off or an
                   account is deleted. Deleting a chat removes its messages,
                   answers, drafts and proposals; plans and sessions the trainer
                   already confirmed stay.
@@ -563,8 +589,9 @@ export default function PrivacyPolicyPage() {
                 <li>
                   <strong className="text-ink">Not medical advice.</strong>{" "}
                   Answers can be wrong. FitLens AI does not diagnose or treat
-                  anything, and trainers review its suggestions before acting
-                  on them.
+                  anything. Trainers review its suggestions before acting on
+                  them, and people without a trainer confirm every change
+                  themselves.
                 </li>
               </ul>
               <p className="mt-4">
@@ -598,7 +625,8 @@ export default function PrivacyPolicyPage() {
                 </li>
                 <li>
                   You can turn AI meal analysis off, or back on, in your Profile
-                  at any time. Trainers can delete a FitLens AI chat at any
+                  at any time. Without a trainer, you can turn FitLens AI chat
+                  off in your Profile. You can delete a FitLens AI chat at any
                   time.
                 </li>
                 <li>
