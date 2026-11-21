@@ -1,6 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // The staff dashboard is never indexed (it also sets noindex in its metadata)
+  async headers() {
+    return [
+      // ":path*" also matches /admin itself
+      {
+        source: "/admin/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+    ];
+  },
   // The old Vercel address permanently redirects to the real domain, keeping the path
   async redirects() {
     return [
