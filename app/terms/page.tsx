@@ -58,7 +58,7 @@ export default function TermsPage() {
             <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
               Terms of Service
             </h1>
-            <p className="text-ink-2">Last updated: October 26, 2026</p>
+            <p className="text-ink-2">Last updated: November 18, 2026</p>
           </div>
 
           <div className="space-y-10 text-[15px] leading-7 text-ink-2">
@@ -189,6 +189,21 @@ export default function TermsPage() {
                 Content shared with a trainer, squad, or other user may be
                 viewed, copied, or reshared by people who have access to it.
                 Choose your audience carefully.
+              </p>
+              <p className="mt-4">
+                <strong className="text-ink">AI features.</strong> Some
+                features use third-party AI providers that process data for
+                FitLens: AI meal analysis sends the meal photos and
+                descriptions you add, and FitLens AI sends a trainer&apos;s
+                questions and the data of clients who allowed it. The app asks
+                for your permission before it sends anything to an AI provider,
+                and nothing is sent if you say no. You can turn each feature
+                off at any time in your Profile. Our providers don&apos;t use
+                this data to train AI models. Our{" "}
+                <Link className="text-ink underline decoration-accent decoration-2 underline-offset-2 hover:opacity-80" href="/privacy">
+                  Privacy Policy
+                </Link>{" "}
+                names them and explains what is sent and how long it is kept.
               </p>
             </section>
 
